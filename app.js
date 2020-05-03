@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const handlebars = require('express-handlebars');
+
 const app = express();
 const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
@@ -10,12 +11,14 @@ const sql=mysql.createConnection({
    password:'',
    port:3306
 });
-sql.query("use estoquenb");
+// escolhe qual db será usado
+sql.query("use crud");
 
 //Template engine
 app.engine("handlebars",handlebars({defaultLayout:'main'}));
 app.set('view engine','handlebars');
 
+//Paginas estáticas
 app.use('/css',express.static('css'));
 app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
