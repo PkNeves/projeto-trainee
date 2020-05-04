@@ -82,9 +82,16 @@ app.post("/adicionar",urlencodeParser,function(req,res){
 });
 
 app.post("/vender",urlencodeParser,function(req,res){
-	let id = req.body.idProdutoVenda
+    let id = req.body.idProdutoVenda
+    let nome = req.body.nomeVenda
 	let qntdEstoque = req.body.quantidadeEstoqueVenda
-	let qntd = req.body.quantidadeVenda
+    let qntd = req.body.quantidadeVenda
+    
+    let transaction = "INSERT INTO transacoes (id, nome, quantidade) VALUES ?"
+
+    sql.query(transaction, [[[id, nome, qntd]]], function (err) {
+        if (err) throw err;
+    })
 
     let values = [(qntdEstoque - qntd), id];
 
@@ -139,9 +146,15 @@ app.get("/excluir/:id",function(req,res){
 
 app.post("/transacoes", urlencodeParser, function (req, res) {
 
-    // console.log('aaaaaaaaaaaaaaaaaaaaaa')
+    let query = "SELECT * FROM transacoes";
 
-    res.render('transacoes');
+    sql.query(query, function(err, results, fields) {
+        res.render('transacoes', {data: results});
+    })
+})
+
+app.post("/home", urlencodeParser, function (req, res) {
+    res.redirect('/')
 })
 
 app.post('/adicionarUsuario', function(req, res) {

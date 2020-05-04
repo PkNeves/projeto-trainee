@@ -1,4 +1,4 @@
-	<h2 style="text-align: center;">Sistema de Controle de Estoque (CRUD)</h2>
+	<h2>Controle de Estoque</h2>
 
 	<!--Botões com as funcionalidades-->
 
@@ -6,13 +6,11 @@
 		<button onclick="mostrarModal(); document.getElementById('adicionarProduto').style.display = 'initial';"><i class="fa fa-plus"></i> Adicionar um produto</button>
 		<button onclick="mostrarModal(); document.getElementById('buscarProduto').style.display = 'initial';"><i class="fa fa-search"></i> Buscar um produto</button>
 
-		{{!-- <button onclick=window.location.href="/transacoes" type="button">Click me</button> --}}
 		<form action='transacoes' style="display: inline" method="post">
-			<button onclick="">Transações</button>
+			<button><i class="fa fa-money"></i> Transações</button>
 		</form>
-		{{!-- <a href="transacoes.handlebars">Transacoes</a> --}}
 	</div>
-
+	
 	<div id="busca" style="display: none; float: right">
 		<br>
 		Buscando por <b><i>"<label id='itemBuscado'></label></i></b>" &nbsp; <a href="/">Cancelar</a>
