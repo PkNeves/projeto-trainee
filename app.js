@@ -137,13 +137,13 @@ app.get("/excluir/:id",function(req,res){
     res.render('excluir');
 });
 
-<<<<<<< HEAD
 app.post("/transacoes", urlencodeParser, function (req, res) {
 
     // console.log('aaaaaaaaaaaaaaaaaaaaaa')
 
     res.render('transacoes');
-=======
+})
+
 app.post('/adicionarUsuario', function(req, res) {
     //verifica senha
     if (req.body.senha != req.body.senha2) {
@@ -181,7 +181,6 @@ app.post('/adicionarUsuario', function(req, res) {
             })
         }
     })
->>>>>>> eec43abddfd9e783f0b5b64318b268cb9a6ffef6
 });
 
 //Abrir servidor

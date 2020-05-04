@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<title>CRUD</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--Fonte para a página-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<!--Font Awesome para os ícones-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+</style>
+<body style="margin: 2%">
+	<h2 style="text-align: center;">Sistema de Controle de Estoque (CRUD)</h2>
+
+	<div>
+		<button onclick="mostrarModal(); document.getElementById('cadastraCliente').style.display = 'initial';"><i class="fa fa-user-plus"></i> Cadastrar</button>
+		<button onclick="mostrarModal(); document.getElementById('entrar').style.display = 'initial';"><i class="fa fa-sign-in"></i> Entrar</button>
+	</div>
+
+	<br>
+
+    <!--CSS do Modal-->
+
+	<style>
+		.modal-container {
+			width: 100vw;
+			height: 100vh;
+			background: rgba(0,0,0,.5);
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			z-index: 1000;
+			justify-content: center;
+			align-items: center;
+			display: none;
+		}
+		.modal-container.show {
+			display: flex;
+		}
+		.modal {
+			background: white;
+			width: 60%;
+			min-width: 300px;
+			padding: 40px;
+			border-radius: 10px;
+			position: relative;
+		}
+		@keyframes modal {
+			from {
+				opacity: 0;
+				transform: translate3d(0, -60px, 0);
+			}
+			to {
+				opacity: 1;
+				transform: translate3d(0, 0, 0);
+			}
+		}
+		.show .modal {
+			animation: modal .3s;
+		}
+		.close {
+			position: absolute;
+			font-size: 1.2em;
+			top: -20px;
+			right: -20px;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			border: 4px solid white;
+			background: gray;
+			color: white;
+			cursor: pointer;
+			box-shadow: 0 4px 4px 0 rgba(0,0,0,.3);
+		}
+		.section {
+			margin-top:16px!important;margin-bottom:16px!important
+		}
+	</style>
+
+	<!--Fim do CSS-->
+
+	<!--JS do Modal-->
+
+	<script>
+		function mostrarModal(){
+			document.getElementById('modal').classList.add('show');
+			limparModal();
+		}
+		function esconderModal(){
+			document.getElementById('modal').classList.remove('show');
+		}
+		function limparModal(){
+			document.getElementById('entrar').style.display = 'none';
+			document.getElementById('entrarADM').style.display = 'none';
+			document.getElementById('cadastraCliente').style.display = 'none';
+		}
+	</script>
+
+	<!--Fim do JS-->
+
+	<!--Div do Modal-->
+
+	<div id="modal" class="modal-container">
+		<div class="modal">
+			<button onclick="esconderModal()" class="close"><i class="fa fa-close"></i></button>
+
+			<div style="display: none; text-align: center;" id="entrar">
+				<form action="" target="_self" method="POST">
+		          <div class="section">
+		            <h1><b>Entrar como cliente<b></h1>
+		          </div><br>
+		          <div class="section">
+		            <label>Email</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="email_login" id="email_login">
+		          </div>
+		          <div class="section">
+		            <label>Senha</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha_login" id="senha_login">
+		          </div><br>
+		          <div align="center">
+		            <button onclick="esconderModal();" style="padding: 4px" type="button">
+		              <i class="fa fa-close"></i>
+		              Cancelar
+		            </button>
+		            <button onclick="" style="padding: 4px; margin-left: 2px" type="submit" class="">
+		              <i class="fa fa-check"></i>
+		              Entrar
+		            </button>
+		          </div>
+		        </form>
+		        <div style="float: right;">
+		        	<a onclick="limparModal(); document.getElementById('entrarADM').style.display = 'initial';" style="text-decoration: none; font-size: 15px; color: blue; cursor: pointer">Entrar como funcionário</a>
+		        </div>
+			</div>
+
+			<div style="display: none; text-align: center;" id="entrarADM">
+				<form action="" target="_self" method="POST">
+		          <div class="section">
+		            <h1><b>Entrar como funcianário<b></h1>
+		          </div><br>
+		          <div class="section">
+		            <label>Tipo</label><br>
+		            <select style="width: 90%; border: 1px solid #ccc; padding: 10px" name="tipo_login" id="tipo_login">
+                		<option value="1">Administrador</option>
+                		<option value="2">Gerente</option>
+                		<option value="3">Vendedor</option>
+                		<option value="4">Editor</option>
+                	</select>
+		          </div>
+		          <div class="section">
+		            <label>Email</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="email_loginADM" id="email_loginADM">
+		          </div>
+		          <div class="section">
+		            <label>Senha</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha_loginADM" id="senha_loginADM">
+		          </div><br>
+		          <div align="center">
+		            <button onclick="esconderModal();" style="padding: 4px" type="button">
+		              <i class="fa fa-close"></i>
+		              Cancelar
+		            </button>
+		            <button onclick="" style="padding: 4px; margin-left: 2px" type="submit" class="">
+		              <i class="fa fa-check"></i>
+		              Entrar
+		            </button>
+		          </div>
+		        </form>
+		        <div style="float: right;">
+		        	<a onclick="limparModal(); document.getElementById('entrar').style.display = 'initial';" style="text-decoration: none; font-size: 15px; color: blue; cursor: pointer">Entrar como cliente</a>
+		        </div>
+			</div>
+
+			<div style="display: none; text-align: center;" id="cadastraCliente">
+				<form action="" target="_self" method="POST">
+		          <div class="section">
+		            <h1><b>Cadastro do cliente<b></h1>
+		          </div><br>
+		          <div class="section">
+		            <label>Email</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="email_cliente" id="email_cliente">
+		          </div>
+		          <div class="section">
+		            <label>Senha</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha1_cliente" id="senha1_cliente">
+		          </div>
+		          <div class="section">
+		            <label>Confirmar senha</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha2_cliente" id="senha2_cliente">
+		          </div><br>
+		          <div align="center">
+		            <button onclick="esconderModal();" style="padding: 4px" type="button">
+		              <i class="fa fa-close"></i>
+		              Cancelar
+		            </button>
+		            <button onclick="" style="padding: 4px; margin-left: 2px" type="submit" class="">
+		              <i class="fa fa-check"></i>
+		              Criar conta
+		            </button>
+		          </div>
+		        </form>
+			</div>
+
+		</div>
+	</div>
+
+	<!--Fim do Modal-->
+
+</body>
+</html>
