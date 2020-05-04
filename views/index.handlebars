@@ -5,6 +5,12 @@
 	<div>
 		<button onclick="mostrarModal(); document.getElementById('adicionarProduto').style.display = 'initial';"><i class="fa fa-plus"></i> Adicionar um produto</button>
 		<button onclick="mostrarModal(); document.getElementById('buscarProduto').style.display = 'initial';"><i class="fa fa-search"></i> Buscar um produto</button>
+
+		{{!-- <button onclick=window.location.href="/transacoes" type="button">Click me</button> --}}
+		<form action='transacoes' style="display: inline" method="post">
+			<button onclick="">Transações</button>
+		</form>
+		{{!-- <a href="transacoes.handlebars">Transacoes</a> --}}
 	</div>
 
 	<div id="busca" style="display: none; float: right">

@@ -1,0 +1,65 @@
+	<h2 style="text-align: center;">Transações</h2>
+
+	<!--Botões com as funcionalidades-->
+
+	<div>
+		<form action='home' style="display: inline" method="post">
+			<button onclick="">Voltar</button>
+		</form>
+	</div>
+
+    <br>
+    
+	<!--Tabela exibindo os produtos-->
+
+	<table border="1">
+        <thead>
+            <th width='10%'>ID</th>
+            <th>Produto</th>
+            <th width='10%'>Quantidade</th>
+            <th width='20%'>Data</th>
+        </thead>
+      {{!-- <tr style="
+        <th width="6%">ID</th>
+        <th width="30%">Nome do produto</th>
+        <th width="8%">Quantidade</th>
+        <th width="11%">Data</th>
+      </tr> --}}
+
+      <!--Loop para exibir os dados do banco de dados-->
+      {{#data}}
+      <tr>
+        <td>
+        	{{id}}
+        	<input style='display: none;' id='id{{id}}' value = '{{id}}'>
+        	<input style='display: none;' id='descricao{{id}}' value = '{{descricao}}'>
+        </td>
+        <td>
+        	{{nome}}
+        	<input style='display: none;' id='nome{{id}}' value = '{{nome}}'>
+        </td>
+        <td>
+        	{{quantidade}}
+        	<input style='display: none;' id='quantidade{{id}}' value = '{{quantidade}}'>
+        </td>
+        <td>
+        	{{valor}}
+        	<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
+        </td>
+        <td>
+        	<button onclick="mostrarModal(); document.getElementById('venderProduto').style.display = 'initial'; vender('{{id}}');"><i class="fa fa-dollar"></i> Vender</button>
+        </td>
+        <td>
+        	<button onclick="mostrarModal(); document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
+        </td>
+        <td>
+        	<button onclick="mostrarModal(); document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
+        </td>
+        <td>
+        	<button onclick="mostrarModal(); document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
+        </td>
+      </tr>
+      {{/data}}
+      <!--Fim do loop-->
+
+    </table>

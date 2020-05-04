@@ -8,7 +8,7 @@ const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
    host:'localhost',
    user:'root',
-   password:'',
+   password:'coxinha12',
    port:3306
 });
 // escolhe qual db será usado
@@ -111,6 +111,13 @@ app.get("/excluir/:id",function(req,res){
         if (err) throw err
     })
     res.render('excluir');
+});
+
+app.post("/transacoes", urlencodeParser, function (req, res) {
+
+    // console.log('aaaaaaaaaaaaaaaaaaaaaa')
+
+    res.render('transacoes');
 });
 
 //Abrir servidor
