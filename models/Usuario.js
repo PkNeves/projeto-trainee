@@ -14,7 +14,7 @@ const Usuario = db.sequelize.define('usuarios', {
         allowNull: false
     },
     tipo: {
-        type: db.Sequelize.ENUM('administrador','gerente','vendedor','editor','cliente'),
+        type: db.Sequelize.ENUM('admin','gerente','vendedor','editor'),
         allowNull: false
     }
 });
