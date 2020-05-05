@@ -37,16 +37,16 @@ module.exports = function(passport) {
     ))
 
     passport.serializeUser((usuario, done) => {
-        done(null, usuario.id)
+        done(null, { "id": usuario.id, "tipo": usuario.tipo})
     })
 
     passport.deserializeUser((id, done) => {
         Usuario.findOne({
             where: {
-                id: id
+                id: id.id
             }
             }).then((usuario) => {
-                done(null, usuario.id)
+                done(null, {"id": usuario.id, "tipo": usuario.tipo})
             })  
     })
 }

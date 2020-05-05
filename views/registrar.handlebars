@@ -1,9 +1,13 @@
 	<h2 style="text-align: center;">Sistema de Controle de Estoque (CRUD)</h2>
 				<form action="/usuario/registrar" target="_self" method="POST">
-                    <input type='hidden' name='tipo' value='cliente'>
+					<input type='hidden' name='tipo' value='0'>
 		          <div class="section">
 		            <h1><b>Cadastro<b></h1>
 		          </div><br>
+		          <div class="section">
+		            <label for='login'>Nome</label><br>
+		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="nome" id="nome">
+		          </div>
 		          <div class="section">
 		            <label for='login'>Login</label><br>
 		            <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="login" id="login">

@@ -49,7 +49,7 @@ app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
 //Rotas
-app.get("/:id?", function(req,res){
+app.get("/:id?", acessos, function(req,res){
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
 
@@ -204,7 +204,6 @@ app.get('/usuario/form', function(req, res) {
 })
 
 app.post('/usuario/login', urlencodeParser, (req, res, next) => {
-    console.log(req)
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/usuario/form',
@@ -221,7 +220,8 @@ app.get('/usuario/registrar', (req, res) => {
     res.render('registrar')
 })
 
-app.post('/usuario/registrar', (req, res) => {
+app.post('/usuario/registrar', urlencodeParser, (req, res) => {
+    const tipos = ['admin','gerente','vendedor','editor']
     //verifica senha
     if (req.body.senha != req.body.senha2) {
         res.send('Msg diverge');
@@ -240,12 +240,11 @@ app.post('/usuario/registrar', (req, res) => {
                     }
                     
                     // cria um usuario com os dados já conferidos
-                    console.log(req.body.tipo)
                     Usuario.create({
                         nome: req.body.nome,
                         login: req.body.login,
                         senha: hash,
-                        tipo: req.body.tipo
+                        tipo: tipos[req.body.tipo]
                     }).then(function() {
                         res.send('usuario criado com sucesso');
                     }).catch(function(erro) {
