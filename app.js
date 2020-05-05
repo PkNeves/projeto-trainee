@@ -33,7 +33,7 @@ const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
    host:'localhost',
    user:'root',
-   password:'coxinha12',
+   password:'',
    port:3306
 });
 // escolhe qual db será usado
@@ -203,7 +203,7 @@ app.get('/usuario/form', function(req, res) {
     res.render('login')
 })
 
-app.post('/login', urlencodeParser, (req, res, next) => {
+app.post('/usuario/login', urlencodeParser, (req, res, next) => {
     console.log(req)
     passport.authenticate('local', {
         successRedirect: '/',
@@ -211,17 +211,17 @@ app.post('/login', urlencodeParser, (req, res, next) => {
         failureFlash: true
     })(req, res, next)
 })
-app.get('/logout', (req, res) => {
+app.get('/usuario/logout', (req, res) => {
     req.logout()
     req.flash('success_msg', 'Deslogado com sucesso!')
-    res.redirect('/login/form')
+    res.redirect('/usuario/form')
 })
 
 app.get('/usuario/registrar', (req, res) => {
     res.render('registrar')
 })
 
-app.post('/registrar', (req, res) => {
+app.post('/usuario/registrar', (req, res) => {
     //verifica senha
     if (req.body.senha != req.body.senha2) {
         res.send('Msg diverge');
