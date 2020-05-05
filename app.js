@@ -1,3 +1,4 @@
+const banco = require('./config/constantes')
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -31,9 +32,9 @@ app.use(express.json());
         })
 const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
-   host:'localhost',
-   user:'root',
-   password:'',
+   host:banco.host,
+   user:banco.user,
+   password:banco.password,
    port:3306
 });
 // escolhe qual db será usado
