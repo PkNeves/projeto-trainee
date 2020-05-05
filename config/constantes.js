@@ -1,7 +1,7 @@
 const banco = {
     "host": "localhost",
     "user": "root",
-    "password": "coxinha12",
+    "password": "",
     "db": "crud"
 }
 

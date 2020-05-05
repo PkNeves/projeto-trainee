@@ -3,6 +3,9 @@ function mostrarModal(){
 	document.getElementById('modal').classList.add('show');
 	limparModal();
 }
+function mostrarModal2(){
+	document.getElementById('modal').classList.add('show');
+}
 function esconderModal(){
 	document.getElementById('modal').classList.remove('show');
 }

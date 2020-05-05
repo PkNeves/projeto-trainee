@@ -312,7 +312,7 @@ app.post('/usuario/registrar', urlencodeParser, (req, res) => {
                         nome: req.body.nome,
                         login: req.body.login,
                         senha: hash,
-                        tipo: tipos[req.body.tipo]
+                        tipo: 'admin'
                     }).then(function() {
                         req.flash('successs_msg', 'Usuario criado com sucesso!')
                         res.render('login');

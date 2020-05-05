@@ -23,13 +23,14 @@ module.exports = function(passport) {
             // busca um usuário no banco de dados
             Usuario.findOne({ where: {login: login}}).then((usuario) => {
                 if (!usuario) {
-                    done(null, false, { message: 'usuario inexistente'})
+
+                    done(null, false, { message: 'Usuário inexistente'})
                 }
                 bcrypt.compare(senha, usuario.senha, (erro, batem) => {
                     if(batem) {
                         return done(null, usuario)
                     } else {
-                        return done(null, false, { message: 'senha incorreta'})
+                        return done(null, false, { message: 'Senha incorreta'})
                     }
                 })
             })
