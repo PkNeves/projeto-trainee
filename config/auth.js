@@ -1,38 +1,52 @@
 const localStrategy = require('passport-local').Strategy
 const sequelize = require('sequelize')
 const bcrypt = require('bcryptjs')
-
-
 const Usuario = require('../models/Usuario');
 
-module.exports = function(passport) {
-    passport.use(new localStrategy({usernameField: 'login', passwordField:"senha"}, (login, senha, done) => {
-        Usuario.findAll({
-            where: {
-                login: login
-            }
-        }).then((usuario) => {
-            if(usuario.length == 0) {
-                return done(null, false, {message: "Essa conta não existe"});
-            }
+/*
+Usuario.findOne({ where: {login: 'itter'}}).then((usuario) => {
+    if (!usuario) { 
+        console.log('n tem')
+    }else {
+        console.log(usuario.id)
+        console.log(usuario.senha)
+    }
+}) 
+*/
 
-            bcrypt.compare(senha, usuario.senha, (erro, batem) => {
-                if(batem) {
-                    return done(null, usuario);
-                }else {
-                    return done(null, false, {message: "Senha incorreta"});
+module.exports = function(passport) {
+    passport.use(new localStrategy({ 
+            usernameField: 'login_login', 
+            passwordField: 'senha_login'
+        }, (login, senha, done) => {
+
+            // busca um usuário no banco de dados
+            Usuario.findOne({ where: {login: login}}).then((usuario) => {
+                if (!usuario) {
+                    done(null, false, { message: 'usuario inexistente'})
                 }
+                bcrypt.compare(senha, usuario.senha, (erro, batem) => {
+                    if(batem) {
+                        return done(null, usuario)
+                    } else {
+                        return done(null, false, { message: 'senha incorreta'})
+                    }
+                })
             })
-        })
-    }))
+        }
+    ))
 
     passport.serializeUser((usuario, done) => {
-        done(null, usuario.id);
+        done(null, usuario.id)
     })
 
     passport.deserializeUser((id, done) => {
-        Usuario.findById(id, (err, usuario) => {
-            done(err, usuario);
-        })
+        Usuario.findOne({
+            where: {
+                id: id
+            }
+            }).then((usuario) => {
+                done(null, usuario.id)
+            })  
     })
 }

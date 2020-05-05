@@ -25,6 +25,7 @@ app.use(express.json());
         app.use((req, res, next) => {
             res.locals.success_msg = req.flash('success_msg');
             res.locals.error_msg = req.flash('error_msg');
+            res.locals.error = req.flash('error')
             res.locals.user = req.user || null;
             next();
         })
@@ -32,7 +33,7 @@ const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
    host:'localhost',
    user:'root',
-   password:'coxinha12',
+   password:'',
    port:3306
 });
 // escolhe qual db será usado
@@ -48,7 +49,7 @@ app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
 //Rotas
-app.get("/:id?", function(req,res){
+app.get("/:id?", acessos, function(req,res){
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
 
@@ -158,17 +159,37 @@ app.post("/home", urlencodeParser, function (req, res) {
 })
 
 app.post('/adicionarUsuario', function(req, res) {
+});
+
+app.get('/usuario/form', function(req, res) {
+    res.render('login')
+})
+
+app.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/usuario/form',
+        failureFlash: true
+    })(req, res, next)
+})
+app.get('/logout', (req, res) => {
+    req.logout()
+    req.flash('success_msg', 'Deslogado com sucesso!')
+    res.redirect('/login/form')
+})
+
+app.get('/usuario/registrar', (req, res) => {
+    res.render('registrar')
+})
+
+app.post('/registrar', (req, res) => {
     //verifica senha
     if (req.body.senha != req.body.senha2) {
         res.send('Msg diverge');
     } 
     
     // Procura algum usuario com o login desejado
-    Usuario.findAll({
-        where: {
-            login: req.body.login
-        }
-    }).then(function(usuario) {
+    Usuario.findAll({ where: { login: req.body.login } }).then(function(usuario) {
         if(usuario.length > 0) {  // verifica se já existe usuario com esse login
             res.send('login já está sendo utilizado');
         }else{
@@ -180,6 +201,7 @@ app.post('/adicionarUsuario', function(req, res) {
                     }
                     
                     // cria um usuario com os dados já conferidos
+                    console.log(req.body.tipo)
                     Usuario.create({
                         nome: req.body.nome,
                         login: req.body.login,
@@ -188,13 +210,13 @@ app.post('/adicionarUsuario', function(req, res) {
                     }).then(function() {
                         res.send('usuario criado com sucesso');
                     }).catch(function(erro) {
-                        res.send('erro ao criar o usuario');
+                        res.send('erro ao criar o usuario '+ erro);
                     });
                 })
             })
         }
     })
-});
+})
 
 //Abrir servidor
 app.listen(8000,function(req,res){
