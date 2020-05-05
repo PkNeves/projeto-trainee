@@ -60,7 +60,7 @@ app.get("/:id?", acessos, function(req,res){
 		let query = "SELECT * FROM produtos order by id"
 
 	    sql.query(query, function(err,results,fields) {
-	        res.render('index',{data:results});
+	        res.render('index',{data:results, type: tipo});
 	    })
 	}else{
 		let values = '%' + req.params.id + '%'

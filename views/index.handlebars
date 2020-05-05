@@ -1,18 +1,19 @@
 	{{>_navbar}}
 	{{!-- user.id = {{user.id}} <br>
 	user.tipo = {{user.tipo}} --}}
+
 	<h2>Controle de Estoque</h2>
 
 	<!--Botões com as funcionalidades-->
 	<div>
-		<button onclick="mostrarModal(); document.getElementById('adicionarProduto').style.display = 'initial';"><i class="fa fa-plus"></i> Adicionar um produto</button>
+		<button id="btAdicionarProduto" onclick="mostrarModal(); document.getElementById('adicionarProduto').style.display = 'initial';"><i class="fa fa-plus"></i> Adicionar um produto</button>
 		<button onclick="mostrarModal(); document.getElementById('buscarProduto').style.display = 'initial';"><i class="fa fa-search"></i> Buscar um produto</button>
 
 		<form action='transacoes' style="display: inline" method="post">
 			<button><i class="fa fa-money"></i> Transações</button>
 		</form>
 
-		<button style="display: inline; float: right" onclick="mostrarModal(); document.getElementById('cadastroUsuario').style.display = 'initial';"><i class="fa fa-user-plus"></i> Cadastrar um usuário</button>
+		<button id="btCadastrarUsuario" style="display: inline; float: right" onclick="mostrarModal(); document.getElementById('cadastroUsuario').style.display = 'initial';"><i class="fa fa-user-plus"></i> Cadastrar um usuário</button>
 	</div>
 	
 	<div id="busca" style="display: none; float: right">
@@ -40,7 +41,7 @@
         <th width="30%">Nome do produto</th>
         <th width="8%">Quantidade</th>
         <th width="11%">Valor Und.</th>
-        <th width="11%">Fazer uma venda</th>
+        <th style="visibility: " width="11%">Fazer uma venda</th>
         <th width="14%">Controle de estoque</th>
         <th width="10%">Editar produto</th>
         <th width="10%">Excluir</th>
@@ -180,7 +181,7 @@
 	              	</div>
 
 	              	<br><br><br><br>
-					<button style="padding: 6px; float: right;" onclick=""><i class="fa fa-dollar"></i> Vender</button>
+					<button id="btVender" style="padding: 6px; float: right;" onclick=""><i class="fa fa-dollar"></i> Vender</button>
 				</form>
 
 			</div>
@@ -212,7 +213,7 @@
 	              	</div>
 
 	              	<br><br><br><br>
-					<button style="padding: 6px; float: right;" onclick=""><i class="fa fa-check"></i> Concluído</button>
+					<button id="btEstoque" style="padding: 6px; float: right;" onclick=""><i class="fa fa-check"></i> Concluído</button>
 
 				</form>
 
@@ -249,7 +250,7 @@
 	              	</div>
 
 	              	<br><br><br><br>
-					<button style="padding: 6px; float: right;" onclick=""><i class="fa fa-pencil"></i> Editar</button>
+					<button id="btEditarProduto" style="padding: 6px; float: right;" onclick=""><i class="fa fa-pencil"></i> Editar</button>
 
 				</form>
 
@@ -288,7 +289,7 @@
               	</div>
 
               	<br><br><br><br>
-				<button style="padding: 6px; float: right;" onclick="window.location.href = 'excluir/' + document.getElementById('idProdutoExcluir').value"><i class="fa fa-trash"></i> Excluir</button>
+				<button id="btExcluirProduto" style="padding: 6px; float: right;" onclick="window.location.href = 'excluir/' + document.getElementById('idProdutoExcluir').value"><i class="fa fa-trash"></i> Excluir</button>
 
 			</div>
 
@@ -347,3 +348,26 @@
 	</div>
 
 	<!--Fim do Modal-->
+
+	<!--JS por usuário-->
+
+	<script>
+	 	const type = '{{type}}';
+		if(type == 'gerente' || type == 'vendedor' || type == 'editor'){
+			document.getElementById('btCadastrarUsuario').disabled = true;
+			if(type == 'vendedor'){
+				document.getElementById('btEstoque').disabled = true;
+				document.getElementById('btEditarProduto').disabled = true;
+				document.getElementById('btExcluirProduto').disabled = true;
+				document.getElementById('btAdicionarProduto').disabled = true;
+			}
+			if(type == 'editor'){
+				document.getElementById('btEditarProduto').disabled = true;
+				document.getElementById('btVender').disabled = true;
+				document.getElementById('btExcluirProduto').disabled = true;
+				document.getElementById('btAdicionarProduto').disabled = true;
+			}
+		}
+	</script>
+
+	<!--Fim do JS por usuário-->
