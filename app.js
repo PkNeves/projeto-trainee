@@ -33,7 +33,7 @@ const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
    host:'localhost',
    user:'root',
-   password:'coxinha12',
+   password:'',
    port:3306
 });
 // escolhe qual db será usado
@@ -68,6 +68,63 @@ app.get("/:id?", function(req,res){
 });
 
 const tipo = 0
+
+app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
+    
+    // Procura algum usuario com o login desejado
+    Usuario.findAll({ where: { login: req.body.usuario_cadastro } }).then(function(usuario) {
+        if(usuario.length > 0) {  // verifica se já existe usuario com esse login
+            res.render('loginUtilizado');
+        }else{
+    
+    
+            if (tipo === 0){
+                let tipo_usuario = req.body.tipo_cadastro
+                if(tipo_usuario == 0){
+                    tipo_usuario = 'admin'
+                }
+                if(tipo_usuario == 1){
+                    tipo_usuario = 'gerente'
+                }
+                if(tipo_usuario == 2){
+                    tipo_usuario = 'vendedor'
+                }
+                if(tipo_usuario == 3){
+                    tipo_usuario = 'editor'
+                }
+                let nome = req.body.nome_cadastro
+                let usuario = req.body.usuario_cadastro
+                let senha = req.body.senha1_cadastro
+                console.log(tipo_usuario);
+
+                bcrypt.genSalt(10, (erro, salt) => {
+                    bcrypt.hash(senha, salt, (erro, hash) => { //cria hash
+                        if(erro) {
+                            res.send('houve um erro');
+                        }
+                        
+                        // cria um usuario com os dados já conferidos
+                        Usuario.create({
+                            nome: nome,
+                            login: usuario,
+                            senha: hash,
+                            tipo: tipo_usuario
+                        }).then(function() {
+                            res.render('cadastrarUsuario');
+                        }).catch(function(erro) {
+                            res.send('erro ao criar o usuario '+ erro);
+                        });
+                    })
+                })
+
+                
+            
+            } else {
+                res.render('sempermissao')
+            }
+        }
+    })
+});
 
 app.post("/adicionar",urlencodeParser,function(req,res){
     if (tipo === 0 || tipo === 1){

@@ -13,6 +13,7 @@ function limparModal(){
 	document.getElementById('editarEstoque').style.display = 'none';
 	document.getElementById('editarProduto').style.display = 'none';
 	document.getElementById('excluirProduto').style.display = 'none';
+	document.getElementById('cadastroUsuario').style.display = 'none';
 }
 
 //JS para vender
@@ -46,4 +47,14 @@ function excluirProduto(id){
 	document.getElementById('descricaoExcluir').value = document.getElementById('descricao' + id).value;
 	document.getElementById('valorExcluir').value = document.getElementById('valor' + id).value;
 	document.getElementById('quantidadeExcluir').value = document.getElementById('quantidade' + id).value;
+}
+
+//Verificar senhas
+function validaSenhas(senha1, senha2){
+	if(senha1 != senha2){
+		alert('As senhas devem ser iguais');
+		return false;
+	}else{
+		return true;
+	}
 }

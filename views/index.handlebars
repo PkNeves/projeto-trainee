@@ -11,9 +11,7 @@
 			<button><i class="fa fa-money"></i> Transações</button>
 		</form>
 
-		<form action="cadastro" style="display: inline; float: right" method="POST">
-			<button> Cadastrar usuário</button>
-		</form>
+		<button style="display: inline; float: right" onclick="mostrarModal(); document.getElementById('cadastroUsuario').style.display = 'initial';"><i class="fa fa-user-plus"></i> Cadastrar um usuário</button>
 	</div>
 	
 	<div id="busca" style="display: none; float: right">
@@ -294,6 +292,55 @@
 			</div>
 
 			<!--Fim da div para excluir um produto-->
+
+			<!--Div para cadastrar usuário-->
+
+			<div style="display: none;" id="cadastroUsuario">
+
+				<form name='form2' action='cadastrarUsuario' method='post'>
+					<div class="section">
+			          <h1 style="text-align: center;"><b>Cadastro de um novo usuário<b></h1>
+			        </div><br>
+			        <div class="section">
+			            <label>Tipo</label><br>
+			            <select style="width: 40%; border: 1px solid #ccc; padding: 10px" name="tipo_cadastro" id="tipo_cadastro">
+	                		<option value="0">Administrador</option>
+	                		<option value="1">Gerente</option>
+	                		<option value="2">Vendedor</option>
+	                		<option value="3">Editor</option>
+	                	</select>
+			        </div><br>
+			        <div class="section">
+			          <label>Nome</label><br>
+			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="nome_cadastro" id="nome_cadastro" required=''>
+			        </div><br>
+			        <div class="section">
+			          <label>Nome de usuário</label><br>
+			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="usuario_cadastro" id="usuario_cadastro" required=''>
+			        </div><br>
+			        <div class="section">
+			          <label>Senha</label><br>
+			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha1_cadastro" id="senha1_cadastro" required=''>
+			        </div><br>
+			        <div class="section">
+			          <label>Confirmar senha</label><br>
+			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha2_cadastro" id="senha2_cadastro" required=''>
+			        </div><br><br>
+			        <div align="center">
+			          <button onclick="esconderModal();" style="padding: 4px" type="button">
+			            <i class="fa fa-close"></i>
+			            Cancelar
+			          </button>
+			          <button onclick="return validaSenhas(document.getElementById('senha1_cadastro').value, document.getElementById('senha2_cadastro').value);" style="padding: 4px; margin-left: 2px" type="submit" class="">
+			            <i class="fa fa-check"></i>
+			            Criar conta
+			          </button>
+			        </div>
+				</form>
+
+			</div>
+
+			<!--Fim da div para cadastrar usuário-->
 
 		</div>
 	</div>
