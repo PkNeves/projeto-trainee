@@ -33,7 +33,7 @@ const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
    host:'localhost',
    user:'root',
-   password:'',
+   password:'coxinha12',
    port:3306
 });
 // escolhe qual db será usado
@@ -49,7 +49,7 @@ app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
 //Rotas
-app.get("/:id?", acessos, function(req,res){
+app.get("/:id?", function(req,res){
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
 
@@ -67,7 +67,7 @@ app.get("/:id?", acessos, function(req,res){
     }
 });
 
-const tipo = 3
+const tipo = 0
 
 app.post("/adicionar",urlencodeParser,function(req,res){
     if (tipo === 0 || tipo === 1){
@@ -181,6 +181,15 @@ app.post("/transacoes", urlencodeParser, function (req, res) {
     sql.query(query, function(err, results, fields) {
         res.render('transacoes', {data: results});
     })
+})
+
+app.post('/cadastro', urlencodeParser, function (req, res) {
+    if (tipo === 0) {
+        res.render('cadastro')
+    
+    } else {
+        res.render('sempermissao')
+    }   
 })
 
 app.post("/home", urlencodeParser, function (req, res) {
