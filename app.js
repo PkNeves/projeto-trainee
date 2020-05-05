@@ -33,7 +33,7 @@ const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
    host:'localhost',
    user:'root',
-   password:'',
+   password:'coxinha12',
    port:3306
 });
 // escolhe qual db será usado
@@ -49,7 +49,7 @@ app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
 //Rotas
-app.get("/:id?", acessos, function(req,res){
+app.get("/:id?", function(req,res){
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
 
@@ -66,83 +66,112 @@ app.get("/:id?", acessos, function(req,res){
 	    })
     }
 });
+
+const tipo = 0
+
 app.post("/adicionar",urlencodeParser,function(req,res){
-	let nome = req.body.nome
-    let desc = req.body.descricao
-    let valor = req.body.valor
-    let qntd = req.body.quantidade
+    if (tipo === 0 || tipo === 1){
+        let nome = req.body.nome
+        let desc = req.body.descricao
+        let valor = req.body.valor
+        let qntd = req.body.quantidade
 
-    let values = [[nome, desc, valor, qntd]]
+        let values = [[nome, desc, valor, qntd]]
 
-    let query = "INSERT INTO produtos (nome, descricao, valor, quantidade) VALUES ?"
+        let query = "INSERT INTO produtos (nome, descricao, valor, quantidade) VALUES ?"
 
-    sql.query(query, [values], function(err) {
-        if (err) throw err
-    })
-    res.render('adicionar',{nome:req.body.nome});
+        sql.query(query, [values], function(err) {
+            if (err) throw err
+        })
+        res.render('adicionar',{nome:req.body.nome});
+    
+    } else {
+        res.render('sempermissao')
+    }
 });
 
 app.post("/vender",urlencodeParser,function(req,res){
-    let id = req.body.idProdutoVenda
-    let nome = req.body.nomeVenda
-	let qntdEstoque = req.body.quantidadeEstoqueVenda
-    let qntd = req.body.quantidadeVenda
+    if (tipo === 0 || tipo === 1 || tipo === 2) {
+        let id = req.body.idProdutoVenda
+        let nome = req.body.nomeVenda
+        let qntdEstoque = req.body.quantidadeEstoqueVenda
+        let qntd = req.body.quantidadeVenda
+        
+        let transaction = "INSERT INTO transacoes (id, nome, quantidade) VALUES ?"
+
+        sql.query(transaction, [[[id, nome, qntd]]], function (err) {
+            if (err) throw err;
+        })
+
+        let values = [(qntdEstoque - qntd), id];
+
+        let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
+
+        sql.query(query, values, function(err) {
+            if (err) throw err
+        })
+        res.render('vender');
     
-    let transaction = "INSERT INTO transacoes (id, nome, quantidade) VALUES ?"
-
-    sql.query(transaction, [[[id, nome, qntd]]], function (err) {
-        if (err) throw err;
-    })
-
-    let values = [(qntdEstoque - qntd), id];
-
-    let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
-
-    sql.query(query, values, function(err) {
-        if (err) throw err
-    })
-    res.render('vender');
+    } else {
+        res.render('sempermissao')
+    }
 });
 
 app.post("/editarEstoque",urlencodeParser,function(req,res){
-	let id = req.body.idProdutoEstoque
-	let qntd = req.body.quantidadeEstoque
+    if (tipo === 0 || tipo === 1 || tipo === 3) {
 
-    let values = [qntd, id];
+        let id = req.body.idProdutoEstoque
+        let qntd = req.body.quantidadeEstoque
 
-    let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
+        let values = [qntd, id];
 
-    sql.query(query, values, function(err) {
-        if (err) throw err
-    })
-    res.render('editarEstoque');
+        let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
+
+        sql.query(query, values, function(err) {
+            if (err) throw err
+        })
+        res.render('editarEstoque');
+    
+    } else {
+        res.render('sempermissao')
+    }
 });
 
 app.post("/editar",urlencodeParser,function(req,res){
-	let id = req.body.idProdutoEditar
-	let nome = req.body.nomeEditar
-    let desc = req.body.descricaoEditar
-    let valor = req.body.valorEditar
+    if (tipo === 0 || tipo === 1){
+        let id = req.body.idProdutoEditar
+        let nome = req.body.nomeEditar
+        let desc = req.body.descricaoEditar
+        let valor = req.body.valorEditar
 
-    let values = [nome, desc, valor, id];
+        let values = [nome, desc, valor, id];
 
-    let query = "UPDATE produtos SET nome = ?, descricao = ?, valor = ? WHERE id = ?"
+        let query = "UPDATE produtos SET nome = ?, descricao = ?, valor = ? WHERE id = ?"
 
-    sql.query(query, values, function(err) {
-        if (err) throw err
-    })
-    res.render('editar');
+        sql.query(query, values, function(err) {
+            if (err) throw err
+        })
+        res.render('editar');
+
+    } else {
+        res.render('sempermissao')
+    }
 });
 
 app.get("/excluir/:id",function(req,res){
-	let values = req.params.id
+    if (tipo === 0 || tipo === 1) {
+        let values = req.params.id
 
-    let query = "DELETE FROM produtos WHERE id = ?"
+        let query = "DELETE FROM produtos WHERE id = ?"
 
-    sql.query(query, values, function(err) {
-        if (err) throw err
-    })
-    res.render('excluir');
+        sql.query(query, values, function(err) {
+            if (err) throw err
+        })
+        res.render('excluir'); 
+    
+    } else {
+        res.render('sempermissao')
+    }
 });
 
 app.post("/transacoes", urlencodeParser, function (req, res) {
@@ -152,6 +181,15 @@ app.post("/transacoes", urlencodeParser, function (req, res) {
     sql.query(query, function(err, results, fields) {
         res.render('transacoes', {data: results});
     })
+})
+
+app.post('/cadastro', urlencodeParser, function (req, res) {
+    if (tipo === 0) {
+        res.render('cadastro')
+    
+    } else {
+        res.render('sempermissao')
+    }   
 })
 
 app.post("/home", urlencodeParser, function (req, res) {
@@ -218,6 +256,10 @@ app.post('/registrar', (req, res) => {
         }
     })
 })
+
+// app.get('/sempermissao', function (req, res) {
+//     res.render('/')
+// }) 
 
 //Abrir servidor
 app.listen(8000,function(req,res){
