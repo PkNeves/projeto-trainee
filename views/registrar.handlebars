@@ -1,6 +1,17 @@
+{{#if erro}}
+	{{erro}}
+{{else}}
+{{/if}}
+{{#if error_msg}}
+	{{erro_msg}}
+{{else}}
+{{/if}}
+{{#if success_msg}}
+	{{success_msg}}
+{{else}}
+{{/if}}
 	<h2 style="text-align: center;">Sistema de Controle de Estoque (CRUD)</h2>
 				<form action="/usuario/registrar" target="_self" method="POST">
-					<input type='hidden' name='tipo' value='0'>
 		          <div class="section">
 		            <h1><b>Cadastro<b></h1>
 		          </div><br>

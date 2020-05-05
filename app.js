@@ -221,22 +221,24 @@ app.get('/usuario/registrar', (req, res) => {
 })
 
 app.post('/usuario/registrar', urlencodeParser, (req, res) => {
-    const tipos = ['admin','gerente','vendedor','editor']
+    var tipos = ['admin','gerente','vendedor','editor']
     //verifica senha
     if (req.body.senha != req.body.senha2) {
-        res.send('Msg diverge');
+        res.send('senha diverge');
     } 
     
     // Procura algum usuario com o login desejado
     Usuario.findAll({ where: { login: req.body.login } }).then(function(usuario) {
         if(usuario.length > 0) {  // verifica se já existe usuario com esse login
-            res.send('login já está sendo utilizado');
+            req.flash('successs_erro', 'O usuário já existe')
+            res.render('registrar');
         }else{
             // gera senha
             bcrypt.genSalt(10, (erro, salt) => {
                 bcrypt.hash(req.body.senha, salt, (erro, hash) => { //cria hash
                     if(erro) {
-                        res.send('houve um erro');
+                        req.flash('successs_erro', 'Houve um erro ao cadastrar: '+erro)
+                        res.render('registrar');
                     }
                     
                     // cria um usuario com os dados já conferidos
@@ -246,7 +248,8 @@ app.post('/usuario/registrar', urlencodeParser, (req, res) => {
                         senha: hash,
                         tipo: tipos[req.body.tipo]
                     }).then(function() {
-                        res.send('usuario criado com sucesso');
+                        req.flash('successs_msg', 'Usuario criado com sucesso!')
+                        res.render('login');
                     }).catch(function(erro) {
                         res.send('erro ao criar o usuario '+ erro);
                     });
