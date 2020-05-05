@@ -165,7 +165,8 @@ app.get('/usuario/form', function(req, res) {
     res.render('login')
 })
 
-app.post('/login', (req, res, next) => {
+app.post('/login', urlencodeParser, (req, res, next) => {
+    console.log(req)
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/usuario/form',
