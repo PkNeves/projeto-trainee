@@ -364,17 +364,17 @@
 			document.getElementById('btCadastrarUsuario').disabled = true;
 		}
 
-		if (!(type == 'gerente')) {
+		if (!(type == 'gerente') && !(type == 'admin')) {
 			document.getElementById('btAdicionarProduto').disabled = true;
 			disable_collection(document.getElementsByClassName('btEditarProduto'))
 			disable_collection(document.getElementsByClassName('btExcluirProduto'))
 		}
 
-		if (!(type == 'vendedor')) {
+		if (!(type == 'vendedor') && !(type == 'gerente') && !(type == 'admin')) {
 			disable_collection(document.getElementsByClassName('btVender'))
 		}
 		
-		if (!(type == 'editor')) {
+		if (!(type == 'editor') && !(type == 'gerente') && !(type == 'admin')) {
 			disable_collection(document.getElementsByClassName('btEstoque'))
 		}
 

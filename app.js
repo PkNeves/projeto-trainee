@@ -50,11 +50,11 @@ app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
 // Tipo de usuario
-// let tipo = null
+let tipo = null
 
 // Rotas
 app.get("/:id?", acessos, function(req,res){
-    // tipo = req.user.tipo
+    tipo = req.user.tipo
 
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
@@ -84,6 +84,7 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
         
         
                 if (tipo  === 'admin'){
+                    console.log('aaaaaa');
                     let tipo_usuario = req.body.tipo_cadastro
                     if(tipo_usuario == 0){
                         tipo_usuario = 'admin'
