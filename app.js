@@ -50,17 +50,17 @@ app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
 // Tipo de usuario
-let tipo = null
+// let tipo = null
 
 // Rotas
 app.get("/:id?", acessos, function(req,res){
-    tipo = req.user.tipo
+    // tipo = req.user.tipo
 
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
 
 	    sql.query(query, function(err,results,fields) {
-	        res.render('index',{data:results, type: tipo});
+	        res.render('index',{data:results, type: req.user.tipo});
 	    })
 	}else{
 		let values = '%' + req.params.id + '%'
@@ -74,7 +74,7 @@ app.get("/:id?", acessos, function(req,res){
 });
 
 app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
-        if (tipo === 'admin') {
+        // if (tipo === 'admin') {
         
         // Procura algum usuario com o login desejado
         Usuario.findAll({ where: { login: req.body.usuario_cadastro } }).then(function(usuario) {
@@ -130,13 +130,13 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
             }
         })
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/adicionar",urlencodeParser,function(req,res){ 
-    if (tipo  === 'admin' || tipo  === 'gerente'){
+    // if (tipo  === 'admin' || tipo  === 'gerente'){
         let nome = req.body.nome
         let desc = req.body.descricao
         let valor = req.body.valor
@@ -151,13 +151,13 @@ app.post("/adicionar",urlencodeParser,function(req,res){
         })
         res.render('adicionar',{nome:req.body.nome});
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/vender",urlencodeParser,function(req,res){
-    if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
+    // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
         let id = req.body.idProdutoVenda
         let nome = req.body.nomeVenda
         let qntdEstoque = req.body.quantidadeEstoqueVenda
@@ -178,13 +178,13 @@ app.post("/vender",urlencodeParser,function(req,res){
         })
         res.render('vender');
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/editarEstoque",urlencodeParser,function(req,res){
-    if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'editor') {
+    // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'editor') {
 
         let id = req.body.idProdutoEstoque
         let qntd = req.body.quantidadeEstoque
@@ -198,13 +198,13 @@ app.post("/editarEstoque",urlencodeParser,function(req,res){
         })
         res.render('editarEstoque');
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/editar",urlencodeParser,function(req,res){
-    if (tipo  === 'admin' || tipo  === 'gerente'){
+    // if (tipo  === 'admin' || tipo  === 'gerente'){
         let id = req.body.idProdutoEditar
         let nome = req.body.nomeEditar
         let desc = req.body.descricaoEditar
@@ -219,13 +219,13 @@ app.post("/editar",urlencodeParser,function(req,res){
         })
         res.render('editar');
 
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.get("/excluir/:id",function(req,res){
-    if (tipo  === 'admin' || tipo  === 'gerente') {
+    // if (tipo  === 'admin' || tipo  === 'gerente') {
         let values = req.params.id
 
         let query = "DELETE FROM produtos WHERE id = ?"
@@ -235,9 +235,9 @@ app.get("/excluir/:id",function(req,res){
         })
         res.render('excluir'); 
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/transacoes", urlencodeParser, function (req, res) {

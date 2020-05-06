@@ -68,16 +68,16 @@
         	<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('venderProduto').style.display = 'initial'; vender('{{id}}');"><i class="fa fa-dollar"></i> Vender</button>
+        	<button class="btVender" onclick="mostrarModal(); document.getElementById('venderProduto').style.display = 'initial'; vender('{{id}}');"><i class="fa fa-dollar"></i> Vender</button>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
+        	<button class="btEstoque" onclick="mostrarModal(); document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
+        	<button class="btEditarProduto" onclick="mostrarModal(); document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
+        	<button class="btExcluirProduto" onclick="mostrarModal(); document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
         </td>
       </tr>
       {{/data}}
@@ -181,7 +181,7 @@
 	              	</div>
 
 	              	<br><br><br><br>
-					<button id="btVender" style="padding: 6px; float: right;" onclick=""><i class="fa fa-dollar"></i> Vender</button>
+					<button style="padding: 6px; float: right;" onclick=""><i class="fa fa-dollar"></i> Vender</button>
 				</form>
 
 			</div>
@@ -213,7 +213,7 @@
 	              	</div>
 
 	              	<br><br><br><br>
-					<button id="btEstoque" style="padding: 6px; float: right;" onclick=""><i class="fa fa-check"></i> Concluído</button>
+					<button style="padding: 6px; float: right;" onclick=""><i class="fa fa-check"></i> Concluído</button>
 
 				</form>
 
@@ -250,7 +250,7 @@
 	              	</div>
 
 	              	<br><br><br><br>
-					<button id="btEditarProduto" style="padding: 6px; float: right;" onclick=""><i class="fa fa-pencil"></i> Editar</button>
+					<button style="padding: 6px; float: right;" onclick=""><i class="fa fa-pencil"></i> Editar</button>
 
 				</form>
 
@@ -289,7 +289,7 @@
               	</div>
 
               	<br><br><br><br>
-				<button id="btExcluirProduto" style="padding: 6px; float: right;" onclick="window.location.href = 'excluir/' + document.getElementById('idProdutoExcluir').value"><i class="fa fa-trash"></i> Excluir</button>
+				<button style="padding: 6px; float: right;" onclick="window.location.href = 'excluir/' + document.getElementById('idProdutoExcluir').value"><i class="fa fa-trash"></i> Excluir</button>
 
 			</div>
 
@@ -352,22 +352,32 @@
 	<!--JS por usuário-->
 
 	<script>
-	 	const type = '{{type}}';
-		if(type == 'gerente' || type == 'vendedor' || type == 'editor'){
-			document.getElementById('btCadastrarUsuario').disabled = true;
-			if(type == 'vendedor'){
-				document.getElementById('btEstoque').disabled = true;
-				document.getElementById('btEditarProduto').disabled = true;
-				document.getElementById('btExcluirProduto').disabled = true;
-				document.getElementById('btAdicionarProduto').disabled = true;
-			}
-			if(type == 'editor'){
-				document.getElementById('btEditarProduto').disabled = true;
-				document.getElementById('btVender').disabled = true;
-				document.getElementById('btExcluirProduto').disabled = true;
-				document.getElementById('btAdicionarProduto').disabled = true;
+		function disable_collection (collection) {
+			for (i = 0; i < collection.length; i++) {
+				collection[i].disabled = true;
 			}
 		}
+
+	 	const type = '{{type}}';
+
+		if (!(type == 'admin')) {
+			document.getElementById('btCadastrarUsuario').disabled = true;
+		}
+
+		if (!(type == 'gerente')) {
+			document.getElementById('btAdicionarProduto').disabled = true;
+			disable_collection(document.getElementsByClassName('btEditarProduto'))
+			disable_collection(document.getElementsByClassName('btExcluirProduto'))
+		}
+
+		if (!(type == 'vendedor')) {
+			disable_collection(document.getElementsByClassName('btVender'))
+		}
+		
+		if (!(type == 'editor')) {
+			disable_collection(document.getElementsByClassName('btEstoque'))
+		}
+
 	</script>
 
 	<!--Fim do JS por usuário-->
