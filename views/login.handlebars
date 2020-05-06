@@ -1,37 +1,49 @@
 {{#if erro}}
-	{{erro}}
+	<script>alert('{{erro}}')</script>
 {{else}}
 {{/if}}
 {{#if error_msg}}
-	{{erro_msg}}
+	<script>alert('{{erro_msg}}')</script>
 {{else}}
 {{/if}}
 {{#if success_msg}}
-	{{success_msg}}
+	<script>alert('{{success_msg}}')</script>
 {{else}}
 {{/if}}
+
+<div id="modal" class="modal-container">
+	<div class="modal">
+		<!--Botão para fechar o modal-->
+		<button onclick="esconderModal()" class="close"><i class="fa fa-close"></i></button>
+		<div style="display: none;" id="login">
+
+			<form action="/usuario/login" target="_self" method="post">
+				<div class="section">
+				<h1><b>Entrar no sistema<b></h1>
+				</div><br>
+				<div class="section">
+				<label>Usuário</label><br>
+				<input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="login_login" id="login_login">
+				</div>
+				<div class="section"><br>
+				<label>Senha</label><br>
+				<input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha_login" id="senha_login">
+				</div><br>
+				<div align="center">
+					<button onclick="" style="font-size:16px; padding: 10px; margin-left: 2px" type="submit" class="">
+						<i class="fa fa-sign-in"></i>
+						Entrar
+					</button><br><br>
+					<a style="cursor: pointer; color: blue" onclick="document.getElementById('info').style.display = 'initial';"> Como criar uma conta?</a>
+					<label style="display: none" id='info'> <br><br>Peça a um administrador para criar a conta para você no perfil dele!  <a style="cursor: pointer; color: blue" onclick="document.getElementById('info').style.display = 'none';"> <br>Entendi</a></label>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+
 	<h2 style="text-align: center;">Sistema de Controle de Estoque (CRUD)</h2>
-
-	<form action="/usuario/login" target="_self" method="post">
-		<div class="section">
-		<h1><b>Entrar como cliente<b></h1>
-		</div><br>
-		<div class="section">
-		<label>Login</label><br>
-		<input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="login_login" id="login_login">
-		</div>
-		<div class="section">
-		<label>Senha</label><br>
-		<input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha_login" id="senha_login">
-		</div><br>
-		<div align="center">
-			<button onclick="" style="padding: 4px; margin-left: 2px" type="submit" class="">
-				<i class="fa fa-check"></i>
-				Entrar
-			</button>
-			<button onclick="" style="padding: 4px; margin-left: 2px" class="">
-				<a href='/usuario/registrar'> Cadastrar</a>
-			</button>
-		</div>
-	</form>
-
+<div style="text-align: center">
+	<button style="font-size:16px; padding: 10px; margin-left: 2px" onclick="mostrarModal2(); document.getElementById('login').style.display = 'initial';"><i class="fa fa-sign-in"></i> Login</button>
+</div>

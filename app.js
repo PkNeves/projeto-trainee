@@ -49,13 +49,18 @@ app.use('/css',express.static('css'));
 app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
-//Rotas
+// Tipo de usuario
+// let tipo = null
+
+// Rotas
 app.get("/:id?", acessos, function(req,res){
+    // tipo = req.user.tipo
+
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
 
 	    sql.query(query, function(err,results,fields) {
-	        res.render('index',{data:results});
+	        res.render('index',{data:results, type: req.user.tipo});
 	    })
 	}else{
 		let values = '%' + req.params.id + '%'
@@ -68,67 +73,70 @@ app.get("/:id?", acessos, function(req,res){
     }
 });
 
-const tipo = 0
-
 app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
-    
-    // Procura algum usuario com o login desejado
-    Usuario.findAll({ where: { login: req.body.usuario_cadastro } }).then(function(usuario) {
-        if(usuario.length > 0) {  // verifica se já existe usuario com esse login
-            res.render('loginUtilizado');
-        }else{
-    
-    
-            if (tipo === 0){
-                let tipo_usuario = req.body.tipo_cadastro
-                if(tipo_usuario == 0){
-                    tipo_usuario = 'admin'
-                }
-                if(tipo_usuario == 1){
-                    tipo_usuario = 'gerente'
-                }
-                if(tipo_usuario == 2){
-                    tipo_usuario = 'vendedor'
-                }
-                if(tipo_usuario == 3){
-                    tipo_usuario = 'editor'
-                }
-                let nome = req.body.nome_cadastro
-                let usuario = req.body.usuario_cadastro
-                let senha = req.body.senha1_cadastro
-                console.log(tipo_usuario);
+        // if (tipo === 'admin') {
+        
+        // Procura algum usuario com o login desejado
+        Usuario.findAll({ where: { login: req.body.usuario_cadastro } }).then(function(usuario) {
+            if(usuario.length > 0) {  // verifica se já existe usuario com esse login
+                res.render('loginUtilizado');
+            }else{
+        
+        
+                if (tipo  === 'admin'){
+                    let tipo_usuario = req.body.tipo_cadastro
+                    if(tipo_usuario == 0){
+                        tipo_usuario = 'admin'
+                    }
+                    if(tipo_usuario == 1){
+                        tipo_usuario = 'gerente'
+                    }
+                    if(tipo_usuario == 2){
+                        tipo_usuario = 'vendedor'
+                    }
+                    if(tipo_usuario == 3){
+                        tipo_usuario = 'editor'
+                    }
+                    let nome = req.body.nome_cadastro
+                    let usuario = req.body.usuario_cadastro
+                    let senha = req.body.senha1_cadastro
+                    console.log(tipo_usuario);
 
-                bcrypt.genSalt(10, (erro, salt) => {
-                    bcrypt.hash(senha, salt, (erro, hash) => { //cria hash
-                        if(erro) {
-                            res.send('houve um erro');
-                        }
-                        
-                        // cria um usuario com os dados já conferidos
-                        Usuario.create({
-                            nome: nome,
-                            login: usuario,
-                            senha: hash,
-                            tipo: tipo_usuario
-                        }).then(function() {
-                            res.render('cadastrarUsuario');
-                        }).catch(function(erro) {
-                            res.send('erro ao criar o usuario '+ erro);
-                        });
+                    bcrypt.genSalt(10, (erro, salt) => {
+                        bcrypt.hash(senha, salt, (erro, hash) => { //cria hash
+                            if(erro) {
+                                res.send('houve um erro');
+                            }
+                            
+                            // cria um usuario com os dados já conferidos
+                            Usuario.create({
+                                nome: nome,
+                                login: usuario,
+                                senha: hash,
+                                tipo: tipo_usuario
+                            }).then(function() {
+                                res.render('cadastrarUsuario');
+                            }).catch(function(erro) {
+                                res.send('erro ao criar o usuario '+ erro);
+                            });
+                        })
                     })
-                })
 
+                    
                 
-            
-            } else {
-                res.render('sempermissao')
+                } else {
+                    res.render('sempermissao')
+                }
             }
-        }
-    })
+        })
+    
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
-app.post("/adicionar",urlencodeParser,function(req,res){
-    if (tipo === 0 || tipo === 1){
+app.post("/adicionar",urlencodeParser,function(req,res){ 
+    // if (tipo  === 'admin' || tipo  === 'gerente'){
         let nome = req.body.nome
         let desc = req.body.descricao
         let valor = req.body.valor
@@ -143,13 +151,13 @@ app.post("/adicionar",urlencodeParser,function(req,res){
         })
         res.render('adicionar',{nome:req.body.nome});
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/vender",urlencodeParser,function(req,res){
-    if (tipo === 0 || tipo === 1 || tipo === 2) {
+    // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
         let id = req.body.idProdutoVenda
         let nome = req.body.nomeVenda
         let qntdEstoque = req.body.quantidadeEstoqueVenda
@@ -170,13 +178,13 @@ app.post("/vender",urlencodeParser,function(req,res){
         })
         res.render('vender');
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/editarEstoque",urlencodeParser,function(req,res){
-    if (tipo === 0 || tipo === 1 || tipo === 3) {
+    // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'editor') {
 
         let id = req.body.idProdutoEstoque
         let qntd = req.body.quantidadeEstoque
@@ -190,13 +198,13 @@ app.post("/editarEstoque",urlencodeParser,function(req,res){
         })
         res.render('editarEstoque');
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/editar",urlencodeParser,function(req,res){
-    if (tipo === 0 || tipo === 1){
+    // if (tipo  === 'admin' || tipo  === 'gerente'){
         let id = req.body.idProdutoEditar
         let nome = req.body.nomeEditar
         let desc = req.body.descricaoEditar
@@ -211,13 +219,13 @@ app.post("/editar",urlencodeParser,function(req,res){
         })
         res.render('editar');
 
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.get("/excluir/:id",function(req,res){
-    if (tipo === 0 || tipo === 1) {
+    // if (tipo  === 'admin' || tipo  === 'gerente') {
         let values = req.params.id
 
         let query = "DELETE FROM produtos WHERE id = ?"
@@ -227,9 +235,9 @@ app.get("/excluir/:id",function(req,res){
         })
         res.render('excluir'); 
     
-    } else {
-        res.render('sempermissao')
-    }
+    // } else {
+    //     res.render('sempermissao')
+    // }
 });
 
 app.post("/transacoes", urlencodeParser, function (req, res) {
@@ -242,7 +250,7 @@ app.post("/transacoes", urlencodeParser, function (req, res) {
 })
 
 app.post('/cadastro', urlencodeParser, function (req, res) {
-    if (tipo === 0) {
+    if (tipo  === 'admin') {
         res.render('cadastro')
     
     } else {
@@ -304,7 +312,7 @@ app.post('/usuario/registrar', urlencodeParser, (req, res) => {
                         nome: req.body.nome,
                         login: req.body.login,
                         senha: hash,
-                        tipo: tipos[req.body.tipo]
+                        tipo: 'admin'
                     }).then(function() {
                         req.flash('successs_msg', 'Usuario criado com sucesso!')
                         res.render('login');

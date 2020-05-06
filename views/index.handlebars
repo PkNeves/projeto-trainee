@@ -1,19 +1,19 @@
 	{{>_navbar}}
-	user.id = {{user.id}} <br>
-	user.tipo = {{user.tipo}}
+	{{!-- user.id = {{user.id}} <br>
+	user.tipo = {{user.tipo}} --}}
+
 	<h2>Controle de Estoque</h2>
 
 	<!--Botões com as funcionalidades-->
-
 	<div>
-		<button onclick="mostrarModal(); document.getElementById('adicionarProduto').style.display = 'initial';"><i class="fa fa-plus"></i> Adicionar um produto</button>
+		<button id="btAdicionarProduto" onclick="mostrarModal(); document.getElementById('adicionarProduto').style.display = 'initial';"><i class="fa fa-plus"></i> Adicionar um produto</button>
 		<button onclick="mostrarModal(); document.getElementById('buscarProduto').style.display = 'initial';"><i class="fa fa-search"></i> Buscar um produto</button>
 
 		<form action='transacoes' style="display: inline" method="post">
 			<button><i class="fa fa-money"></i> Transações</button>
 		</form>
 
-		<button style="display: inline; float: right" onclick="mostrarModal(); document.getElementById('cadastroUsuario').style.display = 'initial';"><i class="fa fa-user-plus"></i> Cadastrar um usuário</button>
+		<button id="btCadastrarUsuario" style="display: inline; float: right" onclick="mostrarModal(); document.getElementById('cadastroUsuario').style.display = 'initial';"><i class="fa fa-user-plus"></i> Cadastrar um usuário</button>
 	</div>
 	
 	<div id="busca" style="display: none; float: right">
@@ -41,7 +41,7 @@
         <th width="30%">Nome do produto</th>
         <th width="8%">Quantidade</th>
         <th width="11%">Valor Und.</th>
-        <th width="11%">Fazer uma venda</th>
+        <th style="visibility: " width="11%">Fazer uma venda</th>
         <th width="14%">Controle de estoque</th>
         <th width="10%">Editar produto</th>
         <th width="10%">Excluir</th>
@@ -68,16 +68,16 @@
         	<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('venderProduto').style.display = 'initial'; vender('{{id}}');"><i class="fa fa-dollar"></i> Vender</button>
+        	<button class="btVender" onclick="mostrarModal(); document.getElementById('venderProduto').style.display = 'initial'; vender('{{id}}');"><i class="fa fa-dollar"></i> Vender</button>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
+        	<button class="btEstoque" onclick="mostrarModal(); document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
+        	<button class="btEditarProduto" onclick="mostrarModal(); document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
         </td>
         <td>
-        	<button onclick="mostrarModal(); document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
+        	<button class="btExcluirProduto" onclick="mostrarModal(); document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
         </td>
       </tr>
       {{/data}}
@@ -348,3 +348,36 @@
 	</div>
 
 	<!--Fim do Modal-->
+
+	<!--JS por usuário-->
+
+	<script>
+		function disable_collection (collection) {
+			for (i = 0; i < collection.length; i++) {
+				collection[i].disabled = true;
+			}
+		}
+
+	 	const type = '{{type}}';
+
+		if (!(type == 'admin')) {
+			document.getElementById('btCadastrarUsuario').disabled = true;
+		}
+
+		if (!(type == 'gerente')) {
+			document.getElementById('btAdicionarProduto').disabled = true;
+			disable_collection(document.getElementsByClassName('btEditarProduto'))
+			disable_collection(document.getElementsByClassName('btExcluirProduto'))
+		}
+
+		if (!(type == 'vendedor')) {
+			disable_collection(document.getElementsByClassName('btVender'))
+		}
+		
+		if (!(type == 'editor')) {
+			disable_collection(document.getElementsByClassName('btEstoque'))
+		}
+
+	</script>
+
+	<!--Fim do JS por usuário-->

@@ -1,2 +1,6 @@
 /node_modules
+<<<<<<< HEAD
 /conf/constantes.js
+=======
+/config/constantes.js
+>>>>>>> 6e1fceabb318d57c265181bbb6dd46859cbaac2c
