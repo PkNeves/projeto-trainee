@@ -28,6 +28,7 @@ CREATE TABLE `produtos` (
   `descricao` text,
   `valor` float(10,2) NOT NULL,
   `quantidade` int NOT NULL,
+  `custo` float(10,2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,7 +39,7 @@ CREATE TABLE `produtos` (
 
 LOCK TABLES `produtos` WRITE;
 /*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
-INSERT INTO `produtos` VALUES (9,'Sabonete','',2.00,0),(10,'Sopa','',5.00,6),(11,'Macarrão','',5.00,3),(13,'Computador','',1200.00,1);
+INSERT INTO `produtos` VALUES (9,'Sabonete','',2.00,0,0.00),(10,'Sopa','',5.00,6,0.00),(11,'Macarrão','',5.00,3,0.00),(13,'Computador','',1200.00,1,0.00);
 /*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -105,4 +106,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-10 20:08:43
+-- Dump completed on 2020-05-10 20:29:56
