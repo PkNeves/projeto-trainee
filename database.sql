@@ -28,10 +28,8 @@ CREATE TABLE `produtos` (
   `descricao` text,
   `valor` float(10,2) NOT NULL,
   `quantidade` int NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +38,7 @@ CREATE TABLE `produtos` (
 
 LOCK TABLES `produtos` WRITE;
 /*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
-INSERT INTO `produtos` VALUES (2,'teste2','teste2',50.00,3,'0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'manteiga','margarina na vdd',10.30,8,'2020-05-04 02:46:05','2020-05-04 02:46:05'),(4,'asd','asdas',10.33,1,'2020-05-04 03:09:06','2020-05-04 03:09:06'),(6,'manga','legal',1.00,1,'0000-00-00 00:00:00','0000-00-00 00:00:00');
+INSERT INTO `produtos` VALUES (9,'Sabonete','',2.00,0),(10,'Sopa','',5.00,6),(11,'Macarrão','',5.00,3),(13,'Computador','',1200.00,1);
 /*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,10 +51,10 @@ DROP TABLE IF EXISTS `transacoes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transacoes` (
   `id` int NOT NULL,
-  `nome` varchar(255) NOT NULL,
+  `produto` varchar(255) NOT NULL,
   `quantidade` int NOT NULL,
-  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `usuario` varchar(255) NOT NULL,
+  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -66,7 +64,6 @@ CREATE TABLE `transacoes` (
 
 LOCK TABLES `transacoes` WRITE;
 /*!40000 ALTER TABLE `transacoes` DISABLE KEYS */;
-INSERT INTO `transacoes` VALUES (1,'aaa',10,'2020-05-04 15:26:37'),(4,'bbb',200,'2020-05-04 15:27:15');
 /*!40000 ALTER TABLE `transacoes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +83,7 @@ CREATE TABLE `usuarios` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +92,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (2,'petterson','pitter','$2a$10$JF7tK5ShW6eUVqbutrclu.7tgqcglCwCLtPV3.KIpWAUEwm6Xv.Na','','2020-05-04 04:41:13','2020-05-04 04:41:13');
+INSERT INTO `usuarios` VALUES (2,'petterson','pitter','$2a$10$JF7tK5ShW6eUVqbutrclu.7tgqcglCwCLtPV3.KIpWAUEwm6Xv.Na','','2020-05-04 04:41:13','2020-05-04 04:41:13'),(4,'gabriel','gabriel','$2a$10$KnBzFoRAsTiXSMxA.Y.gju2TjlOhMjdz92YXoDijyANOpuBV4Tdii','admin','2020-05-05 18:47:32','2020-05-05 18:47:32'),(5,'gerente','gerente','$2a$10$C7OoDxLGQa.w06S3FdxURONpLECSWdoNIvacFX.BecQqWFYQbNG56','gerente','2020-05-05 19:57:26','2020-05-05 19:57:26'),(7,'vendedor','vendedor','$2a$10$7dxRyofu.GoF7.wGlvpKle4.sMHUTnkWx1uA9mxgIfP7E8yl9k4Y6','vendedor','2020-05-05 19:59:24','2020-05-05 19:59:24'),(8,'editor','editor','$2a$10$hoxKhCw46UXWPoCuKpvYhe9b78lEo/IZFhCviOsFqihHtSryWop7e','editor','2020-05-05 20:00:47','2020-05-05 20:00:47'),(9,'teste','teste','$2a$10$Tv5Bn5vsteGaXnFDVBcVi.pG5uMpC4rDZesKh07A1qcdDeJ.wQOMW','admin','2020-05-05 20:20:12','2020-05-05 20:20:12');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -108,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-04 12:33:22
+-- Dump completed on 2020-05-10 20:08:43
