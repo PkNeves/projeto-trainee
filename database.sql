@@ -51,11 +51,12 @@ DROP TABLE IF EXISTS `transacoes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transacoes` (
-  `id` int NOT NULL,
-  `produto` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_produto` varchar(255) NOT NULL,
   `quantidade` int NOT NULL,
   `usuario` varchar(255) NOT NULL,
-  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
