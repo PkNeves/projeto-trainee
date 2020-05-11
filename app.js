@@ -10,6 +10,7 @@ const Usuario = require('./models/Usuario');
 const app = express();
 const passport = require('passport');
 const {acessos} = require('./helpers/acessos');
+const path = require('path');
 require('./config/auth')(passport);
 app.use(express.json());
 // Confugaração
@@ -30,6 +31,8 @@ app.use(express.json());
             res.locals.user = req.user || null;
             next();
         })
+    // Public
+        app.use(express.static(path.join(__dirname, 'public')));
 const urlencodeParser=bodyParser.urlencoded({extended:false});
 const sql=mysql.createConnection({
    host:banco.host,
