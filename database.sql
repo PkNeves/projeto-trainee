@@ -51,11 +51,12 @@ DROP TABLE IF EXISTS `transacoes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transacoes` (
-  `id` int NOT NULL,
-  `produto` varchar(255) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_produto` varchar(255) NOT NULL,
   `quantidade` int NOT NULL,
   `usuario` varchar(255) NOT NULL,
-  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -66,6 +67,32 @@ CREATE TABLE `transacoes` (
 LOCK TABLES `transacoes` WRITE;
 /*!40000 ALTER TABLE `transacoes` DISABLE KEYS */;
 /*!40000 ALTER TABLE `transacoes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `carrinho`
+--
+
+DROP TABLE IF EXISTS `carrinho`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `carrinho` (
+  `id_usuario` int NOT NULL,
+  `id_produto` int NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `quantidade` int NOT NULL,
+  `valor` float(10,2) NOT NULL,
+  PRIMARY KEY (`id_usuario`, `id_produto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `carrinho`
+--
+
+LOCK TABLES `carrinho` WRITE;
+/*!40000 ALTER TABLE `carrinho` DISABLE KEYS */;
+/*!40000 ALTER TABLE `carrinho` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
