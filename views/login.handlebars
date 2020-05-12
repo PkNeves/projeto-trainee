@@ -11,39 +11,36 @@
 {{else}}
 {{/if}}
 
-<div id="modal" class="modal-container">
-	<div class="modal">
-		<!--Botão para fechar o modal-->
-		<button onclick="esconderModal()" class="close"><i class="fa fa-close"></i></button>
-		<div style="display: none;" id="login">
+<style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
 
-			<form action="/usuario/login" target="_self" method="post">
-				<div class="section">
-				<h1><b>Entrar no sistema<b></h1>
-				</div><br>
-				<div class="section">
-				<label>Usuário</label><br>
-				<input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="login_login" id="login_login">
-				</div>
-				<div class="section"><br>
-				<label>Senha</label><br>
-				<input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha_login" id="senha_login">
-				</div><br>
-				<div align="center">
-					<button onclick="" style="font-size:16px; padding: 10px; margin-left: 2px" type="submit" class="">
-						<i class="fa fa-sign-in"></i>
-						Entrar
-					</button><br><br>
-					<a style="cursor: pointer; color: blue" onclick="document.getElementById('info').style.display = 'initial';"> Como criar uma conta?</a>
-					<label style="display: none" id='info'> <br><br>Peça a um administrador para criar a conta para você no perfil dele!  <a style="cursor: pointer; color: blue" onclick="document.getElementById('info').style.display = 'none';"> <br>Entendi</a></label>
-				</div>
-			</form>
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+</style>
+<link href="/css/signin.css" rel="stylesheet">
 
+	<form class="form-signin" action='/usuario/login' method='post'>
+	<h2>Controle de Estoque (CRUD)</h2>
+		<h2 class="h3 mb-3 font-weight-normal">Entrar</h2>
+		<label for="login_login" class="sr-only">Login</label>
+		<input type="text" id="login_login" name='login_login' class="form-control" placeholder="Login" required autofocus>
+		<label for="senha_login" class="sr-only">Senha</label>
+		<input type="password" id="senha_login" name='senha_login' class="form-control" placeholder="Senha" required>
+		<div class="checkbox mb-3">
+			<label>
+				<input type="checkbox" value="remember-me"> Lembrar meu usuário
+			</label>
 		</div>
-	</div>
-</div>
-
-	<h2 style="text-align: center;">Sistema de Controle de Estoque (CRUD)</h2>
-<div style="text-align: center">
-	<button style="font-size:16px; padding: 10px; margin-left: 2px" onclick="mostrarModal2(); document.getElementById('login').style.display = 'initial';"><i class="fa fa-sign-in"></i> Login</button>
-</div>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+		<p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+	</form>

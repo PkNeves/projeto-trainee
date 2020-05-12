@@ -1,4 +1,162 @@
-<ul>
-  <li><a class="active" href="#home">Home</a></li>
-  <li><a href="/usuario/logout">Sair</a></li>
-</ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <a class="navbar-brand" href="#">CRUD</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/usuario/logout"> Sair</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-shopping-cart"></i> Produto
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <button id="btAdicionarProduto" type='button' class='dropdown-item' data-toggle='modal' data-target='#adicionarProduto'>
+            <i class="fa fa-plus"></i> Adicionar
+          </button>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user"></i> Usuario 
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <button id="btCadastrarUsuario" type='button' class='dropdown-item' data-toggle='modal' data-target='#cadastroUsuario'>
+          <i class="fa fa-user-plus"></i> Cadastar
+        </button>
+          <a class="dropdown-item" href="#"><i class="fa fa-list"></i> Listar</a>
+
+      </li>
+    </ul>
+    <!--
+    <form class="form-inline my-2 my-lg-0">
+      <input name='nomeBusca' class="form-control mr-sm-2" type="search" placeholder="Nome do Produto" aria-label="Search">
+      <button class='btn btn-outline-success my-2 my-sm-0' onclick="window.location.href = '/' + document.getElementById('nomeBusca').value"><i class="fa fa-search"></i> Buscar</button>
+    </form>
+    -->
+  </div>
+</nav>
+
+<!-- Modais -->
+  <!-- Cadastro de Usuário -->
+  <div class='modal fade' id="cadastroUsuario" tabindex='-1' role='dialog'>
+    <div class='modal-dialog modal-lg' role='document'>
+      <div class='modal-content'>
+
+        <div class='modal-header'>
+          <h2 class="modal-title center" id="exampleModalLabel">Cadastro de um novo usuário</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class='modal-body'>
+          <div class='container'>
+            <form name='form2' action='cadastrarUsuario' method='post'>
+              <div class='form-group'>
+                <!-- Tipo usuario -->
+                <label for='tipo_cadastro'>Tipo</label>
+                <select class='form-control' name="tipo_cadastro" id="tipo_cadastro">
+                    <option value="0">Administrador</option>
+                    <option value="1">Gerente</option>
+                    <option value="2">Vendedor</option>
+                    <option value="3">Editor</option>
+                </select>
+              </div>
+              <!-- Nome do Usuario -->
+              <div class='form-group'>
+                <label for='nome_cadastro'>Nome</label>
+                <input class='form-control' type="text" name="nome_cadastro" id="nome_cadastro" required=''>
+              </div>
+              <!-- Login do Usuario -->
+              <div class='form-group'>
+                <label for='usuario_cadastro'>Login</label>
+                <input class='form-control' type="text" name="usuario_cadastro" id="usuario_cadastro" required=''>
+              </div>
+              <!-- Campos de Senha -->
+              <div class='form-row'>
+                <!-- Senha de usuario -->
+                <div class='form-group col-md'>
+                  <label for='senha1_cadastro'>Senha</label>
+                  <input class='form-control' type="password" name="senha1_cadastro" id="senha1_cadastro" required=''>
+                </div>
+                <!-- Confirmação de Senha de usuario -->
+                <div class='form-group col-md'>
+                  <label for='senha2_cadastro'>Confirmar Senha</label><br>
+                  <input class='form-control' type="password" name="senha2_cadastro" id="senha2_cadastro" required=''>
+                </div>
+              </div>
+              <div class='modal-footer'>
+                <button class='btn btn-secondary' onclick="esconderModal();" type="button">
+                  <i class="fa fa-close"></i> Cancelar
+                </button>
+                <button class='btn btn-primary' onclick="return validaSenhas(document.getElementById('senha1_cadastro').value, document.getElementById('senha2_cadastro').value);" type="submit" class="">
+                  <i class="fa fa-check"></i>
+                  Criar conta
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Fim da modal para cadastrar usuário-->
+
+  <!-- Modal Adicionar Produto -->
+  <div class='modal fade' id="adicionarProduto" tabindex='-1' role='dialog'>
+    <div class='modal-dialog modal-lg' role='document'>
+      <div class='modal-content'>
+
+        <div class='modal-header'>
+          <h2 class="modal-title center" id="exampleModalLabel">Adicionar um novo produto</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class='modal-body'>
+          <div class='container'>
+            <form name='form1' action='adicionar' method='post'>
+              <!-- Nome Produto -->
+              <div class='form-group'>
+                <label for='nome'>Nome</label>
+                <label style="float: left; color: red;"><b id="confirmaNome" style="display: none;"></b></label>
+                <input class='form-control' type="text" name="nome" id="nome">
+              </div>
+              <!-- Descrição Produto -->
+              <div class='form-group'>
+                <label for='descricao'>Descrição</label>
+                <label style="float: left; color: red;"><b id="confirmaDescrição" style="display: none;"></b></label>
+                <textarea class='form-control' name="descricao" id="descricao"></textarea>
+              </div>
+              <div class='form-row'>
+                <!-- Valor Produto -->
+                <div class='form-group col-md'>
+                  <label for='valor'>Valor</label>
+                  <label style="float: left; color: red;"><b id="confirmaValor" style="display: none;"></b></label>
+                  <input class='form-control' type="text" name="valor" id="valor">
+                </div>
+                <!-- Quantidade Produto -->
+                <div class='form-group col-md'>
+                  <label for='quantidade'>Quantidade</label><br>
+                  <label style="float: left; color: red;"><b id="confirmaQuantidade" style="display: none;"></b></label>
+                  <input class='form-control' type="number" name="quantidade" id="quantidade" placeholder="0" min = 0>
+                </div>
+              </div>
+
+              <div class='modal-footer'>
+                <button type="button" class='btn btn-secondary' data-dismiss="modal">
+                  <i class="fa fa-close"></i> Cancelar
+                </button>
+                <button class='btn btn-primary'><i class="fa fa-plus"></i> Adicionar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fim Modal Adicionar Produto -->
