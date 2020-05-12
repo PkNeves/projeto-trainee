@@ -2,16 +2,10 @@
 
 	<!--Botões com as funcionalidades-->
 	<div>
-		<!--
-		<button id="btAdicionarProduto" onclick="mostrarModal(); document.getElementById('adicionarProduto').style.display = 'initial';"><i class="fa fa-plus"></i> Adicionar um produto</button>
-		<button id="btCadastrarUsuario" style="display: inline; float: right" onclick="mostrarModal(); document.getElementById('cadastroUsuario').style.display = 'initial';"><i class="fa fa-user-plus"></i> Cadastrar um usuário</button>
-		-->
-
 		<form action='transacoes' style="display: inline" method="post">
 			<button class='btn btn-light'><i class="fa fa-money"></i> Transações</button>
 		</form>
-		<button class='btn btn-light' onclick="mostrarModal(); document.getElementById('buscarProduto').style.display = 'initial';"><i class="fa fa-search"></i> Buscar um produto</button>
-
+		<button class='btn btn-light' data-toggle='modal' data-target='#buscarProduto' document.getElementById('buscarProduto').style.display = 'initial';><i class="fa fa-search"></i> Buscar um produto</button>
 	</div>
 	
 	<div id="busca" style="display: none; float: right">
@@ -72,13 +66,13 @@
 					<button class='btVender btn btn-success' data-toggle='modal' data-target='#venderProduto' onclick="document.getElementById('venderProduto').style.display = 'initial'; vender('{{id}}');"><i class="fa fa-dollar"></i> Vender</button>
 				</td>
 				<td>
-					<button class='btEstoque btn btn-secondary' data-toggle='modal' data-target='#editarEstoque' onclick="mostrarModal(); document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
+					<button class='btEstoque btn btn-secondary' data-toggle='modal' data-target='#editarEstoque' onclick="document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
 				</td>
 				<td>
-					<button class='btEditarProduto btn btn-primary' data-toggle='modal' data-target='#editarProduto' onclick="mostrarModal(); document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
+					<button class='btEditarProduto btn btn-primary' data-toggle='modal' data-target='#editarProduto' onclick="document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
 				</td>
 				<td>
-					<button class='btExcluirProduto btn btn-danger' data-toggle='modal' data-target='#excluirProduto' onclick="mostrarModal(); document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
+					<button class='btExcluirProduto btn btn-danger' data-toggle='modal' data-target='#excluirProduto' onclick="document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
 				</td>
 			</tr>
 			{{/data}}
@@ -298,86 +292,39 @@
 	</div>
 	<!-- Fim Exluir Produto -->
 
-	<!--Div do Modal-->
+	<!-- Buscar Produto -->
+	<div class='modal fade' id="buscarProduto" tabindex='-1' role='dialog'>
+		<div class='modal-dialog modal-lg' role='document'>
+			<div class='modal-content'>
 
-	<div id="modal" class="modal-container">
-		<div class="modal">
-			<!--Botão para fechar o modal-->
-			<button onclick="esconderModal()" class="close"><i class="fa fa-close"></i></button>
+				<div class='modal-header'>
+					<h2 class="modal-title center" id="exampleModalLabel">Buscar Produto</h2>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
 
-			<!--Div para buscar um produto-->
-
-			<div style="display: none;" id="buscarProduto">
-				<h3 style="text-align: center;"><b>Buscar um produto</b></h3>
-				<label style="padding-bottom: 4px; float: left;"><b>Nome</b></label><br>
-              	<label style="float: left; color: red;"><b id="confirmaNomeBusca" style="display: none;"></b></label>
-              	<input style="padding: 10px; border: 1px solid #ccc; width: 100%;" type="text" name="nomeBusca" id="nomeBusca">
-              	<br><br>
-				<button style="padding: 6px; float: right;" onclick="window.location.href = '/' + document.getElementById('nomeBusca').value"><i class="fa fa-search"></i> Buscar</button>
+				<div class='modal-body'>
+					<div class='container'>
+						<div class='form-group'>
+							<label for='nomeBusca'>Nome</label>
+							<label ><b id="confirmaNomeBusca" style="display: none;"></b></label>
+							<input class='form-control' type="text" name="nomeBusca" id="nomeBusca">
+						</div>
+					</div>
+				</div>
+				<div class='modal-footer'>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">
+						<i class="fa fa-close"></i> Cancelar
+					</button>
+					<button class='btn btn-primary' onclick="window.location.href = '/' + document.getElementById('nomeBusca').value"><i class="fa fa-search"></i> Buscar</button>
+				</div>
 			</div>
-
-			<!--Fim da div para buscar um produto-->
-
-
-
-
-
-			<!--Div para cadastrar usuário-->
-
-			<div style="display: none;" id="cadastroUsuario">
-
-				<form name='form2' action='cadastrarUsuario' method='post'>
-					<div class="section">
-			          <h1 style="text-align: center;"><b>Cadastro de um novo usuário<b></h1>
-			        </div><br>
-			        <div class="section">
-			            <label>Tipo</label><br>
-			            <select style="width: 40%; border: 1px solid #ccc; padding: 10px" name="tipo_cadastro" id="tipo_cadastro">
-	                		<option value="0">Administrador</option>
-	                		<option value="1">Gerente</option>
-	                		<option value="2">Vendedor</option>
-	                		<option value="3">Editor</option>
-	                	</select>
-			        </div><br>
-			        <div class="section">
-			          <label>Nome</label><br>
-			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="nome_cadastro" id="nome_cadastro" required=''>
-			        </div><br>
-			        <div class="section">
-			          <label>Nome de usuário</label><br>
-			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="text" name="usuario_cadastro" id="usuario_cadastro" required=''>
-			        </div><br>
-			        <div class="section">
-			          <label>Senha</label><br>
-			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha1_cadastro" id="senha1_cadastro" required=''>
-			        </div><br>
-			        <div class="section">
-			          <label>Confirmar senha</label><br>
-			          <input style="width: 90%; border: 1px solid #ccc; padding: 10px" type="password" name="senha2_cadastro" id="senha2_cadastro" required=''>
-			        </div><br><br>
-			        <div align="center">
-			          <button onclick="esconderModal();" style="padding: 4px" type="button">
-			            <i class="fa fa-close"></i>
-			            Cancelar
-			          </button>
-			          <button onclick="return validaSenhas(document.getElementById('senha1_cadastro').value, document.getElementById('senha2_cadastro').value);" style="padding: 4px; margin-left: 2px" type="submit" class="">
-			            <i class="fa fa-check"></i>
-			            Criar conta
-			          </button>
-			        </div>
-				</form>
-
-			</div>
-
-			<!--Fim da div para cadastrar usuário-->
-
 		</div>
 	</div>
-
-	<!--Fim do Modal-->
+	<!--Fim Buscar Produto -->
 
 	<!--JS por usuário-->
-
 	<script>
 		function disable_collection (collection) {
 			for (i = 0; i < collection.length; i++) {
@@ -385,7 +332,7 @@
 			}
 		}
 
-	 	const type = '{{type}}';
+	 	const type = '{{user.tipo}}';
 
 		if (!(type == 'admin')) {
 			document.getElementById('btCadastrarUsuario').disabled = true;

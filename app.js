@@ -63,7 +63,7 @@ app.get("/:id?", acessos, function(req,res){
 		let query = "SELECT * FROM produtos order by id"
 
 	    sql.query(query, function(err,results,fields) {
-	        res.render('index',{data:results, type: req.user.tipo});
+	        res.render('index',{data:results});
 	    })
 	}else{
 		let values = '%' + req.params.id + '%'
@@ -246,7 +246,7 @@ app.get("/excluir/:id",function(req,res){
 
 app.post("/transacoes", urlencodeParser, function (req, res) {
 
-    let query = "SELECT * FROM transacoes";
+    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d') as data FROM transacoes";
 
     sql.query(query, function(err, results, fields) {
         res.render('transacoes', {data: results});
