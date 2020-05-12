@@ -145,10 +145,11 @@ app.post("/adicionar",urlencodeParser,function(req,res){
         let desc = req.body.descricao
         let valor = req.body.valor
         let qntd = req.body.quantidade
+        let valorCusto = req.body.valorCusto
 
-        let values = [[nome, desc, valor, qntd]]
+        let values = [[nome, desc, valor, qntd, valorCusto]]
 
-        let query = "INSERT INTO produtos (nome, descricao, valor, quantidade) VALUES ?"
+        let query = "INSERT INTO produtos (nome, descricao, valor, quantidade, custo) VALUES ?"
 
         sql.query(query, [values], function(err) {
             if (err) throw err
@@ -213,10 +214,11 @@ app.post("/editar",urlencodeParser,function(req,res){
         let nome = req.body.nomeEditar
         let desc = req.body.descricaoEditar
         let valor = req.body.valorEditar
+        let valorCusto = req.body.valorCustoEditar
 
-        let values = [nome, desc, valor, id];
+        let values = [nome, desc, valor, valorCusto, id];
 
-        let query = "UPDATE produtos SET nome = ?, descricao = ?, valor = ? WHERE id = ?"
+        let query = "UPDATE produtos SET nome = ?, descricao = ?, valor = ?, custo = ? WHERE id = ?"
 
         sql.query(query, values, function(err) {
             if (err) throw err

@@ -33,7 +33,8 @@
 				<th>ID</th>
 				<th>Nome do produto</th>
 				<th>Quantidade</th>
-				<th>Valor Und.</th>
+				<th>Valor Custo</th>
+				<th>Valor Venda</th>
 				<th style="visibility: ">Fazer uma venda</th>
 				<th>Controle de estoque</th>
 				<th>Editar produto</th>
@@ -59,6 +60,10 @@
 					<input style='display: none;' id='quantidade{{id}}' value = '{{quantidade}}'>
 				</td>
 				<td>
+					{{custo}}
+					<input style='display: none;' id='valorCusto{{id}}' value = '{{custo}}'>
+				</td>
+				<td>
 					{{valor}}
 					<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
 				</td>
@@ -80,6 +85,7 @@
 		</tbody>
     </table>
     <!--Fim da Tabela-->
+    <br><br>
 
 <!-- Modais -->
 
@@ -215,10 +221,18 @@
 								<textarea class='form-control' name="descricaoEditar" id="descricaoEditar"></textarea>
 							</div>
 
-							<div class='form-group'>
-								<label for='valorEditar'>Valor</label>
-								<label><b id="confirmaValorEditar" style="display: none;"></b></label>
-								<input class='form-control' type="text" name="valorEditar" id="valorEditar">
+							<div class='form-row'>
+								<div class='form-group col-md'>
+				                  	<label for='valorCustoEditar'>Valor de custo</label>
+									<label><b id="confirmaValorCustoEditar" style="display: none;"></b></label>
+									<input class='form-control' type="text" name="valorCustoEditar" id="valorCustoEditar">
+				                </div>
+
+								<div class='form-group col-md'>
+									<label for='valorEditar'>Valor de venda</label>
+									<label><b id="confirmaValorEditar" style="display: none;"></b></label>
+									<input class='form-control' type="text" name="valorEditar" id="valorEditar">
+								</div>
 							</div>
 
 							<div class='form-group'>
@@ -269,9 +283,16 @@
 							<textarea class='form-control' name="descricaoExcluir" id="descricaoExcluir" disabled=""></textarea>
 						</div>
 
-						<div class='form-group'>
-							<label for='valorExcluir'>Valor</label>
-							<input class='form-control' type="text" name="valorExcluir" id="valorExcluir" disabled="">
+						<div class='form-row'>
+							<div class='form-group col-md'>
+								<label for='valorCustoExcluir'>Valor de custo</label>
+								<input class='form-control' type="text" name="valorCustoExcluir" id="valorCustoExcluir" disabled="">
+			                </div>
+
+							<div class='form-group col-md'>
+								<label for='valorExcluir'>Valor de venda</label>
+								<input class='form-control' type="text" name="valorExcluir" id="valorExcluir" disabled="">
+							</div>
 						</div>
 
 						<div class='form-group'>

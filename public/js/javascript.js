@@ -41,6 +41,7 @@ function editarProduto(id){
 	document.getElementById('nomeEditar').value = document.getElementById('nome' + id).value;
 	document.getElementById('descricaoEditar').value = document.getElementById('descricao' + id).value;
 	document.getElementById('valorEditar').value = document.getElementById('valor' + id).value;
+	document.getElementById('valorCustoEditar').value = document.getElementById('valorCusto' + id).value;
 }
 
 //JS para excluir
@@ -49,6 +50,7 @@ function excluirProduto(id){
 	document.getElementById('nomeExcluir').value = document.getElementById('nome' + id).value;
 	document.getElementById('descricaoExcluir').value = document.getElementById('descricao' + id).value;
 	document.getElementById('valorExcluir').value = document.getElementById('valor' + id).value;
+	document.getElementById('valorCustoExcluir').value = document.getElementById('valorCusto' + id).value;
 	document.getElementById('quantidadeExcluir').value = document.getElementById('quantidade' + id).value;
 }
 
