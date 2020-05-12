@@ -38,7 +38,7 @@ module.exports = function(passport) {
     ))
 
     passport.serializeUser((usuario, done) => {
-        done(null, { "id": usuario.id, "tipo": usuario.tipo})
+        done(null, { "nome": usuario.nome, "id": usuario.id, "tipo": usuario.tipo})
     })
 
     passport.deserializeUser((id, done) => {
@@ -47,7 +47,7 @@ module.exports = function(passport) {
                 id: id.id
             }
             }).then((usuario) => {
-                done(null, {"id": usuario.id, "tipo": usuario.tipo})
+                done(null, { "nome": usuario.nome, "id": usuario.id, "tipo": usuario.tipo})
             })  
     })
 }

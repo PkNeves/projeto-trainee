@@ -167,9 +167,9 @@ app.post("/vender",urlencodeParser,function(req,res){
         let qntdEstoque = req.body.quantidadeEstoqueVenda
         let qntd = req.body.quantidadeVenda
         
-        let transaction = "INSERT INTO transacoes (id, nome, quantidade) VALUES ?"
+        let transaction = "INSERT INTO transacoes (id, produto, quantidade, usuario) VALUES ?"
 
-        sql.query(transaction, [[[id, nome, qntd]]], function (err) {
+        sql.query(transaction, [[[id, nome, qntd, req.user.nome]]], function (err) {
             if (err) throw err;
         })
 
