@@ -119,7 +119,8 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
                                 senha: hash,
                                 tipo: tipo_usuario
                             }).then(function() {
-                                res.render('cadastrarUsuario');
+                                req.flash("success_msg", "Usuário criado com sucesso")
+                                res.redirect('/')
                             }).catch(function(erro) {
                                 res.send('erro ao criar o usuario '+ erro);
                             });
@@ -129,7 +130,8 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
                     
                 
                 } else {
-                    res.render('sempermissao')
+                    req.flash("error_msg", "Você não tem permissão pra cadastrar um usuário")
+                    res.redirect('/')
                 }
             }
         })
