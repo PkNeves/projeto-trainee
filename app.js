@@ -391,7 +391,7 @@ app.get("/excluir/:id",function(req,res){
     // }
 });
 
-app.post("/operacoes", urlencodeParser, function (req, res) {
+app.post("/operacoes", urlencodeParser, acessos, function (req, res) {
     // log_operation('Sistema', res.locals.user.nome, 'criar');
 
     let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d %H:%i:%s') as data FROM operacoes order by data DESC";
@@ -442,7 +442,8 @@ app.post('/usuario/registrar', urlencodeParser, (req, res) => {
     var tipos = ['admin','gerente','vendedor','editor']
     //verifica senha
     if (req.body.senha != req.body.senha2) {
-        res.send('senha diverge');
+        req.flash('error_msg','senha diverge');
+        res.redirect('/')
     } 
     
     // Procura algum usuario com o login desejado
@@ -475,6 +476,108 @@ app.post('/usuario/registrar', urlencodeParser, (req, res) => {
             })
         }
     })
+})
+
+app.get('/usuario/listar', acessos,  (req, res) => {
+    Usuario.findAll().then(function(usuarios) { 
+        console.log(usuarios);
+        res.render('usuarioListar', {usuarios: usuarios})
+    })
+})
+
+app.post('/usuario/excluir/:id', urlencodeParser, (req, res) => {
+        let id = req.params.id
+
+        //log_operation(id, res.locals.user.nome, 'excluir');
+
+        Usuario.destroy({
+            where: {
+                id: id
+            }
+        }).then(function() { 
+            req.flash("success_msg", "Usuário excluído com sucesso")
+            res.redirect('/usuario/listar')
+        })
+})
+
+app.post('/usuario/editar', urlencodeParser, (req, res) => {
+
+    var tipos = ['admin', 'gerente', 'vendedor', 'editor'];
+
+    // parametros recebidos pelo corpo
+    var id = req.body.id_usuario
+    var senha1 = req.body.senha1_usuario
+    var senha2 = req.body.senha2_usuario
+    var nome = req.body.nome_usuario
+    var login = req.body.login_usuario
+    var tipo = (req.body.tipo_usuario) ? req.body.tipo_usuario : false 
+
+    // Verifica se foi digitado algo na senha
+    if (senha1 != '' && senha2 != '') {
+        // Verifica se as senhas conferem
+        if (senha1 == senha2) {
+            var salt = bcrypt.genSaltSync(10);
+            var hash = bcrypt.hashSync(senha1, salt);
+            // Verifica o tipo, pois pode estar como disabled
+            if (tipo) {
+                Usuario.update({ 
+                        nome: nome,
+                        login: login,
+                        senha: hash,
+                        tipo: tipos[tipo]
+                        }, {
+                        where: {
+                            id: id
+                        }
+                    }).then(() => {
+                        req.flash("success_msg", "Os dados do usuário foram atualizados")
+                        res.redirect('/usuario/listar')
+                });
+            } else {
+                Usuario.update({ 
+                        nome: nome,
+                        login: login,
+                        senha: hash,
+                        }, {
+                        where: {
+                            id: id
+                        }
+                    }).then(() => {
+                        req.flash("success_msg", "Os dados do usuário foram atualizados")
+                        res.redirect('/usuario/listar')
+                });
+            }
+        }
+    } 
+    // atualiza usuario sem mudar a senha 
+    else {
+        if (tipo) {
+            Usuario.update({ 
+                    nome: nome,
+                    login: login,
+                    tipo: tipos[tipo]
+                    }, {
+                    where: {
+                        id: id
+                    }
+                }).then(() => {
+                    req.flash("success_msg", "Os dados do usuário foram atualizados")
+                    res.redirect('/usuario/listar')
+            });
+        } else {
+            Usuario.update({ 
+                    nome: nome,
+                    login: login
+                    }, {
+                    where: {
+                        id: id
+                    }
+                }).then(() => {
+                    req.flash("success_msg", "Os dados do usuário foram atualizados")
+                    res.redirect('/usuario/listar')
+            });
+        }
+    }
 })
 
 function log_operation (val, user, operation) {

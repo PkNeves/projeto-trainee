@@ -1,0 +1,132 @@
+	<h2>Lista de Usuários</h2>
+
+    <a id="return" href="/">
+        <button class='btn btn-info mb-4'>
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+        </button>
+    </a>
+
+    
+	<table class='table table-striped'>
+        <thead class='thead-dark'>
+            <th>Nome</th>
+            <th>Login</th>
+            <th>Tipo</th>
+            <th>Editar</th>
+            <th>Excluir</th>
+            <!-- 
+            <th>Criado em</th>
+            <th>Modificado em</th>
+            -->
+        </thead>
+
+        <tbody>
+            {{#usuarios}}
+            <tr>    
+                <td>
+                    {{dataValues.nome}}
+                </td>
+                <td>
+                    {{dataValues.login}}
+                </td>
+                <td>
+                    {{dataValues.tipo}}
+                </td>
+                <td>
+                    <button class='btn btn-info' type='button' class='dropdown-item' data-toggle='modal' data-target='#editarUsuario{{dataValues.id}}'>
+                        Editar
+                    </button>
+                        <!--
+                    <form action='/usuario/editar/{{dataValues.id}}' method='post'>
+                        <button class='btn btn-info' type='submit'>Edita</button>
+                    </form>
+                    -->
+                </td>
+                <td>
+                    <form action='/usuario/excluir/{{dataValues.id}}' method='post'>
+                        <button class='btn btn-danger' type='submit'>Excluir</button>
+                    </form>
+                </td>
+                <!--
+                <td>
+                    {{dataValues.createdAt}}
+                </td>
+                <td>
+                    {{dataValues.updatedAt}}
+                </td>
+                -->
+            {{/usuarios}}
+        </tbody>
+    </table>
+
+<!-- Modais -->
+  <!-- Editar Usuário -->
+  {{#usuarios}}
+  <div class='modal fade' id="editarUsuario{{dataValues.id}}" tabindex='-1' role='dialog'>
+    <div class='modal-dialog modal-lg' role='document'>
+      <div class='modal-content'>
+
+        <div class='modal-header'>
+          <h2 class="modal-title center" id="exampleModalLabel">Editar Usuario {{dataValues.nome}}</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class='modal-body'>
+          <div class='container'>
+            <form name='form2' action='/usuario/editar' method='post'>
+            <input type="hidden" name="id_usuario" value='{{dataValues.id}}'>
+              <div class='form-group'>
+                <!-- Tipo usuario -->
+                <label for='tipo_cadastro'>Tipo</label>
+                <select class='form-control' name="tipo_usuario">
+                    <option value='{{dataValues.tipo}}' selected disabled>{{dataValues.tipo}}</option>
+                    <option value="0">Administrador</option>
+                    <option value="1">Gerente</option>
+                    <option value="2">Vendedor</option>
+                    <option value="3">Editor</option>
+                </select>
+              </div>
+              <!-- Nome do Usuario -->
+              <div class='form-group'>
+                <label for='nome_cadastro'>Nome</label>
+                <input class='form-control' type="text" name="nome_usuario" required='' value='{{dataValues.nome}}'>
+              </div>
+              <!-- Login do Usuario -->
+              <div class='form-group'>
+                <label for='usuario_cadastro'>Login</label>
+                <input class='form-control' type="text" name="login_usuario" required='' value='{{dataValues.login}}'>
+              </div>
+              <!-- Campos de Senha -->
+              <div class='form-row'>
+                <!-- Senha de usuario -->
+                <div class='form-group col-md'>
+                  <label for='senha1_cadastro'>Nova Senha</label>
+                  <input class='form-control' type="password" name="senha1_usuario">
+                  <small id="helpSenha" class="form-text text-muted">Se deixar em branco a senha não será alterada  </small>
+
+                </div>
+                <!-- Confirmação de Senha de usuario -->
+                <div class='form-group col-md'>
+                  <label for='senha2_cadastro'>Confirmar Senha</label><br>
+                  <input class='form-control' type="password" name="senha2_usuario">
+                </div>
+              </div>
+              <div class='modal-footer'>
+                <button class='btn btn-secondary' onclick="esconderModal();" type="button">
+                  <i class="fa fa-close"></i> Cancelar
+                </button>
+                <button class='btn btn-primary' type="submit" class="">
+                  <i class="fa fa-check"></i>
+                  Editar conta
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/usuarios}}
+  <!--Fim Editar Usuário-->
