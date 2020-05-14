@@ -12,7 +12,11 @@
             <th>Usuário</th>
             <th>ID</th>
             <th>Produto</th>
+            <th>Descrição</th>
             <th>Quantidade</th>
+            <th>Valor</th>
+            <th>Custo</th>
+            <th>Operação</th>
             <th>Data</th>
         </thead>
 
@@ -29,15 +33,31 @@
                 </td>
                 <td>
                     {{produto}}
-                    <input id='nome{{id}}' value = '{{nome}}'>
+                    <input id='produto{{id}}' value = '{{nome}}'>
+                </td>
+                <td>
+                    {{descricao}}
+                    <input id='descricao{{id}}' value = '{{descricao}}'>
                 </td>
                 <td>
                     {{quantidade}}
                     <input id='quantidade{{id}}' value = '{{quantidade}}'>
                 </td>
                 <td>
+                    {{valor}}
+                    <input id='valor{{id}}' value = '{{valor}}'>
+                </td>
+                <td>
+                    {{custo}}
+                    <input id='custo{{id}}' value = '{{custo}}'>
+                </td>
+                <td>
+                    {{operacao}}
+                    <input id='operacao{{id}}' value = '{{operacao}}'>
+                </td>
+                <td>
                     {{data}}
-                    <input id='valor{{id}}' value = '{{data}}'>
+                    <input id='data{{id}}' value = '{{data}}'>
                 </td>
             </tr>
             {{/data}}
