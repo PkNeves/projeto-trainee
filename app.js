@@ -147,13 +147,16 @@ app.post("/adicionar",urlencodeParser,function(req,res){
         let qntd = req.body.quantidade
         let valorCusto = req.body.valorCusto
 
-        let values = [[nome, desc, valor, qntd, valorCusto]]
+        let values = [nome, desc, valor, qntd, valorCusto]
 
         let query = "INSERT INTO produtos (nome, descricao, valor, quantidade, custo) VALUES ?"
 
-        sql.query(query, [values], function(err) {
+        sql.query(query, [[values]], function(err) {
             if (err) throw err
         })
+
+        log_operation(nome, res.locals.user.nome, 'criar');
+
         res.render('adicionar',{nome:req.body.nome});
     
     // } else {
@@ -168,11 +171,11 @@ app.post("/vender",urlencodeParser,function(req,res){
         let qntdEstoque = req.body.quantidadeEstoqueVenda
         let qntd = req.body.quantidadeVenda
         
-        let transaction = "INSERT INTO transacoes (id, produto, quantidade, usuario) VALUES ?"
+        // let transaction = "INSERT INTO transacoes (id, produto, quantidade, usuario) VALUES ?"
 
-        sql.query(transaction, [[[id, nome, qntd, req.user.nome]]], function (err) {
-            if (err) throw err;
-        })
+        // sql.query(transaction, [[[id, nome, qntd, req.user.nome]]], function (err) {
+        //     if (err) throw err;
+        // })
 
         let values = [(qntdEstoque - qntd), id];
 
@@ -181,6 +184,9 @@ app.post("/vender",urlencodeParser,function(req,res){
         sql.query(query, values, function(err) {
             if (err) throw err
         })
+
+        log_operation(id, res.locals.user.nome, 'vender');
+
         res.render('vender');
     
     // } else {
@@ -201,6 +207,9 @@ app.post("/editarEstoque",urlencodeParser,function(req,res){
         sql.query(query, values, function(err) {
             if (err) throw err
         })
+
+        log_operation(id, res.locals.user.nome, 'estocar');
+
         res.render('editarEstoque');
     
     // } else {
@@ -223,6 +232,9 @@ app.post("/editar",urlencodeParser,function(req,res){
         sql.query(query, values, function(err) {
             if (err) throw err
         })
+
+        log_operation(id, res.locals.user.nome, 'editar');
+
         res.render('editar');
 
     // } else {
@@ -232,13 +244,16 @@ app.post("/editar",urlencodeParser,function(req,res){
 
 app.get("/excluir/:id",function(req,res){
     // if (tipo  === 'admin' || tipo  === 'gerente') {
-        let values = req.params.id
+        let id = req.params.id
+
+        log_operation(id, res.locals.user.nome, 'excluir');
 
         let query = "DELETE FROM produtos WHERE id = ?"
 
-        sql.query(query, values, function(err) {
+        sql.query(query, id, function(err) {
             if (err) throw err
         })
+
         res.render('excluir'); 
     
     // } else {
@@ -246,12 +261,13 @@ app.get("/excluir/:id",function(req,res){
     // }
 });
 
-app.post("/transacoes", urlencodeParser, function (req, res) {
+app.post("/operacoes", urlencodeParser, function (req, res) {
+    // log_operation('Sistema', res.locals.user.nome, 'criar');
 
-    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d') as data FROM transacoes";
+    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d') as data FROM operacoes";
 
     sql.query(query, function(err, results, fields) {
-        res.render('transacoes', {data: results});
+        res.render('operacoes', {data: results});
     })
 })
 
@@ -331,9 +347,52 @@ app.post('/usuario/registrar', urlencodeParser, (req, res) => {
     })
 })
 
-// app.get('/sempermissao', function (req, res) {
-//     res.render('/')
-// }) 
+function log_operation (val, user, operation) {
+    if (operation === 'criar') {
+        let query = "SELECT * FROM produtos WHERE nome = ?";
+   
+        sql.query(query, val, function (err, results) {
+            if (err) throw err;
+
+            let values = [user,
+                          results[0].id,
+                          results[0].nome,
+                          results[0].descricao,
+                          results[0].quantidade,
+                          results[0].valor,
+                          results[0].custo,
+                          operation];
+
+            let op = "INSERT INTO operacoes (usuario, id, produto, descricao, quantidade, valor, custo, operacao) VALUES ? ";
+
+            sql.query(op, [[values]], function (err) {
+                if (err) throw err;
+            });
+        });
+    
+    } else {
+        let query = "SELECT * FROM produtos WHERE id = ?";
+        
+        sql.query(query, val, function (err, results) {
+            if (err) throw err;
+
+            let values = [user,
+                results[0].id,
+                results[0].nome,
+                results[0].descricao,
+                results[0].quantidade,
+                results[0].valor,
+                results[0].custo,
+                operation];
+
+            let op = "INSERT INTO operacoes (usuario, id, produto, descricao, quantidade, valor, custo, operacao) VALUES ? ";
+
+            sql.query(op, [[values]], function (err) {
+                if (err) throw err;
+            });   
+        });
+    }
+}
 
 //Abrir servidor
 app.listen(8000,function(req,res){
