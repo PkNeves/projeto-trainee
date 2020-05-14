@@ -152,12 +152,15 @@ app.post("/adicionar",urlencodeParser,function(req,res){
         let query = "INSERT INTO produtos (nome, descricao, valor, quantidade, custo) VALUES ?"
 
         sql.query(query, [[values]], function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao criar produto")
+                throw err
+            }
         })
 
         log_operation(nome, res.locals.user.nome, 'criar');
-
-        res.render('adicionar',{nome:req.body.nome});
+        req.flash("success_msg", "Produto criado com sucesso")
+        res.redirect('/');
     
     // } else {
     //     res.render('sempermissao')
@@ -182,12 +185,16 @@ app.post("/vender",urlencodeParser,function(req,res){
         let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
 
         sql.query(query, values, function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao realizar a venda")
+                throw err
+            }
         })
 
         log_operation(id, res.locals.user.nome, 'vender');
 
-        res.render('vender');
+        req.flash("success_msg", "Venda realizada com sucesso")
+        res.redirect('/');
     
     // } else {
     //     res.render('sempermissao')
@@ -205,12 +212,16 @@ app.post("/editarEstoque",urlencodeParser,function(req,res){
         let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
 
         sql.query(query, values, function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao editar estoque")
+                throw err
+            }
         })
 
         log_operation(id, res.locals.user.nome, 'estocar');
 
-        res.render('editarEstoque');
+        req.flash("success_msg", "Estoque editado com sucesso")
+        res.redirect('/');
     
     // } else {
     //     res.render('sempermissao')
@@ -230,12 +241,16 @@ app.post("/editar",urlencodeParser,function(req,res){
         let query = "UPDATE produtos SET nome = ?, descricao = ?, valor = ?, custo = ? WHERE id = ?"
 
         sql.query(query, values, function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao editar produto")
+                throw err
+            }
         })
 
         log_operation(id, res.locals.user.nome, 'editar');
 
-        res.render('editar');
+        req.flash("success_msg", "Produto editado com sucesso")
+        res.redirect('/');
 
     // } else {
     //     res.render('sempermissao')
@@ -251,10 +266,14 @@ app.get("/excluir/:id",function(req,res){
         let query = "DELETE FROM produtos WHERE id = ?"
 
         sql.query(query, id, function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao excluir produto")
+                throw err
+            }
         })
 
-        res.render('excluir'); 
+        req.flash("success_msg", "Produto excluído com sucesso")
+        res.redirect('/');
     
     // } else {
     //     res.render('sempermissao')
@@ -264,7 +283,7 @@ app.get("/excluir/:id",function(req,res){
 app.post("/operacoes", urlencodeParser, function (req, res) {
     // log_operation('Sistema', res.locals.user.nome, 'criar');
 
-    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d') as data FROM operacoes";
+    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d %H:%i:%s') as data FROM operacoes";
 
     sql.query(query, function(err, results, fields) {
         res.render('operacoes', {data: results});
