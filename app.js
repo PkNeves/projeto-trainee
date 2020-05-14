@@ -242,7 +242,6 @@ app.post("/vender",urlencodeParser,function(req,res){
                             if (err4) throw err4
                         })
 
-<<<<<<< HEAD
                         log_operation(id[a], res.locals.user.nome, 'vender');
                         a++;
                     })
@@ -280,13 +279,6 @@ app.post("/editarCarrinho",urlencodeParser,function(req,res){
     
         sql.query(query, function(err) {
             if (err) throw err
-=======
-        sql.query(query, values, function(err) {
-            if (err) {
-                req.flash("error_msg", "Erro ao realizar a venda")
-                throw err
-            }
->>>>>>> a08662205148c6e70dd252a4f8dc9768cff93828
         })
         res.render('excluirCarrinho');
     }else{
@@ -312,12 +304,7 @@ app.post("/editarCarrinho",urlencodeParser,function(req,res){
 app.post("/excluirCarrinho",urlencodeParser,function(req,res){
     let id_produto = req.body.id_produtoCarrinho2
 
-<<<<<<< HEAD
     let query = "DELETE FROM carrinho WHERE id_usuario = " + id_usuario + " AND id_produto = " + id_produto
-=======
-        req.flash("success_msg", "Venda realizada com sucesso")
-        res.redirect('/');
->>>>>>> a08662205148c6e70dd252a4f8dc9768cff93828
     
     sql.query(query, function(err) {
         if (err) throw err
@@ -407,7 +394,7 @@ app.get("/excluir/:id",function(req,res){
 app.post("/operacoes", urlencodeParser, function (req, res) {
     // log_operation('Sistema', res.locals.user.nome, 'criar');
 
-    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d %H:%i:%s') as data FROM operacoes";
+    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d %H:%i:%s') as data FROM operacoes order by data DESC";
 
     sql.query(query, function(err, results, fields) {
         res.render('operacoes', {data: results});
