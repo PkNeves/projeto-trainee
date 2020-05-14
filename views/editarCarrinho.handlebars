@@ -1,0 +1,10 @@
+<form id="form" name='form1' action='carrinho' method='post'>
+</form>
+<script>
+	if('{{suficiente}}' == 'n'){
+		alert('Não exitem tantos produtos em nosso estoque! A quantidade foi alterada para o máximo possível!');
+	}else{
+		alert('Carrinho editado com sucesso');
+	}
+	document.getElementById('form').submit();
+</script>

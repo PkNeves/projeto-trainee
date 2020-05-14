@@ -54,10 +54,12 @@ app.use('/img',express.static('img'));
 
 // Tipo de usuario
 let tipo = null
+let id_usuario = null
 
 // Rotas
 app.get("/:id?", acessos, function(req,res){
     tipo = req.user.tipo
+    id_usuario = req.user.id
 
 	if(!req.params.id){
 		let query = "SELECT * FROM produtos order by id"
@@ -161,6 +163,25 @@ app.post("/adicionar",urlencodeParser,function(req,res){
     // }
 });
 
+app.post("/adicionarCarrinho",urlencodeParser,function(req,res){
+    // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
+        let id_produto = req.body.idProdutoVenda
+        let nome = req.body.nomeVenda
+        let qntd = req.body.quantidadeVenda
+        let valor = req.body.valorVenda
+        
+        let query = "INSERT INTO carrinho (id_usuario, id_produto, nome, quantidade, valor) VALUES (?)"
+
+        sql.query(query, [[id_usuario, id_produto, nome, qntd, valor]], function (err) {
+            if (err) throw err;
+        })
+        res.render('adicionarCarrinho');
+    
+    // } else {
+    //     res.render('sempermissao')
+    // }
+});
+
 app.post("/vender",urlencodeParser,function(req,res){
     // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
         let id = req.body.idProdutoVenda
@@ -186,6 +207,61 @@ app.post("/vender",urlencodeParser,function(req,res){
     // } else {
     //     res.render('sempermissao')
     // }
+});
+
+app.post("/carrinho",urlencodeParser,function(req,res){
+
+
+    let query = "SELECT * FROM carrinho where id_usuario = ? order by id_produto"
+
+    sql.query(query, [id_usuario], function(err,results,fields) {
+        res.render('carrinho',{data:results});
+    })
+
+});
+
+app.post("/editarCarrinho",urlencodeParser,function(req,res){
+    let id_produto = req.body.id_produto
+    let qntd = req.body.quantidade
+    let qntdTotal
+    let suficiente = 's';
+
+    if(qntd <= 0){
+        let query = "DELETE FROM carrinho WHERE id_usuario = " + id_usuario + " AND id_produto = " + id_produto
+    
+        sql.query(query, function(err) {
+            if (err) throw err
+        })
+        res.render('excluirCarrinho');
+    }else{
+        let query2 = "SELECT quantidade FROM produtos where id = " + id_produto
+        sql.query(query2, function(err2,results2,fields2) {
+            qntdTotal = results2[0].quantidade;
+            if(qntd > qntdTotal){
+                qntd = qntdTotal
+                suficiente = 'n'
+            }
+            let values = [qntd, id_usuario, id_produto];
+            let query = "UPDATE carrinho SET quantidade = ? WHERE id_usuario = ? AND id_produto = ?"
+
+            sql.query(query, values, function(err) {
+                if (err) throw err
+            })
+            res.render('editarCarrinho', {suficiente: suficiente});
+
+        })
+    }
+});
+
+app.post("/excluirCarrinho",urlencodeParser,function(req,res){
+    let id_produto = req.body.id_produto2
+
+    let query = "DELETE FROM carrinho WHERE id_usuario = " + id_usuario + " AND id_produto = " + id_produto
+    
+    sql.query(query, function(err) {
+        if (err) throw err
+    })
+    res.render('excluirCarrinho');
 });
 
 app.post("/editarEstoque",urlencodeParser,function(req,res){

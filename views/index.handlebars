@@ -35,7 +35,7 @@
 				<th>Quantidade</th>
 				<th>Valor Custo</th>
 				<th>Valor Venda</th>
-				<th style="visibility: ">Fazer uma venda</th>
+				<th>Carrinho</th>
 				<th>Controle de estoque</th>
 				<th>Editar produto</th>
 				<th>Excluir</th>
@@ -68,7 +68,12 @@
 					<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
 				</td>
 				<td>
-					<button class='btVender btn btn-success' data-toggle='modal' data-target='#venderProduto' onclick="document.getElementById('venderProduto').style.display = 'initial'; vender('{{id}}');"><i class="fa fa-dollar"></i> Vender</button>
+					<button id='adicionarNoCarrinho{{id}}' class='btAdicionarCarrinho btn btn-success' data-toggle='modal' data-target='#adicionarCarrinho' onclick="document.getElementById('adicionarCarrinho').style.display = 'initial'; adicionarCarrinho('{{id}}');"><i class="fa fa-cart-plus"></i> Adicionar</button>
+					<script>
+						if({{quantidade}} <= 0){
+							document.getElementById('adicionarNoCarrinho{{id}}').disabled = true;
+						}
+					</script>
 				</td>
 				<td>
 					<button class='btEstoque btn btn-secondary' data-toggle='modal' data-target='#editarEstoque' onclick="document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
@@ -89,13 +94,13 @@
 
 <!-- Modais -->
 
-	<!-- Vender Produto -->
-	<div class='modal fade' id="venderProduto" tabindex='-1' role='dialog'>
+	<!-- Adicionar Produto no Carrinho -->
+	<div class='modal fade' id="adicionarCarrinho" tabindex='-1' role='dialog'>
 		<div class='modal-dialog modal-lg' role='document'>
 			<div class='modal-content'>
 
 				<div class='modal-header'>
-					<h2 class="modal-title center" id="exampleModalLabel">Vender Produto</h2>
+					<h2 class="modal-title center" id="exampleModalLabel">Adicionar no carrinho</h2>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -103,7 +108,7 @@
 
 				<div class='modal-body'>
 					<div class='container'>
-						<form name='form4' action='vender' method='post'>
+						<form name='form4' action='adicionarCarrinho' method='post'>
 							<div class='form-row'>
 								<div class='form-group col-md'>
 									<label for='idProdutoVenda'>ID do produto</label>
@@ -137,7 +142,7 @@
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">
 									<i class="fa fa-close"></i> Cancelar
 								</button>
-								<button class='btn btn-primary'><i class="fa fa-dollar"></i> Vender</button>
+								<button class='btn btn-primary'><i class="fa fa-cart-plus"></i> Adicionar</button>
 							</div>
 						</form>
 					</div>
@@ -145,7 +150,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- Fim Vender Produto -->
+	<!-- Fim Adicionar Produto no Carrinho-->
 
 	<!-- Estoque Produto -->
 	<div class='modal fade' id="editarEstoque" tabindex='-1' role='dialog'>
@@ -366,7 +371,7 @@
 		}
 
 		if (!(type == 'vendedor') && !(type == 'gerente') && !(type == 'admin')) {
-			disable_collection(document.getElementsByClassName('btVender'))
+			disable_collection(document.getElementsByClassName('btAdicionarCarrinho'))
 		}
 		
 		if (!(type == 'editor') && !(type == 'gerente') && !(type == 'admin')) {

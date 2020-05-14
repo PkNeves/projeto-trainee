@@ -19,8 +19,8 @@ function limparModal(){
 	document.getElementById('cadastroUsuario').style.display = 'none';
 }
 
-//JS para vender
-function vender(id){
+//JS para adicionar ao carrinho
+function adicionarCarrinho(id){
 	document.getElementById('idProdutoVenda').value = document.getElementById('id' + id).value;
 	document.getElementById('nomeVenda').value = document.getElementById('nome' + id).value;
 	document.getElementById('valorVenda').value = document.getElementById('valor' + id).value;
