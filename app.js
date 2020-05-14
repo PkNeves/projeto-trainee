@@ -126,7 +126,8 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
                                 senha: hash,
                                 tipo: tipo_usuario
                             }).then(function() {
-                                res.render('cadastrarUsuario');
+                                req.flash("success_msg", "Usuário criado com sucesso")
+                                res.redirect('/')
                             }).catch(function(erro) {
                                 res.send('erro ao criar o usuario '+ erro);
                             });
@@ -136,7 +137,8 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
                     
                 
                 } else {
-                    res.render('sempermissao')
+                    req.flash("error_msg", "Você não tem permissão pra cadastrar um usuário")
+                    res.redirect('/')
                 }
             }
         })
@@ -159,12 +161,15 @@ app.post("/adicionar",urlencodeParser,function(req,res){
         let query = "INSERT INTO produtos (nome, descricao, valor, quantidade, custo) VALUES ?"
 
         sql.query(query, [[values]], function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao criar produto")
+                throw err
+            }
         })
 
         log_operation(nome, res.locals.user.nome, 'criar');
-
-        res.render('adicionar',{nome:req.body.nome});
+        req.flash("success_msg", "Produto criado com sucesso")
+        res.redirect('/');
     
     // } else {
     //     res.render('sempermissao')
@@ -237,6 +242,7 @@ app.post("/vender",urlencodeParser,function(req,res){
                             if (err4) throw err4
                         })
 
+<<<<<<< HEAD
                         log_operation(id[a], res.locals.user.nome, 'vender');
                         a++;
                     })
@@ -274,6 +280,13 @@ app.post("/editarCarrinho",urlencodeParser,function(req,res){
     
         sql.query(query, function(err) {
             if (err) throw err
+=======
+        sql.query(query, values, function(err) {
+            if (err) {
+                req.flash("error_msg", "Erro ao realizar a venda")
+                throw err
+            }
+>>>>>>> a08662205148c6e70dd252a4f8dc9768cff93828
         })
         res.render('excluirCarrinho');
     }else{
@@ -299,7 +312,12 @@ app.post("/editarCarrinho",urlencodeParser,function(req,res){
 app.post("/excluirCarrinho",urlencodeParser,function(req,res){
     let id_produto = req.body.id_produtoCarrinho2
 
+<<<<<<< HEAD
     let query = "DELETE FROM carrinho WHERE id_usuario = " + id_usuario + " AND id_produto = " + id_produto
+=======
+        req.flash("success_msg", "Venda realizada com sucesso")
+        res.redirect('/');
+>>>>>>> a08662205148c6e70dd252a4f8dc9768cff93828
     
     sql.query(query, function(err) {
         if (err) throw err
@@ -318,12 +336,16 @@ app.post("/editarEstoque",urlencodeParser,function(req,res){
         let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
 
         sql.query(query, values, function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao editar estoque")
+                throw err
+            }
         })
 
         log_operation(id, res.locals.user.nome, 'estocar');
 
-        res.render('editarEstoque');
+        req.flash("success_msg", "Estoque editado com sucesso")
+        res.redirect('/');
     
     // } else {
     //     res.render('sempermissao')
@@ -343,12 +365,16 @@ app.post("/editar",urlencodeParser,function(req,res){
         let query = "UPDATE produtos SET nome = ?, descricao = ?, valor = ?, custo = ? WHERE id = ?"
 
         sql.query(query, values, function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao editar produto")
+                throw err
+            }
         })
 
         log_operation(id, res.locals.user.nome, 'editar');
 
-        res.render('editar');
+        req.flash("success_msg", "Produto editado com sucesso")
+        res.redirect('/');
 
     // } else {
     //     res.render('sempermissao')
@@ -364,10 +390,14 @@ app.get("/excluir/:id",function(req,res){
         let query = "DELETE FROM produtos WHERE id = ?"
 
         sql.query(query, id, function(err) {
-            if (err) throw err
+            if (err) {
+                req.flash("error_msg", "Erro ao excluir produto")
+                throw err
+            }
         })
 
-        res.render('excluir'); 
+        req.flash("success_msg", "Produto excluído com sucesso")
+        res.redirect('/');
     
     // } else {
     //     res.render('sempermissao')
@@ -377,7 +407,7 @@ app.get("/excluir/:id",function(req,res){
 app.post("/operacoes", urlencodeParser, function (req, res) {
     // log_operation('Sistema', res.locals.user.nome, 'criar');
 
-    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d') as data FROM operacoes";
+    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d %H:%i:%s') as data FROM operacoes";
 
     sql.query(query, function(err, results, fields) {
         res.render('operacoes', {data: results});
