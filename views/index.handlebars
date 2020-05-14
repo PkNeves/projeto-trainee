@@ -70,12 +70,13 @@
 					<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
 				</td>
 				<td>
-					<button id='adicionarNoCarrinho{{id}}' class='btAdicionarCarrinho btn btn-success' data-toggle='modal' data-target='#adicionarCarrinho' onclick="document.getElementById('adicionarCarrinho').style.display = 'initial'; adicionarCarrinho('{{id}}');"><i class="fa fa-cart-plus"></i> Adicionar</button>
+					<button style="display: initial;" id='adicionarNoCarrinho{{id}}' class='btAdicionarCarrinho btn btn-success' data-toggle='modal' data-target='#adicionarCarrinho' onclick="document.getElementById('adicionarCarrinho').style.display = 'initial'; adicionarCarrinho('{{id}}');"><i class="fa fa-cart-plus"></i> Adicionar</button>
 					<script>
 						if({{quantidade}} <= 0){
 							document.getElementById('adicionarNoCarrinho{{id}}').disabled = true;
 						}
 					</script>
+					<button style="display: none;" id='removerDoCarrinho{{id}}' class='btRemoverCarrinho btn btn-danger' data-toggle='modal' data-target='#removerCarrinho' onclick="removerCarrinho('{{id}}');"><i class="fa fa-cart-arrow-down"></i> Remover</button>
 				</td>
 				<td>
 					<button class='btEstoque btn btn-secondary' data-toggle='modal' data-target='#editarEstoque' onclick="document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
@@ -89,6 +90,12 @@
 			</tr>
 			{{/data}}
 			<!--Fim do loop-->
+			{{#cart}}
+				<script>
+					document.getElementById('adicionarNoCarrinho' + {{id_produto}}).style.display = "none";
+					document.getElementById('removerDoCarrinho' + {{id_produto}}).style.display = "initial";
+				</script>
+			{{/cart}}
 		</tbody>
     </table>
     <!--Fim da Tabela-->
@@ -137,7 +144,7 @@
 								<div class='form-group col-md'>
 									<label for='quantidadeVenda'>Quantidade da venda</label>
 									<label style="float: left; color: red;"><b id="confirmaQuantidade" style="display: none;"></b></label>
-									<input class='form-control' type="number" name="quantidadeVenda" id="quantidadeVenda" placeholder="0" min = 0>
+									<input class='form-control' type="number" name="quantidadeVenda" id="quantidadeVenda" placeholder="0" min = 1 required="">
 								</div>
 							</div>
 							<div class='modal-footer'>
@@ -153,6 +160,58 @@
 		</div>
 	</div>
 	<!-- Fim Adicionar Produto no Carrinho-->
+
+	<!-- Remover Produto do Carrinho -->
+	<div class='modal fade' id="removerCarrinho" tabindex='-1' role='dialog'>
+		<div class='modal-dialog modal-lg' role='document'>
+			<div class='modal-content'>
+
+				<div class='modal-header'>
+					<h2 class="modal-title center" id="exampleModalLabel">Remover do carrinho</h2>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class='modal-body'>
+					<div class='container'>
+						<form name='form4' action='removerCarrinho' method='post'>
+							<div class='form-row'>
+								<div class='form-group col-md'>
+									<label for='idProdutoVendaRemover'>ID do produto</label>
+									<input class='form-control' type="text" name="idProdutoVendaRemover" id="idProdutoVendaRemover" readonly="">
+								</div>
+								<div class='form-group col-md'>
+									<label for='quantidadeEstoqueVendaRemover'>Quantidade em estoque</label>
+									<label style="float: left; color: red;"><b id="confirmaValorRemover" style="display: none;"></b></label>
+									<input class='form-control' type="number" name="quantidadeEstoqueVendaRemover" id="quantidadeEstoqueVendaRemover" readonly="">
+								</div>
+							</div>
+								
+							<div class='form-group'>
+								<label for='nomeVendaRemover'>Nome</label>
+								<input class='form-control' type="text" name="nomeVendaRemover" id="nomeVendaRemover" readonly="">
+							</div>
+
+							<div class='form-row'>
+								<div class='form-group col-md'>
+									<label class='valorVendaRemover'>Valor Unitário</label>
+									<input class='form-control' type="text" name="valorVendaRemover" id="valorVendaRemover" readonly="">
+								</div>
+							</div>
+							<div class='modal-footer'>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">
+									<i class="fa fa-close"></i> Cancelar
+								</button>
+								<button class='btn btn-danger'><i class="fa fa-cart-arrow-down"></i> Remover</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Fim Remover Produto do Carrinho-->
 
 	<!-- Estoque Produto -->
 	<div class='modal fade' id="editarEstoque" tabindex='-1' role='dialog'>

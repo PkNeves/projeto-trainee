@@ -28,6 +28,14 @@ function adicionarCarrinho(id){
 	document.getElementById('quantidadeVenda').max = document.getElementById('quantidade' + id).value;
 }
 
+//JS para remover do carrinho
+function removerCarrinho(id){
+	document.getElementById('idProdutoVendaRemover').value = document.getElementById('id' + id).value;
+	document.getElementById('nomeVendaRemover').value = document.getElementById('nome' + id).value;
+	document.getElementById('valorVendaRemover').value = document.getElementById('valor' + id).value;
+	document.getElementById('quantidadeEstoqueVendaRemover').value = document.getElementById('quantidade' + id).value;
+}
+
 //JS para editar estoque
 function editarEstoque(id){
 	document.getElementById('idProdutoEstoque').value = document.getElementById('id' + id).value;
@@ -52,6 +60,19 @@ function excluirProduto(id){
 	document.getElementById('valorExcluir').value = document.getElementById('valor' + id).value;
 	document.getElementById('valorCustoExcluir').value = document.getElementById('valorCusto' + id).value;
 	document.getElementById('quantidadeExcluir').value = document.getElementById('quantidade' + id).value;
+}
+
+//JS para editar quantidade no carrinho
+function editarQuantidadeCarrinho(id){
+	document.getElementById('id_produtoCarrinho').value = document.getElementById('id' + id).value;
+	document.getElementById('nome_produtoCarrinho').value = document.getElementById('nome' + id).value;
+	document.getElementById('quantidadeCarrinho').value = document.getElementById('quantidade' + id).value;
+}
+
+//JS para excluir produto no carrinho
+function excluirQuantidadeCarrinho(id){
+	document.getElementById('id_produtoCarrinho2').value = document.getElementById('id' + id).value;
+	document.getElementById('nome_produtoCarrinho2').value = document.getElementById('nome' + id).value;
 }
 
 //Verificar senhas

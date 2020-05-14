@@ -61,21 +61,26 @@ app.get("/:id?", acessos, function(req,res){
     tipo = req.user.tipo
     id_usuario = req.user.id
 
-	if(!req.params.id){
-		let query = "SELECT * FROM produtos order by id"
+    let query2 = "SELECT * FROM carrinho where id_usuario = " + id_usuario
+    sql.query(query2, function(err2,results2,fields2) {
 
-	    sql.query(query, function(err,results,fields) {
-	        res.render('index',{data:results});
-	    })
-	}else{
-		let values = '%' + req.params.id + '%'
+        if(!req.params.id){
+            let query = "SELECT * FROM produtos order by id"
 
-        let query = "SELECT * FROM produtos where nome LIKE ? order by id"
+            sql.query(query, function(err,results,fields) {
+                res.render('index',{data:results, cart:results2});
+            })
+        }else{
+            let values = '%' + req.params.id + '%'
 
-	    sql.query(query, values, function(err,results,fields) {
-	        res.render('index',{data:results, busca:req.params.id});
-	    })
-    }
+            let query = "SELECT * FROM produtos where nome LIKE ? order by id"
+
+            sql.query(query, values, function(err,results,fields) {
+                res.render('index',{data:results, cart:results2, busca:req.params.id});
+            })
+        }
+
+    })
 });
 
 app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
@@ -185,34 +190,66 @@ app.post("/adicionarCarrinho",urlencodeParser,function(req,res){
     // }
 });
 
-app.post("/vender",urlencodeParser,function(req,res){
+app.post("/removerCarrinho",urlencodeParser,function(req,res){
     // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
-        let id = req.body.idProdutoVenda
-        let nome = req.body.nomeVenda
-        let qntdEstoque = req.body.quantidadeEstoqueVenda
-        let qntd = req.body.quantidadeVenda
+        let id_produto = req.body.idProdutoVendaRemover
         
-        // let transaction = "INSERT INTO transacoes (id, produto, quantidade, usuario) VALUES ?"
+        let query = "DELETE FROM carrinho WHERE id_usuario = " + id_usuario + " AND id_produto = " + id_produto
 
-        // sql.query(transaction, [[[id, nome, qntd, req.user.nome]]], function (err) {
-        //     if (err) throw err;
-        // })
-
-        let values = [(qntdEstoque - qntd), id];
-
-        let query = "UPDATE produtos SET quantidade = ? WHERE id = ?"
-
-        sql.query(query, values, function(err) {
-            if (err) throw err
+        sql.query(query, function (err) {
+            if (err) throw err;
         })
-
-        log_operation(id, res.locals.user.nome, 'vender');
-
-        res.render('vender');
+        res.render('removerCarrinho');
     
     // } else {
     //     res.render('sempermissao')
     // }
+});
+
+app.post("/vender",urlencodeParser,function(req,res){
+    let query = "SELECT count(*) AS 'count' FROM carrinho where id_usuario = " + id_usuario
+    sql.query(query, function(err,results,fields) {
+        qntdItens = results[0].count;
+        console.log(qntdItens);
+        if(qntdItens > 0){
+            let query2 = "SELECT * FROM carrinho where id_usuario = " + id_usuario
+            sql.query(query2, function(err2,results2,fields2) {
+                let id = []
+                let nome = []
+                let qntdEstoque
+                let qntd = []
+                let query3
+                let query4
+                let a = 0
+                for(var i = 0; i < qntdItens; i++){
+                    id[i] = results2[i].id_produto;
+                    nome[i] = results2[i].nome;
+                    qntd[i] = results2[i].quantidade;
+                    query3 = "SELECT * FROM produtos where id = " + id[i]
+                    console.log(id[i])
+                    sql.query(query3, function(err3,results3,fields3) {
+                        qntdEstoque = results3[0].quantidade;
+
+                        query4 = "UPDATE produtos SET quantidade = " + (qntdEstoque - qntd[a]) + " WHERE id = " + id[a]
+                        console.log(query4)
+
+                        sql.query(query4, function(err4) {
+                            if (err4) throw err4
+                        })
+
+                        log_operation(id[a], res.locals.user.nome, 'vender');
+                        a++;
+                    })
+                }
+            })
+        }
+        let query5 = "DELETE FROM carrinho WHERE id_usuario = " + id_usuario
+        sql.query(query5, function(err5) {
+            if (err5) throw err5
+        })
+    })
+    
+    res.render('vender');
 });
 
 app.post("/carrinho",urlencodeParser,function(req,res){
@@ -227,8 +264,8 @@ app.post("/carrinho",urlencodeParser,function(req,res){
 });
 
 app.post("/editarCarrinho",urlencodeParser,function(req,res){
-    let id_produto = req.body.id_produto
-    let qntd = req.body.quantidade
+    let id_produto = req.body.id_produtoCarrinho
+    let qntd = req.body.quantidadeCarrinho
     let qntdTotal
     let suficiente = 's';
 
@@ -260,7 +297,7 @@ app.post("/editarCarrinho",urlencodeParser,function(req,res){
 });
 
 app.post("/excluirCarrinho",urlencodeParser,function(req,res){
-    let id_produto = req.body.id_produto2
+    let id_produto = req.body.id_produtoCarrinho2
 
     let query = "DELETE FROM carrinho WHERE id_usuario = " + id_usuario + " AND id_produto = " + id_produto
     

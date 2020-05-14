@@ -100,6 +100,32 @@ INSERT INTO `transacoes` VALUES (13,'Computador',1,'gabriel','2020-05-12 01:03:4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `carrinho`
+--
+
+DROP TABLE IF EXISTS `carrinho`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `carrinho` (
+  `id_usuario` int NOT NULL,
+  `id_produto` int NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `quantidade` int NOT NULL,
+  `valor` float(10,2) NOT NULL,
+  PRIMARY KEY (`id_usuario`, `id_produto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `carrinho`
+--
+
+LOCK TABLES `carrinho` WRITE;
+/*!40000 ALTER TABLE `carrinho` DISABLE KEYS */;
+/*!40000 ALTER TABLE `carrinho` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuarios`
 --
 

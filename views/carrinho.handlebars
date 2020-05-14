@@ -1,108 +1,163 @@
 	<!--Tabela exibindo os produtos-->
 
-	<table border="1" style="border-collapse: collapse; width: 100%; text-align: center">
-	  <tr style="background: lightgray">
-	    <th width="6%">ID do produto</th>
-	    <th width="30%">Nome</th>
-	    <th width="10%">Remover</th>
-	    <th width="10%">Quantidade</th>
-	    <th width="11%">Valor Und.</th>
-	  </tr>
+	<table class='table table-striped'>
+	  <thead class='thead-dark'>
+		<tr style="background: lightgray">
+			<th width="6%">ID do produto</th>
+			<th width="30%">Nome</th>
+			<th width="10%">Remover</th>
+			<th width="10%">Quantidade</th>
+			<th width="11%">Valor Und.</th>
+		</tr>
+	  </thead>
 
-	  <!--Loop para exibir os dados do banco de dados-->
-	  <script>
-	  	var soma = 0;
-	  	var qntd = 0;
-	  </script>
-	  {{#data}}
-	  <tr>
-	    <td>
-	    	{{id_produto}}
-	    	<input style='display: none;' id='id{{id_produto}}' value = '{{id_produto}}'>
-	    </td>
-	    <td>
-	    	{{nome}}
-	    	<input style='display: none;' id='nome{{id_produto}}' value = '{{nome}}'>
-	    </td>
-	    <td>
-	    	<button onclick="mostrarModal2(); document.getElementById('editarQuantidade').style.display = 'none'; document.getElementById('excluir').style.display = 'initial'; document.getElementById('id_produto2').value = '{{id_produto}}';"><i class="fa fa-trash"></i></button>
-	    </td>
-	    <td>
-	    	{{quantidade}}
-	    	<button style="float: right; margin-right: 4px" onclick="mostrarModal2(); document.getElementById('excluir').style.display = 'none'; document.getElementById('editarQuantidade').style.display = 'initial'; document.getElementById('quantidade').value = '{{quantidade}}'; document.getElementById('id_produto').value = '{{id_produto}}';"><i class="fa fa-pencil"></i></button>
-	    	<input style='display: none;' id='quantidade{{id_produto}}' value = '{{quantidade}}'>
-	    </td>
-	    <td>
-	    	{{valor}}
-	    	<input style='display: none;' id='valor{{id_produto}}' value = '{{valor}}'>
-	    	<script>
-	    		soma = soma + ({{valor}} * {{quantidade}});
-	    		qntd = qntd + {{quantidade}};
-	    	</script>
-	    </td>
-	  </tr>
-	  {{/data}}
-	  <!--Fim do loop-->
+	  <tbody>
+		<!--Loop para exibir os dados do banco de dados-->
+		<script>
+			var soma = 0;
+			var qntd = 0;
+		</script>
+		{{#data}}
+		<tr>
+			<td>
+				{{id_produto}}
+				<input style='display: none;' id='id{{id_produto}}' value = '{{id_produto}}'>
+			</td>
+			<td>
+				{{nome}}
+				<input style='display: none;' id='nome{{id_produto}}' value = '{{nome}}'>
+			</td>
+			<td>
+				<button class='btExcluirProduto btn btn-danger' data-toggle='modal' data-target='#excluirProduto' onclick="excluirQuantidadeCarrinho('{{id_produto}}');"><i class="fa fa-trash"></i></button>
+			</td>
+			<td>
+				{{quantidade}}
+				<button class='btEditarQuantidade btn btn-primary' data-toggle='modal' data-target='#editarQuantidade' onclick="editarQuantidadeCarrinho('{{id_produto}}');"><i class="fa fa-pencil"></i></button>
+				<input style='display: none;' id='quantidade{{id_produto}}' value = '{{quantidade}}'>
+			</td>
+			<td>
+				{{valor}}
+				<input style='display: none;' id='valor{{id_produto}}' value = '{{valor}}'>
+				<script>
+					soma = soma + ({{valor}} * {{quantidade}});
+					qntd = qntd + {{quantidade}};
+				</script>
+			</td>
+		</tr>
+		{{/data}}
+		<!--Fim do loop-->
 
-	  <tr style="background: lightgray">
-	    <td style="visibility: hidden">
-	    </td>
-	    <td style="visibility: hidden">
-	    </td>
-	    <td style="visibility: hidden">
-	    </td>
-	    <td>
-	    	<b>Total</b>
-	    </td>
-	    <td>
-	    	<b>Total</b>
-	    </td>
-	  </tr>
+		<tr style="background: lightgray">
+			<td style="visibility: hidden">
+			</td>
+			<td style="visibility: hidden">
+			</td>
+			<td style="visibility: hidden">
+			</td>
+			<td>
+				<b>Total</b>
+			</td>
+			<td>
+				<b>Total</b>
+			</td>
+		</tr>
 
-	  <tr>
-	    <td style="visibility: hidden">
-	    </td>
-	    <td style="visibility: hidden">
-	    </td>
-	    <td style="visibility: hidden">
-	    </td>
-	    <td>
-	    	<label id="mostrar_quantidade_total"></label>
-	    </td>
-	    <td>
-	    	<label id="mostrar_valor_total"></label>
-	    	<input style='display: none;' id='valor_total' value = ''>
-	    </td>
-	   	<script>
-	   		document.getElementById("mostrar_quantidade_total").innerHTML = qntd;
-	   		document.getElementById("mostrar_valor_total").innerHTML = soma;
-	   		document.getElementById("valor_total").value = soma;
-	   	</script>
-	  </tr>
-
+		<tr>
+			<td style="visibility: hidden">
+			</td>
+			<td style="visibility: hidden">
+			</td>
+			<td style="visibility: hidden">
+			</td>
+			<td>
+				<label id="mostrar_quantidade_total"></label>
+			</td>
+			<td>
+				<label id="mostrar_valor_total"></label>
+				<input style='display: none;' id='valor_total' value = ''>
+			</td>
+			<script>
+				document.getElementById("mostrar_quantidade_total").innerHTML = qntd;
+				document.getElementById("mostrar_valor_total").innerHTML = soma;
+				document.getElementById("valor_total").value = soma;
+			</script>
+		</tr>
+	  </tbody>
 	</table>
 
 	<!--Fim da Tabela-->
+	<form name='form1' action='vender' method='post'>
+		<button id="btFinalizarVenda" disabled="" type="submit" class="btn btn-success float-right"><i class="fa fa-shopping-cart"></i> Finalizar venda</button>
+	</form>
+	<script>
+		if(qntd > 0){
+			document.getElementById("btFinalizarVenda").removeAttribute("disabled");
+		}
+	</script>
+	<br>
 
 
-	<div id="modal" class="modal-container">
-		<div class="modal">
-			<!--Botão para fechar o modal-->
-			<button onclick="esconderModal()" class="close"><i class="fa fa-close"></i></button>
+	<!-- Editar Quantidade no Carrinho -->
+	<div class='modal fade' id="editarQuantidade" tabindex='-1' role='dialog'>
+		<div class='modal-dialog modal-lg' role='document'>
+			<div class='modal-content'>
 
-			<div style="display: none;text-align: center" id="editarQuantidade">
-				<form name='form1' action='editarCarrinho' method='post'>
-					<input style="display: none;" name="id_produto" id="id_produto">
-					<input style="padding: 10px; border: 1px solid #ccc; width: 40%;" type="number" name="quantidade" id="quantidade" placeholder="0" min = 0>
-					<button style="margin-left: 8px"><i class="fa fa-check"></i></button>
-				</form>
+				<div class='modal-header'>
+					<h2 class="modal-title center" id="exampleModalLabel">Editar quantidade</h2>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class='modal-body'>
+					<div class='container'>
+						<form name='form1' action='editarCarrinho' method='post'>
+							<label for='nomeEditar'>Nome</label>
+							<input style="display: none;" name="id_produtoCarrinho" id="id_produtoCarrinho">
+							<input class='form-control' name="nome_produtoCarrinho" id="nome_produtoCarrinho" type="text" readonly=""><br>
+							<label for='nomeEditar'>Quantidade</label>
+							<input class='form-control' style="" type="number" name="quantidadeCarrinho" id="quantidadeCarrinho" placeholder="0" min = 0>
+							<br>
+							<div class='modal-footer'>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">
+									<i class="fa fa-close"></i> Cancelar
+								</button>
+								<button class="btn btn-primary"><i class="fa fa-check"></i> Concluído</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
-			<div style="display: none;" id="excluir">
-				<form name='form1' action='excluirCarrinho' method='post'>
-					<input style="display: none;" name="id_produto2" id="id_produto2">
-					<button style="margin-left: 8px"><i class="fa fa-trash"></i></button>
-				</form>
-			</div>
+		</div>
+	</div>
 
-		</div
+	<!-- Excluir Produto no Carrinho -->
+	<div class='modal fade' id="excluirProduto" tabindex='-1' role='dialog'>
+		<div class='modal-dialog modal-lg' role='document'>
+			<div class='modal-content'>
+
+				<div class='modal-header'>
+					<h2 class="modal-title center" id="exampleModalLabel">Remover produto</h2>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class='modal-body'>
+					<div class='container'>
+						<form name='form1' action='excluirCarrinho' method='post'>
+							<label for='nomeEditar'>Nome</label>
+							<input style="display: none;" name="id_produtoCarrinho2" id="id_produtoCarrinho2">
+							<input class='form-control' name="nome_produtoCarrinho2" id="nome_produtoCarrinho2" type="text" readonly=""><br>
+							<div class='modal-footer'>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">
+									<i class="fa fa-close"></i> Cancelar
+								</button>
+								<button class='btn btn-danger'><i class="fa fa-trash"></i> Remover</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
