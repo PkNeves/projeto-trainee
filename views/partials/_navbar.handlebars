@@ -26,8 +26,11 @@
         <button id="btCadastrarUsuario" type='button' class='dropdown-item' data-toggle='modal' data-target='#cadastroUsuario'>
           <i class="fa fa-user-plus"></i> Cadastar
         </button>
-          <a class="dropdown-item" href="/usuario/listar"><i class="fa fa-list"></i> Listar</a>
-
+        <form action='/usuario/listar' method='get'>
+        <button type='submit' id='btListarUsuario' class='dropdown-item'>
+          <i class="fa fa-list"> </i> Listar
+        </button>
+        </form>
       </li>
       
       <li class="nav-item">
@@ -188,3 +191,10 @@
     </div>
   </div>
   <!-- Fim Modal Adicionar Produto -->
+  <script>
+	 	const type = '{{user.tipo}}';
+		if (!(type == 'admin')) {
+			document.getElementById('btCadastrarUsuario').disabled = true;
+			document.getElementById('btListarUsuario').disabled = true;
+		}
+    </script>

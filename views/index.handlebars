@@ -446,9 +446,12 @@
 
 	 	const type = '{{user.tipo}}';
 
+		/* movido pro _nabar 
 		if (!(type == 'admin')) {
 			document.getElementById('btCadastrarUsuario').disabled = true;
+			document.getElementById('btListarUsuario').disabled = true;
 		}
+		*/
 
 		if (!(type == 'gerente') && !(type == 'admin')) {
 			document.getElementById('btAdicionarProduto').disabled = true;
