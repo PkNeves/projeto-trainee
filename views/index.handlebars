@@ -62,11 +62,11 @@
 					<input style='display: none;' id='quantidade{{id}}' value = '{{quantidade}}'>
 				</td>
 				<td>
-					{{custo}}
+					R$ {{custo}}
 					<input style='display: none;' id='valorCusto{{id}}' value = '{{custo}}'>
 				</td>
 				<td>
-					{{valor}}
+					R$ {{valor}}
 					<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
 				</td>
 				<td>
@@ -138,7 +138,12 @@
 							<div class='form-row'>
 								<div class='form-group col-md'>
 									<label class='valorVenda'>Valor Unitário</label>
-									<input class='form-control' type="text" name="valorVenda" id="valorVenda" readonly="">
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+										<div class="input-group-text">R$</div>
+										</div>
+										<input class='form-control' type="text" name="valorVenda" id="valorVenda" readonly="">
+									</div>
 								</div>
 
 								<div class='form-group col-md'>
@@ -291,13 +296,23 @@
 								<div class='form-group col-md'>
 				                  	<label for='valorCustoEditar'>Valor de custo</label>
 									<label><b id="confirmaValorCustoEditar" style="display: none;"></b></label>
-									<input class='form-control' type="text" name="valorCustoEditar" id="valorCustoEditar">
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+										<div class="input-group-text">R$</div>
+										</div>
+										<input class='form-control' type="text" name="valorCustoEditar" id="valorCustoEditar">
+									</div>
 				                </div>
 
 								<div class='form-group col-md'>
 									<label for='valorEditar'>Valor de venda</label>
 									<label><b id="confirmaValorEditar" style="display: none;"></b></label>
-									<input class='form-control' type="text" name="valorEditar" id="valorEditar">
+									<div class="input-group mb-2">
+										<div class="input-group-prepend">
+										<div class="input-group-text">R$</div>
+										</div>
+										<input class='form-control' type="text" name="valorEditar" id="valorEditar">
+									</div>
 								</div>
 							</div>
 
@@ -352,12 +367,22 @@
 						<div class='form-row'>
 							<div class='form-group col-md'>
 								<label for='valorCustoExcluir'>Valor de custo</label>
-								<input class='form-control' type="text" name="valorCustoExcluir" id="valorCustoExcluir" disabled="">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+									<div class="input-group-text">R$</div>
+									</div>
+									<input class='form-control' type="text" name="valorCustoExcluir" id="valorCustoExcluir" disabled="">
+								</div>
 			                </div>
 
 							<div class='form-group col-md'>
 								<label for='valorExcluir'>Valor de venda</label>
-								<input class='form-control' type="text" name="valorExcluir" id="valorExcluir" disabled="">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+									<div class="input-group-text">R$</div>
+									</div>
+									<input class='form-control' type="text" name="valorExcluir" id="valorExcluir" disabled="">
+								</div>
 							</div>
 						</div>
 

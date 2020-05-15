@@ -36,7 +36,7 @@
 				<input style='display: none;' id='quantidade{{id_produto}}' value = '{{quantidade}}'>
 			</td>
 			<td>
-				{{valor}}
+				R$ {{valor}}
 				<input style='display: none;' id='valor{{id_produto}}' value = '{{valor}}'>
 				<script>
 					soma = soma + ({{valor}} * {{quantidade}});
@@ -73,7 +73,7 @@
 				<label id="mostrar_quantidade_total"></label>
 			</td>
 			<td>
-				<label id="mostrar_valor_total"></label>
+				R$ <label id="mostrar_valor_total"></label>
 				<input style='display: none;' id='valor_total' value = ''>
 			</td>
 			<script>

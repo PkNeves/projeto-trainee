@@ -47,11 +47,11 @@
                     <input name="quantidade" id='q1uantidade' value = '{{quantidade}}'>
                 </td>
                 <td>
-                    {{valor}}
+                    R$ {{valor}}
                     <input name="valor" id='v1alor' value = '{{valor}}'>
                 </td>
                 <td>
-                    {{custo}}
+                    R$ {{custo}}
                     <input name="custo" id='c1usto' value = '{{custo}}'>
                 </td>
                 <td>
@@ -89,11 +89,11 @@
                     <input name="quantidade" id='q2uantidade' value = '{{quantidade}}'>
                 </td>
                 <td>
-                    {{valor}}
+                    R$ {{valor}}
                     <input name="valor" id='v2alor' value = '{{valor}}'>
                 </td>
                 <td>
-                    {{custo}}
+                    R$ {{custo}}
                     <input name="custo" id='c2usto' value = '{{custo}}'>
                 </td>
                 <td>
@@ -139,12 +139,27 @@
                     }
                     if(document.getElementById("q1uantidade").value != document.getElementById("q2uantidade").value){
                         document.getElementById("q3uantidade").classList.add("table-info");
+                        var conta = (document.getElementById("q2uantidade").value - document.getElementById("q1uantidade").value);
+                        if(conta > 0){
+                            conta = '+' + conta;
+                        }
+                        document.getElementById("q3uantidade").innerHTML = conta;
                     }
                     if(document.getElementById("v1alor").value != document.getElementById("v2alor").value){
                         document.getElementById("v3alor").classList.add("table-info");
+                        var conta2 = (document.getElementById("v2alor").value - document.getElementById("v1alor").value);
+                        if(conta2 > 0){
+                            conta2 = '+' + conta2;
+                        }
+                        document.getElementById("v3alor").innerHTML = conta2;
                     }
                     if(document.getElementById("c1usto").value != document.getElementById("c2usto").value){
                         document.getElementById("c3usto").classList.add("table-info");
+                        var conta3 = (document.getElementById("c2usto").value - document.getElementById("c1usto").value);
+                        if(conta3 > 0){
+                            conta3 = '+' + conta3;
+                        }
+                        document.getElementById("c3usto").innerHTML = conta3;
                     }
                 </script>
             </tr>
