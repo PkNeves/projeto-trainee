@@ -211,6 +211,37 @@ app.post("/removerCarrinho",urlencodeParser,function(req,res){
     // }
 });
 
+app.post("/exibirAleracao",urlencodeParser,function(req,res){
+    let query = "SELECT count(*) AS 'count' FROM operacoes where id = " + req.body.id
+    sql.query(query, function(err,results,fields) {
+        qntdItens = results[0].count;
+        if(qntdItens > 0){
+            let query2 = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d %H:%i:%s') AS datas FROM operacoes where id = " + req.body.id + " ORDER BY data DESC"
+            console.log(query2);
+            sql.query(query2, function(err2,results2,fields2) {
+                let primeiro
+                let segundo
+                let vez = 0
+                for(var i = 0; i < qntdItens; i++){
+                    console.log(vez);
+                    if(vez == 0){
+                        if(results2[i].datas == req.body.data){
+                            primeiro = i
+                            vez++;
+                        }
+                    }else{
+                        if(vez == 1){
+                            segundo = i
+                            vez++;
+                        }
+                    }
+                }
+                res.render('exibirAleracao',{primeiro:results2[primeiro], segundo:results2[segundo]});
+            })
+        }
+    })
+});
+
 app.post("/vender",urlencodeParser,function(req,res){
     let query = "SELECT count(*) AS 'count' FROM carrinho where id_usuario = " + id_usuario
     sql.query(query, function(err,results,fields) {
@@ -240,6 +271,14 @@ app.post("/vender",urlencodeParser,function(req,res){
 
                         sql.query(query4, function(err4) {
                             if (err4) throw err4
+                        })
+                        query6 = "DELETE FROM carrinho WHERE id_produto = " + id[a]
+                
+                        sql.query(query6, function(err6) {
+                            if (err6) {
+                                req.flash("error_msg", "Erro ao editar os carrinhos")
+                                throw err
+                            }
                         })
 
                         log_operation(id[a], res.locals.user.nome, 'vender');
@@ -328,6 +367,14 @@ app.post("/editarEstoque",urlencodeParser,function(req,res){
                 throw err
             }
         })
+        query = "DELETE FROM carrinho WHERE id_produto = " + id
+
+        sql.query(query, function(err) {
+            if (err) {
+                req.flash("error_msg", "Erro ao editar os carrinhos")
+                throw err
+            }
+        })
 
         log_operation(id, res.locals.user.nome, 'estocar');
 
@@ -379,6 +426,15 @@ app.get("/excluir/:id",function(req,res){
         sql.query(query, id, function(err) {
             if (err) {
                 req.flash("error_msg", "Erro ao excluir produto")
+                throw err
+            }
+        })
+
+        query = "DELETE FROM carrinho WHERE id_produto = " + id
+
+        sql.query(query, function(err) {
+            if (err) {
+                req.flash("error_msg", "Erro ao editar os carrinhos")
                 throw err
             }
         })

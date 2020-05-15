@@ -1,0 +1,153 @@
+	<h2>Detalhes</h2>
+
+    <form action='operacoes' style="display: inline" method="post">
+        <button class='btn btn-info mb-4'>
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+        </button>
+    </form>
+
+    
+	<table class='table table-striped'>
+        <thead class='thead-dark'>
+            <th></th>
+            <th>Usuário</th>
+            <th>ID</th>
+            <th>Produto</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Valor</th>
+            <th>Custo</th>
+            <th>Operação</th>
+            <th>Data</th>
+        </thead>
+        <tbody>
+            {{#segundo}}
+            <tr>  
+                <td class="table-dark">
+                    <b>Antes</b>
+                </td>
+                <td>
+                    {{usuario}}
+                    <input name="usuario" id='u1suario' value = '{{usuario}}'>
+                </td>
+                <td>
+                    {{id}}
+                    <input name="id" id='i1d' value = '{{id}}'>
+                </td>
+                <td>
+                    {{produto}}
+                    <input name="produto" id='p1roduto' value = '{{produto}}'>
+                </td>
+                <td>
+                    {{descricao}}
+                    <input name="descricao" id='d1escricao' value = '{{descricao}}'>
+                </td>
+                <td>
+                    {{quantidade}}
+                    <input name="quantidade" id='q1uantidade' value = '{{quantidade}}'>
+                </td>
+                <td>
+                    {{valor}}
+                    <input name="valor" id='v1alor' value = '{{valor}}'>
+                </td>
+                <td>
+                    {{custo}}
+                    <input name="custo" id='c1usto' value = '{{custo}}'>
+                </td>
+                <td>
+                </td>
+                <td>
+                    {{data}}
+                    <input name="data" id='d1ata' value = '{{datas}}'>
+                </td>
+                </td>
+            </tr>
+            {{/segundo}}
+            {{#primeiro}}
+            <tr>  
+                <td class="table-dark">
+                    <b>Depois</b>
+                </td>
+                <td>
+                    {{usuario}}
+                    <input name="usuario" id='u2suario' value = '{{usuario}}'>
+                </td>
+                <td>
+                    {{id}}
+                    <input name="id" id='i2d' value = '{{id}}'>
+                </td>
+                <td>
+                    {{produto}}
+                    <input name="produto" id='p2roduto' value = '{{produto}}'>
+                </td>
+                <td>
+                    {{descricao}}
+                    <input name="descricao" id='d2escricao' value = '{{descricao}}'>
+                </td>
+                <td>
+                    {{quantidade}}
+                    <input name="quantidade" id='q2uantidade' value = '{{quantidade}}'>
+                </td>
+                <td>
+                    {{valor}}
+                    <input name="valor" id='v2alor' value = '{{valor}}'>
+                </td>
+                <td>
+                    {{custo}}
+                    <input name="custo" id='c2usto' value = '{{custo}}'>
+                </td>
+                <td>
+                    {{operacao}}
+                    <input name="operacao" id='o2peracao' value = '{{operacao}}'>
+                </td>
+                <td>
+                    {{data}}
+                    <input name="data" id='d2ata' value = '{{datas}}'>
+                </td>
+                </td>
+            </tr>
+            {{/primeiro}}
+            <tr>  
+                <td class="table-dark">
+                    <b>Alterações</b>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td id='p3roduto'>
+                </td>
+                <td id='d3escricao'>
+                </td>
+                <td id='q3uantidade'>
+                </td>
+                <td id='v3alor'>
+                </td>
+                <td id='c3usto'>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                </td>
+                <script>
+                    if(document.getElementById("p1roduto").value != document.getElementById("p2roduto").value){
+                        document.getElementById("p3roduto").classList.add("table-info");
+                    }
+                    if(document.getElementById("d1escricao").value != document.getElementById("d2escricao").value){
+                        document.getElementById("d3escricao").classList.add("table-info");
+                    }
+                    if(document.getElementById("q1uantidade").value != document.getElementById("q2uantidade").value){
+                        document.getElementById("q3uantidade").classList.add("table-info");
+                    }
+                    if(document.getElementById("v1alor").value != document.getElementById("v2alor").value){
+                        document.getElementById("v3alor").classList.add("table-info");
+                    }
+                    if(document.getElementById("c1usto").value != document.getElementById("c2usto").value){
+                        document.getElementById("c3usto").classList.add("table-info");
+                    }
+                </script>
+            </tr>
+        </tbody>
+            
+    </table>

@@ -18,47 +18,54 @@
             <th>Custo</th>
             <th>Operação</th>
             <th>Data</th>
+            <th>Alteração</th>
         </thead>
 
         <tbody>
             {{#data}}
-            <tr>    
-                <td>
-                    {{usuario}}
-                    <input id='usuario{{id}}' value = '{{usuario}}'>
-                </td>
-                <td>
-                    {{id}}
-                    <input id='id{{id}}' value = '{{id}}'>
-                </td>
-                <td>
-                    {{produto}}
-                    <input id='produto{{id}}' value = '{{nome}}'>
-                </td>
-                <td>
-                    {{descricao}}
-                    <input id='descricao{{id}}' value = '{{descricao}}'>
-                </td>
-                <td>
-                    {{quantidade}}
-                    <input id='quantidade{{id}}' value = '{{quantidade}}'>
-                </td>
-                <td>
-                    {{valor}}
-                    <input id='valor{{id}}' value = '{{valor}}'>
-                </td>
-                <td>
-                    {{custo}}
-                    <input id='custo{{id}}' value = '{{custo}}'>
-                </td>
-                <td>
-                    {{operacao}}
-                    <input id='operacao{{id}}' value = '{{operacao}}'>
-                </td>
-                <td>
-                    {{data}}
-                    <input id='data{{id}}' value = '{{data}}'>
-                </td>
+            <tr>  
+                <form name='form1' action='exibirAleracao' method='post'> 
+                    <td>
+                        {{usuario}}
+                        <input name="usuario" id='usuario{{id}}' value = '{{usuario}}'>
+                    </td>
+                    <td>
+                        {{id}}
+                        <input name="id" id='id{{id}}' value = '{{id}}'>
+                    </td>
+                    <td>
+                        {{produto}}
+                        <input name="produto" id='produto{{id}}' value = '{{nome}}'>
+                    </td>
+                    <td>
+                        {{descricao}}
+                        <input name="descricao" id='descricao{{id}}' value = '{{descricao}}'>
+                    </td>
+                    <td>
+                        {{quantidade}}
+                        <input name="quantidade" id='quantidade{{id}}' value = '{{quantidade}}'>
+                    </td>
+                    <td>
+                        {{valor}}
+                        <input name="valor" id='valor{{id}}' value = '{{valor}}'>
+                    </td>
+                    <td>
+                        {{custo}}
+                        <input name="custo" id='custo{{id}}' value = '{{custo}}'>
+                    </td>
+                    <td>
+                        {{operacao}}
+                        <input name="operacao" id='operacao{{id}}' value = '{{operacao}}'>
+                    </td>
+                    <td>
+                        {{data}}
+                        <input name="data" id='data{{id}}' value = '{{data}}'>
+                    </td>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary"><i class="fa fa-search"></i> Consultar</button>
+                    </td>
+                </form> 
             </tr>
             {{/data}}
         </tbody>
