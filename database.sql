@@ -1,166 +1,244 @@
--- MySQL dump 10.13  Distrib 8.0.19, for Linux (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.0.1
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: crud
--- ------------------------------------------------------
--- Server version	8.0.19
+-- Host: 127.0.0.1
+-- Tempo de geração: 15-Maio-2020 às 18:43
+-- Versão do servidor: 10.4.11-MariaDB
+-- versão do PHP: 7.4.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Table structure for table `operacoes`
+-- Banco de dados: `crud`
 --
 
-DROP TABLE IF EXISTS `operacoes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `carrinho`
+--
+
+CREATE TABLE `carrinho` (
+  `id_usuario` int(11) NOT NULL,
+  `id_produto` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `valor` float(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `operacoes`
+--
+
 CREATE TABLE `operacoes` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `usuario` varchar(255) NOT NULL,
-  `descricao` text,
+  `descricao` text DEFAULT NULL,
   `valor` float(10,2) NOT NULL,
-  `quantidade` int NOT NULL,
+  `quantidade` int(11) NOT NULL,
   `operacao` enum('criar','editar','vender','estocar','excluir') NOT NULL,
-  `data` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `data` timestamp NULL DEFAULT current_timestamp(),
   `produto` varchar(255) NOT NULL,
   `custo` float(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `operacoes`
+-- Extraindo dados da tabela `operacoes`
 --
 
-LOCK TABLES `operacoes` WRITE;
-/*!40000 ALTER TABLE `operacoes` DISABLE KEYS */;
-INSERT INTO `operacoes` VALUES (18,'gabriel','suahsuasuahsau',10.00,100,'criar','2020-05-13 05:22:12','Sistema',1.00),(24,'gabriel','saushhusua',10.00,100,'criar','2020-05-13 05:25:59','Primeiro teste',1.00),(15,'gabriel','',10.00,99,'vender','2020-05-13 05:45:35','Figado',1.00),(15,'gabriel','',10.00,990,'estocar','2020-05-13 05:47:49','Figado',1.00),(15,'gabriel','',10.00,990,'editar','2020-05-13 05:48:16','Figado',100.00),(17,'gabriel','',10.00,100,'excluir','2020-05-13 05:49:55','Margarina',1.00);
-/*!40000 ALTER TABLE `operacoes` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `operacoes` (`id`, `usuario`, `descricao`, `valor`, `quantidade`, `operacao`, `data`, `produto`, `custo`) VALUES
+(18, 'gabriel', 'suahsuasuahsau', 10.00, 100, 'criar', '2020-05-13 05:22:12', 'Sistema', 1.00),
+(24, 'gabriel', 'saushhusua', 10.00, 100, 'criar', '2020-05-13 05:25:59', 'Primeiro teste', 1.00),
+(15, 'gabriel', '', 10.00, 99, 'vender', '2020-05-13 05:45:35', 'Figado', 1.00),
+(15, 'gabriel', '', 10.00, 990, 'estocar', '2020-05-13 05:47:49', 'Figado', 1.00),
+(15, 'gabriel', '', 10.00, 990, 'editar', '2020-05-13 05:48:16', 'Figado', 100.00),
+(17, 'gabriel', '', 10.00, 100, 'excluir', '2020-05-13 05:49:55', 'Margarina', 1.00),
+(31, 'petterson', '1', 1.00, 1, 'excluir', '2020-05-15 05:29:37', 'tetse', 1.00),
+(18, 'petterson', 'suahsuasuahsau', 10.00, 99, 'estocar', '2020-05-15 05:30:22', 'Sistema', 1.00),
+(18, 'petterson', 'suahsuasuahsau', 10.00, 99, 'editar', '2020-05-15 05:30:51', 'Sistem', 1.00),
+(18, 'petterson', 'suahsuasuahsau', 10.00, 98, 'estocar', '2020-05-15 05:31:20', 'Sistem', 1.00),
+(18, 'petterson', 'suahsuasuahsau', 10.00, 50, 'estocar', '2020-05-15 05:32:10', 'Sistem', 1.00),
+(18, 'petterson', 'algo', 100.00, 50, 'editar', '2020-05-15 05:32:53', 'Sistema', 20.00),
+(18, 'petterson', 'algo', 100.00, 20, 'vender', '2020-05-15 05:35:03', 'Sistema', 20.00),
+(19, 'petterson', 'suahshaushahsua1', 100.00, 75, 'vender', '2020-05-15 05:35:03', 'Caralho', 10.00),
+(20, 'petterson', '1', 1.00, 0, 'vender', '2020-05-15 05:35:03', 'teste', 1.00),
+(18, 'Petterson', 'algo', 1000.00, 20, 'editar', '2020-05-15 05:36:25', 'Sistema', 20.00),
+(20, 'Petterson', '1', 1.00, 0, 'criar', '2020-05-15 05:37:48', 'teste', 1.00);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `produtos`
+-- Estrutura da tabela `operacoes_usuarios`
 --
 
-DROP TABLE IF EXISTS `produtos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `operacoes_usuarios` (
+  `id` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `nome_usuario` varchar(255) NOT NULL,
+  `id_usuario_modificado` int(11) NOT NULL,
+  `nome_usuario_modificado` varchar(255) NOT NULL,
+  `operacao` enum('editar','excluir','criar','') NOT NULL,
+  `data` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `operacoes_usuarios`
+--
+
+INSERT INTO `operacoes_usuarios` (`id`, `id_usuario`, `nome_usuario`, `id_usuario_modificado`, `nome_usuario_modificado`, `operacao`, `data`) VALUES
+(2, 2, 'Petterson', 27, 'z', 'criar', '2020-05-15 16:28:00'),
+(3, 2, 'Petterson', 28, 'a', 'criar', '2020-05-15 16:37:53'),
+(4, 2, 'Petterson', 28, 'a', 'excluir', '2020-05-15 16:38:04'),
+(5, 2, 'Petterson', 8, 'editor', 'editar', '2020-05-15 16:39:35');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `produtos`
+--
+
 CREATE TABLE `produtos` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
-  `descricao` text,
+  `descricao` text DEFAULT NULL,
   `valor` float(10,2) NOT NULL,
-  `quantidade` int NOT NULL,
-  `custo` float(10,2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `quantidade` int(11) NOT NULL,
+  `custo` float(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `produtos`
+-- Extraindo dados da tabela `produtos`
 --
 
-LOCK TABLES `produtos` WRITE;
-/*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
-INSERT INTO `produtos` VALUES (18,'Sistema','suahsuasuahsau',10.00,100,1.00),(19,'Caralho','suahshaushahsua1',100.00,100,10.00),(20,'teste','1',1.00,1,1.00),(21,'a','1',1.00,1,1.00),(22,'aaaaaaaaaaa','1',1.00,1,1.00),(23,'bbbb','1',1.00,1,1.00),(24,'Primeiro teste','saushhusua',10.00,100,1.00),(25,'Segundo teste','1',1.00,1,1.00),(26,'ccc','1',1.00,1,1.00),(27,'ccccc','111',1.00,1,1.00),(28,'cccc','1',1.00,1,1.00),(29,'suahsahsuahSUAs','aushuashau',1.00,1,1.00),(30,'kkkk','saysuas',1.00,1,1.00),(31,'tetse','1',1.00,1,1.00);
-/*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `produtos` (`id`, `nome`, `descricao`, `valor`, `quantidade`, `custo`) VALUES
+(18, 'Sistema', 'algo', 1000.00, 20, 20.00),
+(19, 'Caralho', 'suahshaushahsua1', 100.00, 75, 10.00),
+(20, 'teste', '1', 1.00, 0, 1.00),
+(21, 'a', '1', 1.00, 1, 1.00),
+(22, 'aaaaaaaaaaa', '1', 1.00, 1, 1.00),
+(23, 'bbbb', '1', 1.00, 1, 1.00),
+(24, 'Primeiro teste', 'saushhusua', 10.00, 100, 1.00),
+(25, 'Segundo teste', '1', 1.00, 1, 1.00),
+(26, 'ccc', '1', 1.00, 1, 1.00),
+(27, 'ccccc', '111', 1.00, 1, 1.00),
+(28, 'cccc', '1', 1.00, 1, 1.00),
+(29, 'suahsahsuahSUAs', 'aushuashau', 1.00, 1, 1.00),
+(30, 'kkkk', 'saysuas', 1.00, 1, 1.00),
+(32, 'teste', 'asdjal', 30.40, 2, 20.30);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `transacoes`
+-- Estrutura da tabela `transacoes`
 --
 
-DROP TABLE IF EXISTS `transacoes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transacoes` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `produto` varchar(255) NOT NULL,
-  `quantidade` int NOT NULL,
+  `quantidade` int(11) NOT NULL,
   `usuario` varchar(255) NOT NULL,
-  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `data` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `transacoes`
+-- Extraindo dados da tabela `transacoes`
 --
 
-LOCK TABLES `transacoes` WRITE;
-/*!40000 ALTER TABLE `transacoes` DISABLE KEYS */;
-INSERT INTO `transacoes` VALUES (13,'Computador',1,'gabriel','2020-05-12 01:03:49'),(11,'Macarrão',1,'gabriel','2020-05-12 01:31:14'),(10,'Sopa',1,'vendedor','2020-05-12 17:09:30');
-/*!40000 ALTER TABLE `transacoes` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `transacoes` (`id`, `produto`, `quantidade`, `usuario`, `data`) VALUES
+(13, 'Computador', 1, 'gabriel', '2020-05-12 01:03:49'),
+(11, 'Macarrão', 1, 'gabriel', '2020-05-12 01:31:14'),
+(10, 'Sopa', 1, 'vendedor', '2020-05-12 17:09:30');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `carrinho`
+-- Estrutura da tabela `usuarios`
 --
 
-DROP TABLE IF EXISTS `carrinho`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `carrinho` (
-  `id_usuario` int NOT NULL,
-  `id_produto` int NOT NULL,
-  `nome` varchar(255) NOT NULL,
-  `quantidade` int NOT NULL,
-  `valor` float(10,2) NOT NULL,
-  PRIMARY KEY (`id_usuario`, `id_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `carrinho`
---
-
-LOCK TABLES `carrinho` WRITE;
-/*!40000 ALTER TABLE `carrinho` DISABLE KEYS */;
-/*!40000 ALTER TABLE `carrinho` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `usuarios`
---
-
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
   `login` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `tipo` enum('admin','gerente','vendedor','editor') NOT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `usuarios`
+-- Extraindo dados da tabela `usuarios`
 --
 
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (2,'petterson','pitter','$2a$10$JF7tK5ShW6eUVqbutrclu.7tgqcglCwCLtPV3.KIpWAUEwm6Xv.Na','','2020-05-04 04:41:13','2020-05-04 04:41:13'),(4,'gabriel','gabriel','$2a$10$KnBzFoRAsTiXSMxA.Y.gju2TjlOhMjdz92YXoDijyANOpuBV4Tdii','admin','2020-05-05 18:47:32','2020-05-05 18:47:32'),(5,'gerente','gerente','$2a$10$C7OoDxLGQa.w06S3FdxURONpLECSWdoNIvacFX.BecQqWFYQbNG56','gerente','2020-05-05 19:57:26','2020-05-05 19:57:26'),(7,'vendedor','vendedor','$2a$10$7dxRyofu.GoF7.wGlvpKle4.sMHUTnkWx1uA9mxgIfP7E8yl9k4Y6','vendedor','2020-05-05 19:59:24','2020-05-05 19:59:24'),(8,'editor','editor','$2a$10$hoxKhCw46UXWPoCuKpvYhe9b78lEo/IZFhCviOsFqihHtSryWop7e','editor','2020-05-05 20:00:47','2020-05-05 20:00:47'),(9,'teste','teste','$2a$10$Tv5Bn5vsteGaXnFDVBcVi.pG5uMpC4rDZesKh07A1qcdDeJ.wQOMW','admin','2020-05-05 20:20:12','2020-05-05 20:20:12');
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+INSERT INTO `usuarios` (`id`, `nome`, `login`, `senha`, `tipo`, `createdAt`, `updatedAt`) VALUES
+(2, 'Petterson', 'pitter', '$2a$10$JF7tK5ShW6eUVqbutrclu.7tgqcglCwCLtPV3.KIpWAUEwm6Xv.Na', 'admin', '2020-05-04 04:41:13', '2020-05-15 05:36:10'),
+(4, 'gabriel', 'gabriel', '$2a$10$KnBzFoRAsTiXSMxA.Y.gju2TjlOhMjdz92YXoDijyANOpuBV4Tdii', 'admin', '2020-05-05 18:47:32', '2020-05-05 18:47:32'),
+(5, 'gerente', 'gerente', '$2a$10$C7OoDxLGQa.w06S3FdxURONpLECSWdoNIvacFX.BecQqWFYQbNG56', 'gerente', '2020-05-05 19:57:26', '2020-05-05 19:57:26'),
+(7, 'vendedor', 'vendedor', '$2a$10$7dxRyofu.GoF7.wGlvpKle4.sMHUTnkWx1uA9mxgIfP7E8yl9k4Y6', 'vendedor', '2020-05-05 19:59:24', '2020-05-05 19:59:24'),
+(8, 'editor', 'editor', '$2a$10$hoxKhCw46UXWPoCuKpvYhe9b78lEo/IZFhCviOsFqihHtSryWop7e', 'gerente', '2020-05-05 20:00:47', '2020-05-15 16:39:35');
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices para tabela `carrinho`
+--
+ALTER TABLE `carrinho`
+  ADD PRIMARY KEY (`id_usuario`,`id_produto`);
+
+--
+-- Índices para tabela `operacoes_usuarios`
+--
+ALTER TABLE `operacoes_usuarios`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `produtos`
+--
+ALTER TABLE `produtos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `operacoes_usuarios`
+--
+ALTER TABLE `operacoes_usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `produtos`
+--
+ALTER TABLE `produtos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2020-05-14  7:56:34

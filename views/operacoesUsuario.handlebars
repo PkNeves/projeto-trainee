@@ -1,0 +1,47 @@
+	<h2>Transações</h2>
+
+    <a id="return" href="/">
+        <button class='btn btn-info mb-4'>
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+        </button>
+    </a>
+
+    
+	<table class='table table-striped'>
+        <thead class='thead-dark'>
+            <th>Quem alterou</th>
+            <th>Usuario alterado</th>
+            <th>Usuario alterado ID</th>
+            <th>Operação</th>
+            <th>Data</th>
+        </thead>
+
+        <tbody>
+            {{#data}}
+            <tr>  
+                <form name='form1' action='exibirAleracao' method='post'> 
+                    <td>
+                        {{nome_usuario}}
+                    </td>
+                    <td>
+                        {{nome_usuario_modificado}}
+                    </td>
+                    <td>
+                        {{id_usuario_modificado}}
+                    </td>
+                    <td>
+                        {{operacao}}
+                    </td>
+                    <td>
+                        {{data}}
+                    </td>
+                    <!--
+                    <td>
+                        <button class="btn btn-primary"><i class="fa fa-search"></i> Consultar</button>
+                    </td>
+                    -->
+                </form> 
+            </tr>
+            {{/data}}
+        </tbody>
+    </table>

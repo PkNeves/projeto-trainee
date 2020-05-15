@@ -1,11 +1,17 @@
 	<h2>Lista de Usuários</h2>
 
-    <a id="return" href="/">
-        <button class='btn btn-info mb-4'>
-            <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+    <div clas='row'>
+      <a id="return" href="/">
+          <button class='btn btn-info mb-4'>
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+          </button>
+      </a>
+      <form action='/usuario/operacoes' style="display: inline" method="post">
+        <button class='btn btn-light'>
+          <i class="fa fa-money"></i> Operações
         </button>
-    </a>
-
+      </form>
+    </div>
     
 	<table class='table table-striped'>
         <thead class='thead-dark'>

@@ -94,7 +94,6 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
         
         
                 if (tipo  === 'admin'){
-                    console.log('aaaaaa');
                     let tipo_usuario = req.body.tipo_cadastro
                     if(tipo_usuario == 0){
                         tipo_usuario = 'admin'
@@ -125,7 +124,14 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
                                 login: usuario,
                                 senha: hash,
                                 tipo: tipo_usuario
-                            }).then(function() {
+                            }).then(function(usuario) {
+                                var data = {
+                                    "id": res.locals.user.id,
+                                    "nome": res.locals.user.nome,
+                                    "id_mod": usuario.id,
+                                    "nome_mod": usuario.nome
+                                }
+                                log_user(data, 'criar')
                                 req.flash("success_msg", "Usuário criado com sucesso")
                                 res.redirect('/')
                             }).catch(function(erro) {
@@ -522,7 +528,13 @@ app.post('/usuario/registrar', urlencodeParser, (req, res) => {
                         login: req.body.login,
                         senha: hash,
                         tipo: 'admin'
-                    }).then(function() {
+                    }).then(function(usuario) {
+                        res.send(usuario)
+                        let data = {
+                            'id': res.locals.user.id,
+                            'nome': res.locals.user.nome,
+                        }
+                        log_user(data, 'criar')
                         req.flash('successs_msg', 'Usuario criado com sucesso!')
                         res.render('login');
                     }).catch(function(erro) {
@@ -542,13 +554,17 @@ app.get('/usuario/listar', acessos,  (req, res) => {
 })
 
 app.post('/usuario/excluir/:id', urlencodeParser, (req, res) => {
-        let id = req.params.id
+        var dados = {
+            'id': res.locals.user.id,
+            'nome': res.locals.user.nome,
+            'id_mod': req.params.id
+        }
 
-        //log_operation(id, res.locals.user.nome, 'excluir');
-
+        log_user(dados, 'excluir')
+        // Deleta o usuario
         Usuario.destroy({
             where: {
-                id: id
+                id: dados.id_mod
             }
         }).then(function() { 
             req.flash("success_msg", "Usuário excluído com sucesso")
@@ -568,6 +584,14 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
     var login = req.body.login_usuario
     var tipo = (req.body.tipo_usuario) ? req.body.tipo_usuario : false 
 
+    // variavel com as informações pra salvar o log de Usuarios 
+    var dados = {
+        'id': res.locals.user.id,
+        'nome': res.locals.user.nome,
+        'id_mod': id,
+        'nome_mod': nome
+    }
+
     // Verifica se foi digitado algo na senha
     if (senha1 != '' && senha2 != '') {
         // Verifica se as senhas conferem
@@ -576,6 +600,7 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
             var hash = bcrypt.hashSync(senha1, salt);
             // Verifica o tipo, pois pode estar como disabled
             if (tipo) {
+                log_user(dados, 'editar')
                 Usuario.update({ 
                         nome: nome,
                         login: login,
@@ -590,6 +615,7 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
                         res.redirect('/usuario/listar')
                 });
             } else {
+                log_user(dados, 'editar')
                 Usuario.update({ 
                         nome: nome,
                         login: login,
@@ -608,6 +634,7 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
     // atualiza usuario sem mudar a senha 
     else {
         if (tipo) {
+            log_user(dados, 'editar')
             Usuario.update({ 
                     nome: nome,
                     login: login,
@@ -621,6 +648,7 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
                     res.redirect('/usuario/listar')
             });
         } else {
+            log_user(dados, 'editar')
             Usuario.update({ 
                     nome: nome,
                     login: login
@@ -634,6 +662,16 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
             });
         }
     }
+})
+
+app.post("/usuario/operacoes", urlencodeParser, acessos, function (req, res) {
+    // log_operation('Sistema', res.locals.user.nome, 'criar');
+
+    let query = "SELECT *, DATE_FORMAT(data, '%Y/%m/%d %H:%i:%s') as data FROM operacoes_usuarios order by data DESC";
+
+    sql.query(query, function(err, results, fields) {
+        res.render('operacoesUsuario', {data: results});
+    })
 })
 
 function log_operation (val, user, operation) {
@@ -679,6 +717,60 @@ function log_operation (val, user, operation) {
             sql.query(op, [[values]], function (err) {
                 if (err) throw err;
             });   
+        });
+    }
+}
+function log_user(dados, operacao) {
+
+    if (operacao == 'excluir') {
+        // Acha o usuario
+        Usuario.findAll({
+            where: {
+                id: dados.id_mod
+            }
+        }).then((usuario) => {
+            let values = [
+                dados.id,
+                dados.nome,
+                usuario[0].id,
+                usuario[0].nome,
+                "excluir"
+            ]
+            // Se o usuario for achado, insere na tabela de operacoes
+            let query = "INSERT INTO operacoes_usuarios (id_usuario, nome_usuario, id_usuario_modificado, nome_usuario_modificado, operacao) VALUES ?" 
+            
+            sql.query(query, [[values]], function (err) {
+                if (err) throw err;
+            });
+        })
+    } else if (operacao == 'editar') {
+            let values = [
+                dados.id,
+                dados.nome,
+                dados.id_mod,
+                dados.nome_mod,
+                "editar"
+            ]
+            // Se o usuario for achado, insere na tabela de operacoes
+            let query = "INSERT INTO operacoes_usuarios (id_usuario, nome_usuario, id_usuario_modificado, nome_usuario_modificado, operacao) VALUES ?" 
+            
+            sql.query(query, [[values]], function (err) {
+                if (err) throw err;
+            });
+
+    } else if (operacao = 'criar') {
+        let values = [
+            dados.id,
+            dados.nome,
+            dados.id_mod,
+            dados.nome_mod,
+            "criar"
+        ]
+        // Se o usuario for achado, insere na tabela de operacoes
+        let query = "INSERT INTO operacoes_usuarios (id_usuario, nome_usuario, id_usuario_modificado, nome_usuario_modificado, operacao) VALUES ?" 
+        
+        sql.query(query, [[values]], function (err) {
+            if (err) throw err;
         });
     }
 }
