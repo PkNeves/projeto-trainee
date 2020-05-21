@@ -20,10 +20,7 @@
             <th>Tipo</th>
             <th>Editar</th>
             <th>Excluir</th>
-            <!-- 
-            <th>Criado em</th>
-            <th>Modificado em</th>
-            -->
+            <th>Info</th>
         </thead>
 
         <tbody>
@@ -39,28 +36,20 @@
                     {{dataValues.tipo}}
                 </td>
                 <td>
-                    <button class='btn btn-info' type='button' class='dropdown-item' data-toggle='modal' data-target='#editarUsuario{{dataValues.id}}'>
+                    <button class='btn btn-primary' type='button' class='dropdown-item' data-toggle='modal' data-target='#editarUsuario{{dataValues.id}}'>
                         Editar
                     </button>
-                        <!--
-                    <form action='/usuario/editar/{{dataValues.id}}' method='post'>
-                        <button class='btn btn-info' type='submit'>Edita</button>
-                    </form>
-                    -->
                 </td>
                 <td>
                     <form action='/usuario/excluir/{{dataValues.id}}' method='post'>
                         <button class='btn btn-danger' type='submit'>Excluir</button>
                     </form>
                 </td>
-                <!--
                 <td>
-                    {{dataValues.createdAt}}
+                    <form action='/usuario/info/{{dataValues.id}}' method='get'>
+                        <button class='btn btn-info' type='submit'>Info</button>
+                    </form>
                 </td>
-                <td>
-                    {{dataValues.updatedAt}}
-                </td>
-                -->
             {{/usuarios}}
         </tbody>
     </table>

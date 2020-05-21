@@ -268,6 +268,34 @@ router.post("/operacoes", acessos, function (req, res) {
     })
 })
 
+router.get('/info/:id', (req, res) => {
+    var id_user = req.params.id
+    var data = new Date();
+    var mes_atual = data.getMonth() + 1 
+    var mes_anterior = mes_atual - 1; 
+
+
+    Usuario.findAll({
+        where: {
+            id: id_user
+        }
+    }).then(users => {
+        var query_mes_anterior = "SELECT SUM(quantidade*valor) as valor FROM operacoes WHERE id_user =" + id_user + " and MONTH(data) = " + mes_anterior + " and operacao = 'vender'"
+        var query_mes_atual = "SELECT SUM(quantidade*valor) as valor FROM operacoes WHERE id_user =" + id_user + " and MONTH(data) = " + mes_atual + " and operacao = 'vender'"
+
+        console.log('query_anteior' + query_mes_anterior)
+        db.sql.query(query_mes_anterior, function(err, dados_mes_anterior, fields) {
+            db.sql.query(query_mes_atual, function(err, dados_mes_atual, fields) {
+                res.render('usuario/info', {
+                        user: users[0], 
+                        mes_anterior: dados_mes_anterior[0], 
+                        mes_atual: dados_mes_atual[0], 
+                })            
+            })
+        })
+    });
+})
+
 function log_user(dados, operacao) {
 
     if (operacao == 'excluir') {
@@ -322,5 +350,6 @@ function log_user(dados, operacao) {
         });
     }
 }
+
 
 module.exports = router

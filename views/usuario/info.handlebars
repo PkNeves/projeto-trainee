@@ -1,0 +1,42 @@
+	<h2>Informações do Usuário</h2>
+
+    <div clas='row'>
+      <a id="return" href="/usuario/listar">
+          <button class='btn btn-info mb-4'>
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+          </button>
+      </a>
+    </div>
+    
+	<table class='table table-striped'>
+        <thead class='thead-dark'>
+            <th>Nome</th>
+            <th>Criado em</th>
+            <th>Ultimo Login</th>
+            <th>Salário Mensal</th>
+            <th>Vendas Mês Anterior</th>
+            <th>Vendas Mês atual</th>
+        </thead>
+
+        <tbody>
+            <tr>    
+                <td>
+                    {{user.dataValues.nome}}
+                </td>
+                <td>
+                    {{user.dataValues.createdAt}}
+                </td>
+                <td>
+                    {{user.dataValues.ultimo_login}}
+                </td>
+                <td>
+                    R$ {{user.dataValues.salario_mensal}}
+                </td>
+                <td>
+                    R$ {{mes_anteior.valor}}
+                </td>
+                <td>
+                    R$ {{mes_atual.valor}}
+                </td>
+        </tbody>
+    </table>

@@ -1,5 +1,4 @@
 const localStrategy = require('passport-local').Strategy
-const sequelize = require('sequelize')
 const bcrypt = require('bcryptjs')
 const Usuario = require('../models/Usuario');
 
