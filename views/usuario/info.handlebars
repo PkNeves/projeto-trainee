@@ -7,7 +7,7 @@
           </button>
       </a>
     </div>
-    
+
 	<table class='table table-striped'>
         <thead class='thead-dark'>
             <th>Nome</th>
@@ -40,3 +40,31 @@
                 </td>
         </tbody>
     </table>
+
+
+    <br><br><h3>Operações</h3>
+
+    <table class='table table-striped'>
+        <thead class='thead-dark'>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Custo</th>
+            <th>Valor</th>
+            <th>Operação</th>
+            <th>Data</th>
+        </thead>
+
+        <tbody>
+            {{#operacoes}}
+            <tr>
+                <td> {{ produto }} </td>
+                <td> {{ quantidade }} </td>
+                <td> {{ custo }} </td>
+                <td> {{ valor }} </td>
+                <td> {{ operacao }} </td>
+                <td> {{ data }} </td>
+            </tr>
+            {{/operacoes}}
+        </tbody>
+
+    </table>        

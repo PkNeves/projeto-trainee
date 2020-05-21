@@ -282,15 +282,21 @@ router.get('/info/:id', (req, res) => {
     }).then(users => {
         var query_mes_anterior = "SELECT SUM(quantidade*valor) as valor FROM operacoes WHERE id_user =" + id_user + " and MONTH(data) = " + mes_anterior + " and operacao = 'vender'"
         var query_mes_atual = "SELECT SUM(quantidade*valor) as valor FROM operacoes WHERE id_user =" + id_user + " and MONTH(data) = " + mes_atual + " and operacao = 'vender'"
+        var query_operacoes = "SELECT *, DATE_FORMAT(data, '%H:%i %d/%m/%Y') as data FROM operacoes WHERE id_user = " + id_user + " ORDER BY data DESC;";
 
         console.log('query_anteior' + query_mes_anterior)
         db.sql.query(query_mes_anterior, function(err, dados_mes_anterior, fields) {
             db.sql.query(query_mes_atual, function(err, dados_mes_atual, fields) {
-                res.render('usuario/info', {
+                db.sql.query(query_operacoes, function(err, dados_operacoes, fields) {
+                    console.log(dados_operacoes)
+
+                    res.render('usuario/info', {
                         user: users[0], 
                         mes_anterior: dados_mes_anterior[0], 
                         mes_atual: dados_mes_atual[0], 
-                })            
+                        operacoes: dados_operacoes,
+                    })
+                })          
             })
         })
     });
