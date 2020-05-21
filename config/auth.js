@@ -28,6 +28,12 @@ module.exports = function(passport) {
                 }
                 bcrypt.compare(senha, usuario.senha, (erro, batem) => {
                     if(batem) {
+                        let data = new Date()
+                        usuario.update({ ultimo_login: data},{
+                            where: {
+                                login: login
+                            }
+                        })
                         return done(null, usuario)
                     } else {
                         return done(null, false, { message: 'Senha incorreta'})
