@@ -110,7 +110,7 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
                     let nome = req.body.nome_cadastro
                     let usuario = req.body.usuario_cadastro
                     let senha = req.body.senha1_cadastro
-                    console.log(tipo_usuario);
+                    let salario = req.body.salario_cadastro
 
                     bcrypt.genSalt(10, (erro, salt) => {
                         bcrypt.hash(senha, salt, (erro, hash) => { //cria hash
@@ -123,7 +123,8 @@ app.post("/cadastrarUsuario",urlencodeParser,function(req,res){
                                 nome: nome,
                                 login: usuario,
                                 senha: hash,
-                                tipo: tipo_usuario
+                                tipo: tipo_usuario,
+                                salario_mensal: salario
                             }).then(function(usuario) {
                                 var data = {
                                     "id": res.locals.user.id,
@@ -173,7 +174,11 @@ app.post("/adicionar",urlencodeParser,function(req,res){
             }
         })
 
-        log_operation(nome, res.locals.user.nome, 'criar');
+        var user = {
+            "nome": res.locals.user.nome,
+            "id": res.locals.user.id
+        }
+        log_operation(nome, user, 'criar');
         req.flash("success_msg", "Produto criado com sucesso")
         res.redirect('/');
     
@@ -287,7 +292,11 @@ app.post("/vender",urlencodeParser,function(req,res){
                             }
                         })
 
-                        log_operation(id[a], res.locals.user.nome, 'vender');
+                        var user = {
+                            "nome": res.locals.user.nome,
+                            "id": res.locals.user.id
+                        }
+                        log_operation(id[a], user, 'vender');
                         a++;
                     })
                 }
@@ -382,7 +391,11 @@ app.post("/editarEstoque",urlencodeParser,function(req,res){
             }
         })
 
-        log_operation(id, res.locals.user.nome, 'estocar');
+        var user = {
+            "nome": res.locals.user.nome,
+            "id": res.locals.user.id
+        }
+        log_operation(id, user, 'estocar');
 
         req.flash("success_msg", "Estoque editado com sucesso")
         res.redirect('/');
@@ -411,7 +424,11 @@ app.post("/editar",urlencodeParser,function(req,res){
             }
         })
 
-        log_operation(id, res.locals.user.nome, 'editar');
+        var user = {
+            "nome": res.locals.user.nome,
+            "id": res.locals.user.id
+        }
+        log_operation(id, user, 'editar');
 
         req.flash("success_msg", "Produto editado com sucesso")
         res.redirect('/');
@@ -425,7 +442,11 @@ app.get("/excluir/:id",function(req,res){
     // if (tipo  === 'admin' || tipo  === 'gerente') {
         let id = req.params.id
 
-        log_operation(id, res.locals.user.nome, 'excluir');
+        var user = {
+            "nome": res.locals.user.nome,
+            "id": res.locals.user.id
+        }
+        log_operation(id, user, 'excluir');
 
         let query = "DELETE FROM produtos WHERE id = ?"
 
@@ -581,6 +602,7 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
     var senha1 = req.body.senha1_usuario
     var senha2 = req.body.senha2_usuario
     var nome = req.body.nome_usuario
+    var salario = req.body.salario_usuario
     var login = req.body.login_usuario
     var tipo = (req.body.tipo_usuario) ? req.body.tipo_usuario : false 
 
@@ -605,7 +627,8 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
                         nome: nome,
                         login: login,
                         senha: hash,
-                        tipo: tipos[tipo]
+                        tipo: tipos[tipo],
+                        salario_mensal: salario
                         }, {
                         where: {
                             id: id
@@ -619,7 +642,8 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
                 Usuario.update({ 
                         nome: nome,
                         login: login,
-                        senha: hash,
+                        salario_mensal: salario,
+                        senha: hash
                         }, {
                         where: {
                             id: id
@@ -638,6 +662,7 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
             Usuario.update({ 
                     nome: nome,
                     login: login,
+                    salario_mensal: salario,
                     tipo: tipos[tipo]
                     }, {
                     where: {
@@ -651,6 +676,7 @@ app.post('/usuario/editar', urlencodeParser, (req, res) => {
             log_user(dados, 'editar')
             Usuario.update({ 
                     nome: nome,
+                    salario_mensal: salario,
                     login: login
                     }, {
                     where: {
@@ -681,16 +707,19 @@ function log_operation (val, user, operation) {
         sql.query(query, val, function (err, results) {
             if (err) throw err;
 
-            let values = [user,
-                          results[0].id,
-                          results[0].nome,
-                          results[0].descricao,
-                          results[0].quantidade,
-                          results[0].valor,
-                          results[0].custo,
-                          operation];
+            let values = [
+                user.id,
+                user.nome,
+                results[0].id,
+                results[0].nome,
+                results[0].descricao,
+                results[0].quantidade,
+                results[0].valor,
+                results[0].custo,
+                operation
+            ];
 
-            let op = "INSERT INTO operacoes (usuario, id, produto, descricao, quantidade, valor, custo, operacao) VALUES ? ";
+            let op = "INSERT INTO operacoes (id_user, usuario, id, produto, descricao, quantidade, valor, custo, operacao) VALUES ? ";
 
             sql.query(op, [[values]], function (err) {
                 if (err) throw err;
@@ -703,16 +732,19 @@ function log_operation (val, user, operation) {
         sql.query(query, val, function (err, results) {
             if (err) throw err;
 
-            let values = [user,
+            let values = [
+                user.id,
+                user.nome,
                 results[0].id,
                 results[0].nome,
                 results[0].descricao,
                 results[0].quantidade,
                 results[0].valor,
                 results[0].custo,
-                operation];
+                operation
+            ];
 
-            let op = "INSERT INTO operacoes (usuario, id, produto, descricao, quantidade, valor, custo, operacao) VALUES ? ";
+            let op = "INSERT INTO operacoes (id_user, usuario, id, produto, descricao, quantidade, valor, custo, operacao) VALUES ? ";
 
             sql.query(op, [[values]], function (err) {
                 if (err) throw err;

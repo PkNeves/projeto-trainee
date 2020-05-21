@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 15-Maio-2020 às 18:43
+-- Tempo de geração: 21-Maio-2020 às 03:07
 -- Versão do servidor: 10.4.11-MariaDB
 -- versão do PHP: 7.4.1
 
@@ -44,6 +44,7 @@ CREATE TABLE `carrinho` (
 
 CREATE TABLE `operacoes` (
   `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `usuario` varchar(255) NOT NULL,
   `descricao` text DEFAULT NULL,
   `valor` float(10,2) NOT NULL,
@@ -58,24 +59,11 @@ CREATE TABLE `operacoes` (
 -- Extraindo dados da tabela `operacoes`
 --
 
-INSERT INTO `operacoes` (`id`, `usuario`, `descricao`, `valor`, `quantidade`, `operacao`, `data`, `produto`, `custo`) VALUES
-(18, 'gabriel', 'suahsuasuahsau', 10.00, 100, 'criar', '2020-05-13 05:22:12', 'Sistema', 1.00),
-(24, 'gabriel', 'saushhusua', 10.00, 100, 'criar', '2020-05-13 05:25:59', 'Primeiro teste', 1.00),
-(15, 'gabriel', '', 10.00, 99, 'vender', '2020-05-13 05:45:35', 'Figado', 1.00),
-(15, 'gabriel', '', 10.00, 990, 'estocar', '2020-05-13 05:47:49', 'Figado', 1.00),
-(15, 'gabriel', '', 10.00, 990, 'editar', '2020-05-13 05:48:16', 'Figado', 100.00),
-(17, 'gabriel', '', 10.00, 100, 'excluir', '2020-05-13 05:49:55', 'Margarina', 1.00),
-(31, 'petterson', '1', 1.00, 1, 'excluir', '2020-05-15 05:29:37', 'tetse', 1.00),
-(18, 'petterson', 'suahsuasuahsau', 10.00, 99, 'estocar', '2020-05-15 05:30:22', 'Sistema', 1.00),
-(18, 'petterson', 'suahsuasuahsau', 10.00, 99, 'editar', '2020-05-15 05:30:51', 'Sistem', 1.00),
-(18, 'petterson', 'suahsuasuahsau', 10.00, 98, 'estocar', '2020-05-15 05:31:20', 'Sistem', 1.00),
-(18, 'petterson', 'suahsuasuahsau', 10.00, 50, 'estocar', '2020-05-15 05:32:10', 'Sistem', 1.00),
-(18, 'petterson', 'algo', 100.00, 50, 'editar', '2020-05-15 05:32:53', 'Sistema', 20.00),
-(18, 'petterson', 'algo', 100.00, 20, 'vender', '2020-05-15 05:35:03', 'Sistema', 20.00),
-(19, 'petterson', 'suahshaushahsua1', 100.00, 75, 'vender', '2020-05-15 05:35:03', 'Caralho', 10.00),
-(20, 'petterson', '1', 1.00, 0, 'vender', '2020-05-15 05:35:03', 'teste', 1.00),
-(18, 'Petterson', 'algo', 1000.00, 20, 'editar', '2020-05-15 05:36:25', 'Sistema', 20.00),
-(20, 'Petterson', '1', 1.00, 0, 'criar', '2020-05-15 05:37:48', 'teste', 1.00);
+INSERT INTO `operacoes` (`id`, `id_user`, `usuario`, `descricao`, `valor`, `quantidade`, `operacao`, `data`, `produto`, `custo`) VALUES
+(3, 2, 'Petterson', 'gamer', 5000.00, 5, 'criar', '2020-05-21 00:34:13', 'computador', 1000.00),
+(3, 2, 'Petterson', 'gamer', 5000.00, 5, 'editar', '2020-05-21 00:34:24', 'computador', 2500.00),
+(3, 2, 'Petterson', 'gamer', 5000.00, 3, 'estocar', '2020-05-21 00:34:28', 'computador', 2500.00),
+(3, 2, 'Petterson', 'gamer', 5000.00, 2, 'vender', '2020-05-21 00:34:38', 'computador', 2500.00);
 
 -- --------------------------------------------------------
 
@@ -98,10 +86,10 @@ CREATE TABLE `operacoes_usuarios` (
 --
 
 INSERT INTO `operacoes_usuarios` (`id`, `id_usuario`, `nome_usuario`, `id_usuario_modificado`, `nome_usuario_modificado`, `operacao`, `data`) VALUES
-(2, 2, 'Petterson', 27, 'z', 'criar', '2020-05-15 16:28:00'),
-(3, 2, 'Petterson', 28, 'a', 'criar', '2020-05-15 16:37:53'),
-(4, 2, 'Petterson', 28, 'a', 'excluir', '2020-05-15 16:38:04'),
-(5, 2, 'Petterson', 8, 'editor', 'editar', '2020-05-15 16:39:35');
+(7, 2, 'Petterson', 35, 'admin', 'criar', '2020-05-21 00:30:52'),
+(8, 2, 'Petterson', 36, 'gerente', 'criar', '2020-05-21 00:33:19'),
+(9, 2, 'Petterson', 37, 'vendedor', 'criar', '2020-05-21 00:33:36'),
+(10, 2, 'Petterson', 38, 'editor', 'criar', '2020-05-21 00:33:58');
 
 -- --------------------------------------------------------
 
@@ -123,43 +111,7 @@ CREATE TABLE `produtos` (
 --
 
 INSERT INTO `produtos` (`id`, `nome`, `descricao`, `valor`, `quantidade`, `custo`) VALUES
-(18, 'Sistema', 'algo', 1000.00, 20, 20.00),
-(19, 'Caralho', 'suahshaushahsua1', 100.00, 75, 10.00),
-(20, 'teste', '1', 1.00, 0, 1.00),
-(21, 'a', '1', 1.00, 1, 1.00),
-(22, 'aaaaaaaaaaa', '1', 1.00, 1, 1.00),
-(23, 'bbbb', '1', 1.00, 1, 1.00),
-(24, 'Primeiro teste', 'saushhusua', 10.00, 100, 1.00),
-(25, 'Segundo teste', '1', 1.00, 1, 1.00),
-(26, 'ccc', '1', 1.00, 1, 1.00),
-(27, 'ccccc', '111', 1.00, 1, 1.00),
-(28, 'cccc', '1', 1.00, 1, 1.00),
-(29, 'suahsahsuahSUAs', 'aushuashau', 1.00, 1, 1.00),
-(30, 'kkkk', 'saysuas', 1.00, 1, 1.00),
-(32, 'teste', 'asdjal', 30.40, 2, 20.30);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `transacoes`
---
-
-CREATE TABLE `transacoes` (
-  `id` int(11) NOT NULL,
-  `produto` varchar(255) NOT NULL,
-  `quantidade` int(11) NOT NULL,
-  `usuario` varchar(255) NOT NULL,
-  `data` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `transacoes`
---
-
-INSERT INTO `transacoes` (`id`, `produto`, `quantidade`, `usuario`, `data`) VALUES
-(13, 'Computador', 1, 'gabriel', '2020-05-12 01:03:49'),
-(11, 'Macarrão', 1, 'gabriel', '2020-05-12 01:31:14'),
-(10, 'Sopa', 1, 'vendedor', '2020-05-12 17:09:30');
+(3, 'computador', 'gamer', 5000.00, 2, 2500.00);
 
 -- --------------------------------------------------------
 
@@ -173,6 +125,8 @@ CREATE TABLE `usuarios` (
   `login` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `tipo` enum('admin','gerente','vendedor','editor') NOT NULL,
+  `salario_mensal` decimal(10,2) NOT NULL,
+  `ultimo_login` timestamp NULL DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -181,12 +135,12 @@ CREATE TABLE `usuarios` (
 -- Extraindo dados da tabela `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nome`, `login`, `senha`, `tipo`, `createdAt`, `updatedAt`) VALUES
-(2, 'Petterson', 'pitter', '$2a$10$JF7tK5ShW6eUVqbutrclu.7tgqcglCwCLtPV3.KIpWAUEwm6Xv.Na', 'admin', '2020-05-04 04:41:13', '2020-05-15 05:36:10'),
-(4, 'gabriel', 'gabriel', '$2a$10$KnBzFoRAsTiXSMxA.Y.gju2TjlOhMjdz92YXoDijyANOpuBV4Tdii', 'admin', '2020-05-05 18:47:32', '2020-05-05 18:47:32'),
-(5, 'gerente', 'gerente', '$2a$10$C7OoDxLGQa.w06S3FdxURONpLECSWdoNIvacFX.BecQqWFYQbNG56', 'gerente', '2020-05-05 19:57:26', '2020-05-05 19:57:26'),
-(7, 'vendedor', 'vendedor', '$2a$10$7dxRyofu.GoF7.wGlvpKle4.sMHUTnkWx1uA9mxgIfP7E8yl9k4Y6', 'vendedor', '2020-05-05 19:59:24', '2020-05-05 19:59:24'),
-(8, 'editor', 'editor', '$2a$10$hoxKhCw46UXWPoCuKpvYhe9b78lEo/IZFhCviOsFqihHtSryWop7e', 'gerente', '2020-05-05 20:00:47', '2020-05-15 16:39:35');
+INSERT INTO `usuarios` (`id`, `nome`, `login`, `senha`, `tipo`, `salario_mensal`, `ultimo_login`, `createdAt`, `updatedAt`) VALUES
+(2, 'Petterson', 'petter', '$2a$10$exk0iY.g9hoBlqNbLDIVg.3hR/b87XMqgfpTGCfet7FUS6sAOLS8K', 'admin', '500.50', NULL, '2020-05-04 04:41:13', '2020-05-21 00:11:34'),
+(35, 'admin', 'admin', '$2a$10$lVL.tFWHRoLvv3.WkaoNuuOpz/1RclL.yOKtzmKP20FfA1yN4GpVi', 'admin', '100.00', NULL, '2020-05-21 00:30:52', '2020-05-21 00:30:52'),
+(36, 'gerente', 'gerente', '$2a$10$foI10Wex9uWUkEZ.ew8sguCbm8htDf8OANmQjZkts1sWBNiPaKZyG', 'gerente', '100.00', NULL, '2020-05-21 00:33:19', '2020-05-21 00:33:19'),
+(37, 'vendedor', 'vendedor', '$2a$10$XKD65dLVMq3P0YuWHglcJ.UXOCn8GH.LWz7IeHiBJo0a3J1kkZwDK', 'vendedor', '100.00', NULL, '2020-05-21 00:33:36', '2020-05-21 00:33:36'),
+(38, 'editor', 'editor', '$2a$10$yndtIEzuM9SBcOGCh8aMQOYO9sSIUcr5QeDX9wV61RQ2ZhcU7wfXW', 'editor', '200.00', NULL, '2020-05-21 00:33:58', '2020-05-21 00:33:58');
 
 --
 -- Índices para tabelas despejadas
@@ -224,19 +178,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `operacoes_usuarios`
 --
 ALTER TABLE `operacoes_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

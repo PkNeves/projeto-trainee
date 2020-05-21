@@ -16,6 +16,14 @@ const Usuario = db.sequelize.define('usuarios', {
     tipo: {
         type: db.Sequelize.ENUM('admin','gerente','vendedor','editor'),
         allowNull: false
+    },
+    salario_mensal: {
+        type: db.Sequelize.DECIMAL(10,2),
+        allowNull: false
+    },
+    ultimo_login: {
+        type: db.Sequelize.DATE(),
+        allowNull: true
     }
 });
 
