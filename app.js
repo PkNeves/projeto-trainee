@@ -187,6 +187,7 @@ app.post("/vender", function(req,res){
                 let nome = []
                 let qntdEstoque
                 let qntd = []
+                let valor = []
                 let query3
                 let query4
                 let a = 0
@@ -194,6 +195,7 @@ app.post("/vender", function(req,res){
                     id[i] = results2[i].id_produto;
                     nome[i] = results2[i].nome;
                     qntd[i] = results2[i].quantidade;
+                    valor[i] = results2[i].valor;
                     query3 = "SELECT * FROM produtos where id = " + id[i]
                     console.log(id[i])
                     db.sql.query(query3, function(err3,results3,fields3) {
@@ -218,6 +220,17 @@ app.post("/vender", function(req,res){
                             "nome": res.locals.user.nome,
                             "id": res.locals.user.id
                         }
+                        var data = new Date();
+
+                        query7 = "INSERT INTO vendas (id_usuario, dia, mes, ano, valor) VALUES (" + id_usuario + ", " + (data.getDay()) + ", " + (data.getMonth() + 1) + ", " + (data.getFullYear()) + ", " + (qntd[a] * valor[a]) + ")"
+                
+                        db.sql.query(query7, function(err7) {
+                            if (err7) {
+                                req.flash("error_msg", "Erro ao inserir venda")
+                                throw err
+                            }
+                        })
+
                         log_operation(id[a], user, 'vender');
                         a++;
                     })

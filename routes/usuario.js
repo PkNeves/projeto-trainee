@@ -268,11 +268,41 @@ router.post("/operacoes", acessos, function (req, res) {
     })
 })
 
+router.post("/graficoMensal", acessos, function (req, res) {
+    var id = req.body.id_usuario;
+    var mes = req.body.mes_grafico;
+    var ano = req.body.ano_grafico;
+    let query = "SELECT * FROM vendas where id_usuario = " + id + " and mes = " +  + mes + " and ano = " + ano + " order by dia";
+    console.log("\n\n\n\n"+query);
+
+    db.sql.query(query, function(err, results, fields) {
+        res.render('usuario/graficoMensal', {data: results, omes: mes, oano: ano, oid: id});
+    })
+})
+
+router.post("/graficoAnual", acessos, function (req, res) {
+    var id = req.body.id_usuario;
+    var ano = req.body.ano_grafico;
+    let query = "SELECT * FROM vendas where id_usuario = " + id + " and ano = " + ano + " order by mes";
+    console.log("\n\n\n\n"+query);
+
+    db.sql.query(query, function(err, results, fields) {
+        res.render('usuario/graficoAnual', {data: results, oano: ano, oid: id});
+    })
+})
+
 router.get('/info/:id', (req, res) => {
     var id_user = req.params.id
     var data = new Date();
-    var mes_atual = data.getMonth() + 1 
-    var mes_anterior = mes_atual - 1; 
+    var mes_atual = data.getMonth() + 1
+    var ano_atual = data.getFullYear(); 
+    if(mes_atual == 1){
+        var mes_anterior = 12;
+        var ano_anterior = ano_atual - 1; 
+    }else{
+        var mes_anterior = mes_atual - 1;
+        var ano_anterior = ano_atual; 
+    }
 
 
     Usuario.findAll({
@@ -280,22 +310,27 @@ router.get('/info/:id', (req, res) => {
             id: id_user
         }
     }).then(users => {
-        var query_mes_anterior = "SELECT SUM(quantidade*valor) as valor FROM operacoes WHERE id_user =" + id_user + " and MONTH(data) = " + mes_anterior + " and operacao = 'vender'"
-        var query_mes_atual = "SELECT SUM(quantidade*valor) as valor FROM operacoes WHERE id_user =" + id_user + " and MONTH(data) = " + mes_atual + " and operacao = 'vender'"
+        var query_mes_anterior = "SELECT SUM(valor) as valor FROM vendas WHERE id_usuario =" + id_user + " and mes = " + mes_anterior + " and ano = " + ano_atual
+        var query_mes_atual = "SELECT SUM(valor) as valor FROM vendas WHERE id_usuario =" + id_user + " and mes = " + mes_atual + " and ano = " + ano_anterior
+        var query_menor_ano = "SELECT Min(ano) as ano FROM vendas WHERE id_usuario =" + id_user
         var query_operacoes = "SELECT *, DATE_FORMAT(data, '%H:%i %d/%m/%Y') as data FROM operacoes WHERE id_user = " + id_user + " ORDER BY data DESC;";
 
         console.log('query_anteior' + query_mes_anterior)
         db.sql.query(query_mes_anterior, function(err, dados_mes_anterior, fields) {
             db.sql.query(query_mes_atual, function(err, dados_mes_atual, fields) {
-                db.sql.query(query_operacoes, function(err, dados_operacoes, fields) {
-                    console.log(dados_operacoes)
+                db.sql.query(query_menor_ano, function(err, dados_menor_ano, fields) {
+                    db.sql.query(query_operacoes, function(err, dados_operacoes, fields) {
+                        console.log(dados_operacoes)
 
-                    res.render('usuario/info', {
-                        user: users[0], 
-                        mes_anterior: dados_mes_anterior[0], 
-                        mes_atual: dados_mes_atual[0], 
-                        operacoes: dados_operacoes,
-                    })
+                        res.render('usuario/info', {
+                            id_usuario: id_user,
+                            user: users[0], 
+                            mes_anterior: dados_mes_anterior[0], 
+                            mes_atual: dados_mes_atual[0], 
+                            menor_ano: dados_menor_ano[0],
+                            operacoes: dados_operacoes,
+                        })
+                    })          
                 })          
             })
         })

@@ -1,4 +1,4 @@
-	<h2>Informações do Usuário</h2>
+    <h2>Informações do Usuário</h2>
 
     <div clas='row'>
       <a id="return" href="/usuario/listar">
@@ -7,6 +7,61 @@
           </button>
       </a>
     </div>
+    <div class="jumbotron">
+        <h2 style="margin-top: -30px;">Gráficos</h2><br>
+        <form style="display: none" id="form_mes" name='form1' action='/usuario/graficoMensal' method='post'>
+            <input name="id_usuario" style="display: none" value="{{id_usuario}}">
+            <input id="mes_grafico2" name="mes_grafico">
+            <input id="ano_grafico2" name="ano_grafico">
+        </form>
+        <form style="text-align: center;" id="form_ano" name='form1' action='/usuario/graficoAnual' method='post'>
+            <input name="id_usuario" style="display: none" value="{{id_usuario}}">
+            <select style="width: 130px;" id="mes_grafico" name="mes_grafico" class="btn btn-dark">
+                <option value="1">Janeiro</option> 
+                <option value="2">Feveieiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+            </select>
+            <select style="width: 130px;" id="ano_grafico" name="ano_grafico" class="btn btn-dark">
+            </select>
+        </form>
+        <div style="text-align: center;"><br>
+            <button onclick="check()" class="btn btn-info"><i class="fa fa-line-chart"></i> Grágico por mês</button>
+            <button onclick="document.getElementById('form_ano').submit();" class="btn btn-info"><i class="fa fa-line-chart"></i> Grágico por ano</button>
+        </div>
+    </div>
+    <script>
+        var data = new Date();
+        var ano_atual = data.getFullYear();
+        var mes_atual = data.getMonth() + 1;
+        function check(){
+            document.getElementById("mes_grafico2").value = document.getElementById("mes_grafico").value;
+            document.getElementById("ano_grafico2").value = document.getElementById("ano_grafico").value;
+            if(document.getElementById("ano_grafico").value == ano_atual){
+                if(document.getElementById("mes_grafico").value > mes_atual){
+                    alert("Não podemos ver o futuro! Por favor, mude a data.");
+                }else{
+                    document.getElementById("form_mes").submit();
+                }
+            }else{
+                document.getElementById("form_mes").submit();
+            }
+        }
+        var menor_ano = {{menor_ano.ano}};
+        var htmls = "";
+        for(var i = ano_atual; i>=menor_ano; i--){
+            htmls += "<option value='" + i + "'>" + i + "</option>"
+        }
+        document.getElementById("ano_grafico").innerHTML = htmls;
+    </script>
 
 	<table class='table table-striped'>
         <thead class='thead-dark'>

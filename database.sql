@@ -52,7 +52,8 @@ CREATE TABLE `operacoes` (
   `operacao` enum('criar','editar','vender','estocar','excluir') NOT NULL,
   `data` timestamp NULL DEFAULT current_timestamp(),
   `produto` varchar(255) NOT NULL,
-  `custo` float(10,2) NOT NULL
+  `custo` float(10,2) NOT NULL,
+  `valor_total` float(10,2)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -106,6 +107,16 @@ CREATE TABLE `produtos` (
   `custo` float(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `vendas` (
+  `id_venda` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `dia` int(11) NOT NULL,
+  `mes` int(11) NOT NULL,
+  `ano` int(11) NOT NULL,
+  `valor` float(10,2) NOT NULL,
+  PRIMARY KEY (id_venda)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Extraindo dados da tabela `produtos`
 --
@@ -140,7 +151,8 @@ INSERT INTO `usuarios` (`id`, `nome`, `login`, `senha`, `tipo`, `salario_mensal`
 (35, 'admin', 'admin', '$2a$10$lVL.tFWHRoLvv3.WkaoNuuOpz/1RclL.yOKtzmKP20FfA1yN4GpVi', 'admin', '100.00', NULL, '2020-05-21 00:30:52', '2020-05-21 00:30:52'),
 (36, 'gerente', 'gerente', '$2a$10$foI10Wex9uWUkEZ.ew8sguCbm8htDf8OANmQjZkts1sWBNiPaKZyG', 'gerente', '100.00', NULL, '2020-05-21 00:33:19', '2020-05-21 00:33:19'),
 (37, 'vendedor', 'vendedor', '$2a$10$XKD65dLVMq3P0YuWHglcJ.UXOCn8GH.LWz7IeHiBJo0a3J1kkZwDK', 'vendedor', '100.00', NULL, '2020-05-21 00:33:36', '2020-05-21 00:33:36'),
-(38, 'editor', 'editor', '$2a$10$yndtIEzuM9SBcOGCh8aMQOYO9sSIUcr5QeDX9wV61RQ2ZhcU7wfXW', 'editor', '200.00', NULL, '2020-05-21 00:33:58', '2020-05-21 00:33:58');
+(38, 'editor', 'editor', '$2a$10$yndtIEzuM9SBcOGCh8aMQOYO9sSIUcr5QeDX9wV61RQ2ZhcU7wfXW', 'editor', '200.00', NULL, '2020-05-21 00:33:58', '2020-05-21 00:33:58'),
+(39, '1', '1', '$2a$10$odfW1e0q9Rdg3tyybCavVeeNBzo7mx8PQgQwJYHWtdccN867AzWfO', 'admin', '1.00', NULL, '2020-05-21 00:33:58', '2020-05-21 00:33:58');
 
 --
 -- Índices para tabelas despejadas
