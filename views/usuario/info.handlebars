@@ -17,18 +17,18 @@
         <form style="text-align: center;" id="form_ano" name='form1' action='/usuario/graficoAnual' method='post'>
             <input name="id_usuario" style="display: none" value="{{id_usuario}}">
             <select style="width: 130px;" id="mes_grafico" name="mes_grafico" class="btn btn-dark">
-                <option value="1">Janeiro</option> 
-                <option value="2">Feveieiro</option>
-                <option value="3">Março</option>
-                <option value="4">Abril</option>
-                <option value="5">Maio</option>
-                <option value="6">Junho</option>
-                <option value="7">Julho</option>
-                <option value="8">Agosto</option>
-                <option value="9">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
+                <option id="mes1" value="1">Janeiro</option> 
+                <option id="mes2" value="2">Feveieiro</option>
+                <option id="mes3" value="3">Março</option>
+                <option id="mes4" value="4">Abril</option>
+                <option id="mes5" value="5">Maio</option>
+                <option id="mes6" value="6">Junho</option>
+                <option id="mes7" value="7">Julho</option>
+                <option id="mes8" value="8">Agosto</option>
+                <option id="mes9" value="9">Setembro</option>
+                <option id="mes10" value="10">Outubro</option>
+                <option id="mes11" value="11">Novembro</option>
+                <option id="mes12" value="12">Dezembro</option>
             </select>
             <select style="width: 130px;" id="ano_grafico" name="ano_grafico" class="btn btn-dark">
             </select>
@@ -42,6 +42,7 @@
         var data = new Date();
         var ano_atual = data.getFullYear();
         var mes_atual = data.getMonth() + 1;
+        document.getElementById("mes" + mes_atual).selected = true;
         function check(){
             document.getElementById("mes_grafico2").value = document.getElementById("mes_grafico").value;
             document.getElementById("ano_grafico2").value = document.getElementById("ano_grafico").value;

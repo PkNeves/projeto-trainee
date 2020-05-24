@@ -222,7 +222,7 @@ app.post("/vender", function(req,res){
                         }
                         var data = new Date();
 
-                        query7 = "INSERT INTO vendas (id_usuario, dia, mes, ano, valor) VALUES (" + id_usuario + ", " + (data.getDay()) + ", " + (data.getMonth() + 1) + ", " + (data.getFullYear()) + ", " + (qntd[a] * valor[a]) + ")"
+                        query7 = "INSERT INTO vendas (id_usuario, dia, mes, ano, valor) VALUES (" + id_usuario + ", " + (data.getDate()) + ", " + (data.getMonth() + 1) + ", " + (data.getFullYear()) + ", " + (qntd[a] * valor[a]) + ")"
                 
                         db.sql.query(query7, function(err7) {
                             if (err7) {
