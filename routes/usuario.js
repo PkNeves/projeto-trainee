@@ -4,7 +4,8 @@ const {acessos} = require('../helpers/acessos');
 const passport = require('passport');
 const Usuario = require('../models/Usuario');
 const db = require('../models/db.js');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const pdf = require ("html-pdf");
 
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
@@ -140,6 +141,19 @@ router.get('/listar', acessos,  (req, res) => {
         console.log(usuarios);
         res.render('usuario/listar', {usuarios: usuarios})
     })
+})
+
+router.post('/emitirPDF', (req, res) => {
+    var html = "";
+    html += "<h1>Olá, teste</h1>";
+    pdf.create(html, {}).toFile("./meuPDF.pdf",(err, res) => {
+        if(err){
+            console.log("Erro");
+        }else{
+            console.log(res);
+        }
+    })
+    res.redirect('/')
 })
 
 router.post('/excluir/:id', (req, res) => {

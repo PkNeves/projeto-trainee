@@ -12,7 +12,7 @@
     var ctx = document.getElementById('myChart').getContext('2d');
     var a = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     {{#data}}
-        a[{{dia}}] += {{valor}}
+        a[{{dia}} - 1] += {{valor}}
     {{/data}}
     var b = [29, 30, 31];
     if({{omes}} == 4 || {{omes}} == 6 || {{omes}} == 9 || {{omes}} == 11){
