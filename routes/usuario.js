@@ -144,16 +144,132 @@ router.get('/listar', acessos,  (req, res) => {
 })
 
 router.post('/emitirPDF', (req, res) => {
-    var html = "";
-    html += "<h1>Olá, teste</h1>";
-    pdf.create(html, {}).toFile("./meuPDF.pdf",(err, res) => {
-        if(err){
-            console.log("Erro");
-        }else{
-            console.log(res);
+    let id_user = req.body.id_usuario;
+    var data = new Date();
+    var mes_atual = data.getMonth() + 1
+    var ano_atual = data.getFullYear(); 
+    if(mes_atual == 1){
+        var mes_anterior = 12;
+        var ano_anterior = ano_atual - 1; 
+    }else{
+        var mes_anterior = mes_atual - 1;
+        var ano_anterior = ano_atual; 
+    }
+
+
+    Usuario.findAll({
+        where: {
+            id: id_user
         }
-    })
-    res.redirect('/')
+    }).then(users => {
+        var query_mes_anterior = "SELECT SUM(valor) as valor FROM vendas WHERE id_usuario =" + id_user + " and mes = " + mes_anterior + " and ano = " + ano_atual
+        var query_mes_atual = "SELECT SUM(valor) as valor FROM vendas WHERE id_usuario =" + id_user + " and mes = " + mes_atual + " and ano = " + ano_anterior
+        var query_menor_ano = "SELECT Min(ano) as ano FROM vendas WHERE id_usuario =" + id_user
+        var query_operacoes = "SELECT *, DATE_FORMAT(data, '%H:%i %d/%m/%Y') as data FROM operacoes WHERE id_user = " + id_user + " ORDER BY data DESC;";
+
+        console.log('query_anteior' + query_mes_anterior)
+        db.sql.query(query_mes_anterior, function(err, dados_mes_anterior, fields) {
+            db.sql.query(query_mes_atual, function(err, dados_mes_atual, fields) {
+                db.sql.query(query_menor_ano, function(err, dados_menor_ano, fields) {
+                    db.sql.query(query_operacoes, function(err, dados_operacoes, fields) {
+                        console.log(dados_operacoes)
+
+
+                        var html = `
+                        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+                        <div style="font-family: Raleway; width: 688px; margin-left: 48px;">
+                            <label style="float: right">` 
+                            
+                            var dataAtuall = new Date();
+                            var essaData = dataAtuall.getHours() + ":" + dataAtuall.getMinutes() + ":" + dataAtuall.getSeconds() +  " - " + dataAtuall.getDate() + "/" + (dataAtuall.getMonth() + 1) + "/" + dataAtuall.getFullYear();
+                            html += essaData
+                            html += `</label><label style="float: left"><b>Projeto CRUD</b></label>
+                            <br><br><br><h3>Usuário: ${users[0].dataValues.nome}</h3>
+                            <br><br><h3>Dados</h3>
+                            <table class='table table-striped'>
+                                <thead class='thead-dark'>
+                                    <th>Nome</th>
+                                    <th>Criado em</th>
+                                    <th>Ultimo Login</th>
+                                    <th>Salário Mensal</th>
+                                    <th>Vendas Mês Anterior</th>
+                                    <th>Vendas Mês atual</th>
+                                </thead>
+                        
+                                <tbody>
+                                    <tr>    
+                                        <td>
+                                            ${users[0].dataValues.nome}
+                                        </td>
+                                        <td>
+                                            ${users[0].dataValues.createdAt}
+                                        </td>
+                                        <td>
+                                            ${users[0].dataValues.ultimo_login}
+                                        </td>
+                                        <td>
+                                            R$ ${users[0].dataValues.salario_mensal}
+                                        </td>
+                                        <td>
+                                            R$ ${dados_mes_anterior[0].valor}
+                                        </td>
+                                        <td>
+                                            R$ ${dados_mes_atual[0].valor}
+                                        </td>
+                                </tbody>
+                            </table>
+
+                            <br><br><h3>Operações</h3>
+
+                            <table class='table table-striped'>
+                                <thead class='thead-dark'>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Custo</th>
+                                    <th>Valor</th>
+                                    <th>Operação</th>
+                                    <th>Data</th>
+                                </thead>
+
+                                <tbody>`;
+
+                                    for(var i = 0; i < dados_operacoes.length; i++){
+                                        html += `<tr>
+                                                    <td> ${ dados_operacoes[i].produto } </td>
+                                                    <td> ${ dados_operacoes[i].quantidade } </td>
+                                                    <td> ${ dados_operacoes[i].custo } </td>
+                                                    <td> ${ dados_operacoes[i].valor } </td>
+                                                    <td> ${ dados_operacoes[i].operacao } </td>
+                                                    <td> ${ dados_operacoes[i].data } </td>
+                                                </tr>`
+                                    }
+                                html += `
+                                </tbody>
+
+                            </table>
+                        </div>
+                        `;
+                        pdf.create(html, {}).toFile("./views/usuario/dadosUsuario.pdf",(err, res) => {
+                            if(err){
+                                console.log("Erro");
+                            }else{
+                                console.log(res);
+                            }
+                        })
+                        res.render("usuario/mostrarPDF")
+
+
+                    })          
+                })          
+            })
+        })
+    });
+
+
+
+    
 })
 
 router.post('/excluir/:id', (req, res) => {

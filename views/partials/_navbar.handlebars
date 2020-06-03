@@ -9,7 +9,7 @@
       <li class="nav-item">
         <a class="nav-link" href="/">{{user.nome}}: {{user.tipo}}</a>
       </li>
-      <li class="nav-item dropdown">
+      <li id="liAdicionarProduto" class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-archive"></i> Produto
         </a>
@@ -18,7 +18,7 @@
             <i class="fa fa-plus"></i> Adicionar
           </button>
       </li>
-      <li class="nav-item dropdown">
+      <li id="liCadastrarUsuario" class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-user"></i> Usuario 
         </a>
@@ -198,8 +198,11 @@
   <!-- Fim Modal Adicionar Produto -->
   <script>
 	 	var type = '{{user.tipo}}';
+		if (!(type == 'admin') && !(type == 'gerente')) {
+      document.getElementById('liCadastrarUsuario').style.display = 'none';
+      document.getElementById('liAdicionarProduto').style.display = 'none';
+    }
 		if (!(type == 'admin')) {
-			document.getElementById('btCadastrarUsuario').disabled = true;
-			document.getElementById('btListarUsuario').disabled = true;
+      document.getElementById('liCadastrarUsuario').style.display = 'none';
 		}
   </script>

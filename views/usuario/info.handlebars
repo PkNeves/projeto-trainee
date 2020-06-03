@@ -41,6 +41,7 @@
     <div class="jumbotron">
         <h2 style="margin-top: -30px;">Download PDF</h2><br>
         <form style="text-align: center;" name='form1' action='/usuario/emitirPDF' method='post'>
+            <input name="id_usuario" style="display: none" value="{{id_usuario}}">
             <button class="btn btn-danger"><i class="fa fa-file-pdf-o"></i> Download</button>
         </form>
     </div>

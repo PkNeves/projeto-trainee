@@ -37,10 +37,10 @@
 				<th>Quantidade</th>
 				<th>Valor Custo</th>
 				<th>Valor Venda</th>
-				<th>Carrinho</th>
-				<th>Controle de estoque</th>
-				<th>Editar produto</th>
-				<th>Excluir</th>
+				<th class="colunaCarrinho">Carrinho</th>
+				<th class="colunaEstoque">Controle de estoque</th>
+				<th class="colunaEditar">Editar produto</th>
+				<th class="colunaExcluir">Excluir</th>
 			</tr>
 		</thead>
 
@@ -69,7 +69,7 @@
 					R$ {{valor}}
 					<input style='display: none;' id='valor{{id}}' value = '{{valor}}'>
 				</td>
-				<td>
+				<td class="colunaCarrinho">
 					<button style="display: initial;" id='adicionarNoCarrinho{{id}}' class='btAdicionarCarrinho btn btn-success' data-toggle='modal' data-target='#adicionarCarrinho' onclick="document.getElementById('adicionarCarrinho').style.display = 'initial'; adicionarCarrinho('{{id}}');"><i class="fa fa-cart-plus"></i> Adicionar</button>
 					<script>
 						if({{quantidade}} <= 0){
@@ -78,13 +78,13 @@
 					</script>
 					<button style="display: none;" id='removerDoCarrinho{{id}}' class='btRemoverCarrinho btn btn-danger' data-toggle='modal' data-target='#removerCarrinho' onclick="removerCarrinho('{{id}}');"><i class="fa fa-cart-arrow-down"></i> Remover</button>
 				</td>
-				<td>
+				<td class="colunaEstoque">
 					<button class='btEstoque btn btn-secondary' data-toggle='modal' data-target='#editarEstoque' onclick="document.getElementById('editarEstoque').style.display = 'initial'; editarEstoque('{{id}}');"><i class="fa fa-archive"></i> Estoque</button>
 				</td>
-				<td>
+				<td class="colunaEditar">
 					<button class='btEditarProduto btn btn-primary' data-toggle='modal' data-target='#editarProduto' onclick="document.getElementById('editarProduto').style.display = 'initial'; editarProduto('{{id}}');"><i class="fa fa-pencil"></i> Editar</button>
 				</td>
-				<td>
+				<td class="colunaExcluir">
 					<button class='btExcluirProduto btn btn-danger' data-toggle='modal' data-target='#excluirProduto' onclick="document.getElementById('excluirProduto').style.display = 'initial'; excluirProduto('{{id}}');"><i class="fa fa-trash"></i> Excluir</button>
 				</td>
 			</tr>
@@ -443,6 +443,11 @@
 				collection[i].disabled = true;
 			}
 		}
+		function delete_collection (collection) {
+			for (i = 0; i < collection.length; i++) {
+				collection[i].style.display = 'none';
+			}
+		}
 
 	 	var type = '{{user.tipo}}';
 
@@ -452,19 +457,13 @@
 			document.getElementById('btListarUsuario').disabled = true;
 		}
 		*/
-
-		if (!(type == 'gerente') && !(type == 'admin')) {
-			document.getElementById('btAdicionarProduto').disabled = true;
-			disable_collection(document.getElementsByClassName('btEditarProduto'))
-			disable_collection(document.getElementsByClassName('btExcluirProduto'))
+		if ((type == 'editor')) {
+			delete_collection(document.getElementsByClassName('colunaCarrinho'))
+			delete_collection(document.getElementsByClassName('colunaEditar'))
+			delete_collection(document.getElementsByClassName('colunaExcluir'))
 		}
-
-		if (!(type == 'vendedor') && !(type == 'gerente') && !(type == 'admin')) {
-			disable_collection(document.getElementsByClassName('btAdicionarCarrinho'))
-		}
-		
-		if (!(type == 'editor') && !(type == 'gerente') && !(type == 'admin')) {
-			disable_collection(document.getElementsByClassName('btEstoque'))
+		if ((type == 'vendedor')) {
+			delete_collection(document.getElementsByClassName('colunaEstoque'))
 		}
 
 	</script>
