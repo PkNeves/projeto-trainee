@@ -32,8 +32,21 @@
         </button>
         </form>
       </li>
+
+      <li id="liBalancoFinanceiro" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-dollar"></i> Balanço financeiro
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <button type='button' class='dropdown-item' data-toggle='modal' data-target='#adicionarDespesa'>
+            <i class="fa fa-plus"></i> Adicionar uma despesa
+          </button>
+          <button type='submit' id='btListarUsuario' class='dropdown-item'>
+            <i class="fa fa-list"> </i> Listar balanço financeiro
+          </button>
+      </li>
       
-      <li class="nav-item">
+      <li id="liCarrinho" class="nav-item">
         <form id="formCarrinho" name='form1' action='/carrinho' method='post'>
           <a style="cursor: pointer" class="nav-link" id="btCarrinho" onclick="document.getElementById('formCarrinho').submit();"><i class="fa fa-shopping-cart"></i> Mostrar carrinho</a>
         </form>
@@ -123,6 +136,52 @@
   </div>
   <!--Fim da modal para cadastrar usuário-->
 
+  <!-- Modal Adicionar Despesa -->
+  <div class='modal fade' id="adicionarDespesa" tabindex='-1' role='dialog'>
+    <div class='modal-dialog modal-lg' role='document'>
+      <div class='modal-content'>
+
+        <div class='modal-header'>
+          <h2 class="modal-title center" id="exampleModalLabel">Adicionar uma despesa</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class='modal-body'>
+          <div class='container'>
+            <form name='form1' action='adicionarDespesa' method='post'>
+              <!-- Nome -->
+              <div class='form-group'>
+                <label for='nome'>Nome da despesa</label>
+                <label style="float: left; color: red;"><b id="confirmaNome" style="display: none;"></b></label>
+                <input class='form-control' type="text" name="nome" required="">
+              </div>
+                <!-- Valor -->
+              <div class='form-group'>
+                <label for='valor'>Valor da despesa</label>
+                <label style="float: left; color: red;"><b id="confirmaValorCusto" style="display: none;"></b></label>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                  <div class="input-group-text">R$</div>
+                  </div>
+                  <input class='form-control' type="text" name="valor" required="">
+                </div>
+              </div>
+              <div class='modal-footer'>
+                <button type="button" class='btn btn-secondary' data-dismiss="modal">
+                  <i class="fa fa-close"></i> Cancelar
+                </button>
+                <button class='btn btn-primary'><i class="fa fa-plus"></i> Adicionar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fim Modal Adicionar Despesa -->
+
   <!-- Modal Adicionar Produto -->
   <div class='modal fade' id="adicionarProduto" tabindex='-1' role='dialog'>
     <div class='modal-dialog modal-lg' role='document'>
@@ -198,9 +257,13 @@
   <!-- Fim Modal Adicionar Produto -->
   <script>
 	 	var type = '{{user.tipo}}';
+    if ((type == 'editor')) {
+      document.getElementById('liCarrinho').style.display = 'none';
+    }
 		if (!(type == 'admin') && !(type == 'gerente')) {
       document.getElementById('liCadastrarUsuario').style.display = 'none';
       document.getElementById('liAdicionarProduto').style.display = 'none';
+      document.getElementById('liBalancoFinanceiro').style.display = 'none';
     }
 		if (!(type == 'admin')) {
       document.getElementById('liCadastrarUsuario').style.display = 'none';

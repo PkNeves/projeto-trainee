@@ -44,9 +44,10 @@ CREATE TABLE `carrinho` (
 
 CREATE TABLE `despesas_fixas` (
   `idDespesa` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
   `nome` varchar(255) NOT NULL,
   `valor` decimal(10,2) NOT NULL,
-  `data` datetime NOT NULL
+  `data` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

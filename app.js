@@ -109,6 +109,29 @@ app.post("/adicionar", function(req,res){
     // }
 });
 
+app.post("/adicionarDespesa", function(req,res){ 
+    // if (tipo  === 'admin' || tipo  === 'gerente'){
+        let nome = req.body.nome
+        let valor = req.body.valor
+
+        let values = [id_usuario, nome, valor]
+
+        let query = "INSERT INTO despesas_fixas (idUsuario, nome, valor) VALUES ?"
+
+        db.sql.query(query, [[values]], function(err) {
+            if (err) {
+                req.flash("error_msg", "Erro ao adicionar despesa!")
+                throw err
+            }
+        })
+        req.flash("success_msg", "Despesa adicionada com sucesso!")
+        res.redirect('/');
+    
+    // } else {
+    //     res.render('sempermissao')
+    // }
+});
+
 app.post("/adicionarCarrinho", function(req,res){
     // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
         let id_produto = req.body.idProdutoVenda
