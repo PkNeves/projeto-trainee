@@ -109,29 +109,6 @@ app.post("/adicionar", function(req,res){
     // }
 });
 
-app.post("/adicionarDespesa", function(req,res){ 
-    // if (tipo  === 'admin' || tipo  === 'gerente'){
-        let nome = req.body.nome
-        let valor = req.body.valor
-
-        let values = [id_usuario, nome, valor]
-
-        let query = "INSERT INTO despesas_fixas (idUsuario, nome, valor) VALUES ?"
-
-        db.sql.query(query, [[values]], function(err) {
-            if (err) {
-                req.flash("error_msg", "Erro ao adicionar despesa!")
-                throw err
-            }
-        })
-        req.flash("success_msg", "Despesa adicionada com sucesso!")
-        res.redirect('/');
-    
-    // } else {
-    //     res.render('sempermissao')
-    // }
-});
-
 app.post("/adicionarCarrinho", function(req,res){
     // if (tipo  === 'admin' || tipo  === 'gerente' || tipo  === 'vendedor') {
         let id_produto = req.body.idProdutoVenda
@@ -510,7 +487,60 @@ function log_operation (val, user, operation) {
     }
 }
 
-//Abrir servidor
+// DESPESAS
+
+app.post("/adicionarDespesa", function(req,res){ 
+    // if (tipo  === 'admin' || tipo  === 'gerente'){
+        let nome = req.body.nome
+        let valor = req.body.valor
+
+        let values = [id_usuario, nome, valor]
+
+        let query = "INSERT INTO despesas_fixas (idUsuario, nome, valor) VALUES ?"
+
+        db.sql.query(query, [[values]], function(err) {
+            if (err) {
+                req.flash("error_msg", "Erro ao adicionar despesa!")
+                throw err
+            }
+        })
+        req.flash("success_msg", "Despesa adicionada com sucesso!")
+        res.redirect('/');
+    
+    // } else {
+    //     res.render('sempermissao')
+    // }
+});
+
+app.get("/despesas/lista", function (req, res) {
+    let mes_atual = new Date().getMonth() + 1;
+    
+    let query_despesas= "SELECT * FROM despesas_fixas;";
+    let query_salarios = "SELECT SUM(salario_mensal) as soma FROM usuarios";
+    let query_vendas = "SELECT SUM(valor) as soma FROM vendas WHERE mes =" + mes_atual;
+
+    db.sql.query(query_despesas, function (err, despesas) {
+        db.sql.query(query_salarios, function (err, salarios) {
+            db.sql.query(query_vendas, function (err, vendas) {
+                if (err) {
+                    req.flash("error_msg", "Erro ao consultar despesas");
+                    res.redirect("/");
+                
+                } else {
+                    res.render("listarDespesas", {
+                        despesas: despesas,
+                        salarios: salarios[0].soma,
+                        vendas: vendas[0].soma,
+                        mes: mes_atual,
+                    })
+                }
+            })
+        })
+    })
+})
+
+
+// Abrir servidor
 app.listen(8000,function(req,res){
    console.log('Servidor aberto!');
 });

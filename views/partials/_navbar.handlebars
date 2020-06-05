@@ -41,9 +41,11 @@
           <button type='button' class='dropdown-item' data-toggle='modal' data-target='#adicionarDespesa'>
             <i class="fa fa-plus"></i> Adicionar uma despesa
           </button>
-          <button type='submit' id='btListarUsuario' class='dropdown-item'>
-            <i class="fa fa-list"> </i> Listar balanço financeiro
-          </button>
+          <form action="/despesas/lista" method="get">   
+            <button type='submit' id='btCHANGELATER' class='dropdown-item'>
+              <i class="fa fa-list"> </i> Listar balanço financeiro
+            </button>
+          </form>
       </li>
       
       <li id="liCarrinho" class="nav-item">
