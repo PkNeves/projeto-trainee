@@ -1,0 +1,81 @@
+<h2>Demonstrativo simplificado</h2>
+
+<table class='table table-striped'>
+        <tr class='thead-dark'>
+            <th>Despesas</th>
+            <th id="despesas">R$ </th>
+        </tr>
+
+        {{#despesas}}
+        <tr>
+           <td>{{nome}}</td>
+            <td>R$ {{valor}}</td>
+        </tr>
+        {{/despesas}}
+        <tr>
+            <td>Salários</td>
+            <td>R$ {{salarios}}</td>
+        </tr>
+
+        <tr class='thead-dark'>
+            <th id="tituloVendas">Vendas</th>
+            <th id="totalVendas">R$ {{vendas}}</th>
+        </tr>
+        
+        <tr id="resultado">
+            <td>
+                <div class="progress" style="height: 100%;">
+                    <div class="progress-bar" role="progressbar">Vendas</div>
+                </div>
+            </td>
+            {{!-- <td id='resultado'></td> --}}
+        </tr>
+
+</table>
+
+<script>
+    let titulo = document.getElementById("tituloVendas");
+    let meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+    
+    titulo.textContent += " (" + meses[{{mes}}-1] + ")";
+
+    let despesas = document.getElementById("despesas");
+    let totalDespesas = {{salarios}};
+
+    {{#despesas}}
+        totalDespesas += {{valor}}
+    {{/despesas}}
+
+    despesas.textContent += totalDespesas;
+
+    let resultado = document.getElementById("resultado");
+    let total = {{vendas}} - totalDespesas;
+
+    let progresso = document.querySelector(".progress-bar");    
+
+    if (total > 0) {
+        resultado.setAttribute("class", "bg-success");
+        progresso.style.width = "100%";
+
+    } else {
+        resultado.setAttribute("class", "bg-danger");
+        progresso.style.width = {{vendas}} * 100 / totalDespesas + "%";
+    }
+
+    let valorTotal = document.createElement("td");
+    valorTotal.textContent = total;
+
+    resultado.appendChild(valorTotal);
+    {{!-- resultado.textContent = total; --}}
+
+{{!--  
+    progresso.setAttribute("style", "width: 50%"); --}}
+
+
+{{!--     
+    let tituloVendas = document.querySelector('#tituloVendas');
+
+    tituloVendas.textContent += {{salarios}};
+    
+    console.log(Response) --}}
+</script>
